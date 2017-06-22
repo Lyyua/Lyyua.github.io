@@ -93,13 +93,13 @@
 
 
 
-<meta name="description" content="状态机与行为树状态机状态机简单的说，是基于当前状态下，存在若干种跳转条件，满足某种跳转条件后，切换到另一个状态，类似Unity的Mecanim动画系统。 如果状态较多，情况切换复杂，就会看起来一团麻，比如一个简单AI策略的实现，就会产生如下图一般的效果，线条杂乱，不紧不易理清，而且也不容易，不过早期的大多游戏AI都是用FSM实现，后续的事实证明选择适合需求的解决方案才是最好的：  行为树于是为了满">
+<meta name="description" content="状态机与行为树状态机状态机简单的说，是基于当前状态下，存在若干种跳转条件，满足某种跳转条件后，切换到另一个状态，类似Unity的Mecanim动画系统。 如果状态较多，情况切换复杂，就会看起来一团麻，比如一个简单AI策略的实现，就会产生如下图一般的效果，线条杂乱，不紧不易理清，而且也不容易，不过早期的大多游戏AI都是用FSM实现，后续的事实证明选择适合需求的解决方案才是最好的：">
 <meta name="keywords" content="AI">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Rain AI，先从行为树的角度谈谈（一）">
 <meta property="og:url" content="http://yoursite.com/2017/06/22/Rain1/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="状态机与行为树状态机状态机简单的说，是基于当前状态下，存在若干种跳转条件，满足某种跳转条件后，切换到另一个状态，类似Unity的Mecanim动画系统。 如果状态较多，情况切换复杂，就会看起来一团麻，比如一个简单AI策略的实现，就会产生如下图一般的效果，线条杂乱，不紧不易理清，而且也不容易，不过早期的大多游戏AI都是用FSM实现，后续的事实证明选择适合需求的解决方案才是最好的：  行为树于是为了满">
+<meta property="og:description" content="状态机与行为树状态机状态机简单的说，是基于当前状态下，存在若干种跳转条件，满足某种跳转条件后，切换到另一个状态，类似Unity的Mecanim动画系统。 如果状态较多，情况切换复杂，就会看起来一团麻，比如一个简单AI策略的实现，就会产生如下图一般的效果，线条杂乱，不紧不易理清，而且也不容易，不过早期的大多游戏AI都是用FSM实现，后续的事实证明选择适合需求的解决方案才是最好的：">
 <meta property="og:image" content="http://yoursite.com/2017/06/22/Rain1/FSM.png">
 <meta property="og:image" content="http://yoursite.com/2017/06/22/Rain1/BD.png">
 <meta property="og:image" content="http://yoursite.com/2017/06/22/Rain1/Parallel.png">
@@ -109,10 +109,10 @@
 <meta property="og:image" content="http://yoursite.com/2017/06/22/Rain1/selector1.jpg">
 <meta property="og:image" content="http://yoursite.com/2017/06/22/Rain1/selector2.jpg">
 <meta property="og:image" content="http://yoursite.com/2017/06/22/Rain1/selector3.jpg">
-<meta property="og:updated_time" content="2017-06-22T14:49:24.690Z">
+<meta property="og:updated_time" content="2017-06-22T14:56:47.599Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Rain AI，先从行为树的角度谈谈（一）">
-<meta name="twitter:description" content="状态机与行为树状态机状态机简单的说，是基于当前状态下，存在若干种跳转条件，满足某种跳转条件后，切换到另一个状态，类似Unity的Mecanim动画系统。 如果状态较多，情况切换复杂，就会看起来一团麻，比如一个简单AI策略的实现，就会产生如下图一般的效果，线条杂乱，不紧不易理清，而且也不容易，不过早期的大多游戏AI都是用FSM实现，后续的事实证明选择适合需求的解决方案才是最好的：  行为树于是为了满">
+<meta name="twitter:description" content="状态机与行为树状态机状态机简单的说，是基于当前状态下，存在若干种跳转条件，满足某种跳转条件后，切换到另一个状态，类似Unity的Mecanim动画系统。 如果状态较多，情况切换复杂，就会看起来一团麻，比如一个简单AI策略的实现，就会产生如下图一般的效果，线条杂乱，不紧不易理清，而且也不容易，不过早期的大多游戏AI都是用FSM实现，后续的事实证明选择适合需求的解决方案才是最好的：">
 <meta name="twitter:image" content="http://yoursite.com/2017/06/22/Rain1/FSM.png">
 
 
@@ -332,7 +332,7 @@
 
       
         <h2 id="状态机与行为树"><a href="#状态机与行为树" class="headerlink" title="状态机与行为树"></a>状态机与行为树</h2><h3 id="状态机"><a href="#状态机" class="headerlink" title="状态机"></a>状态机</h3><p><strong><font color="red" size="4">状态机</font></strong>简单的说，是基于当前状态下，存在若干种跳转条件，满足某种跳转条件后，切换到另一个状态，类似Unity的Mecanim动画系统。</p>
-<p>如果状态较多，情况切换复杂，就会看起来一团麻，比如一个简单AI策略的实现，就会产生如下图一般的效果，线条杂乱，不紧不易理清，而且也不容易，不过早期的大多游戏AI都是用FSM实现，后续的事实证明选择适合需求的解决方案才是最好的：</p>
+<p>如果状态较多，情况切换复杂，就会看起来一团麻，比如一个简单AI策略的实现，就会产生如下图一般的效果，线条杂乱，不紧不易理清，而且也不容易，不过早期的大多游戏AI都是用FSM实现，后续的事实证明选择适合需求的解决方案才是最好的：<a id="more"></a></p>
 <p><img src="/2017/06/22/Rain1/FSM.png" alt=""></p>
 <h3 id="行为树"><a href="#行为树" class="headerlink" title="行为树"></a>行为树</h3><p>于是为了满足需求，便于开发，使用行为树会是一个不错的选择，行为树提供大量的流程控制方法，使得状态之间的改变更加直观，整个游戏AI使用树型结构，方便查看与编辑。如下就是一个战斗小队队长的AI：</p>
 <p><img src="/2017/06/22/Rain1/BD.png" alt=""></p>
@@ -351,12 +351,12 @@
 <p>Repeating不是一种返回状态。action节点被标记成Repeating后，返回给Decision节点为Running</p>
 <h2 id="实例分析"><a href="#实例分析" class="headerlink" title="实例分析"></a>实例分析</h2><p>主要说的是跟Running状态节点有关的使用出现的一些情况。</p>
 <p>当某个action节点为Running，如果最终的返回结果使得根节点不为Running时，下一次迭代时不会直接跳到Running状态的action节点，虽然节点仍然照常进行，但是每一次执行这个Running状态的节点都是重新开始的执行。较为明显的是timer节点，timer节点是一个计时节点，计时过程中返回Running，根节点若不为Running，下一次迭代进入这个节点都是重新开始，也就是从0秒开始到0.xxx，不能起到计时的作用，要起到计时作用就必须使根节点得到的结果是Running，下一次迭代直接跳转到这个Running节点，继续之前的运行结果。（当然这种运行机制是由BT框架决定，每一次并不是top-down遍历所有节点，一般是出于效率考虑，所以要活用）</p>
-<p>实例分析，此时我的需求是，怪物巡逻，发现玩家后原地顿住1秒，如图对比：</p>
-<p>Root节点是个并行节点，接受到的返回结果是failure，那么下一次迭代照常进行，正常运行到timer节点，只不过每次进入都是0秒到0.xxx秒，不能起到计时作用，那么AI会停在原地做无用的计时。</p>
+<p>此时我的需求是，怪物巡逻，发现玩家后原地顿住1秒。如图：</p>
+<p>Root节点是个并行节点，接受到的返回结果是failure，那么下一次迭代照常进行，正常运行到timer节点，只不过每次进入都是0秒到0.xxx秒，不能起到计时作用，那么AI会停在原地做无用的计时，就像这样：</p>
 <p><img src="/2017/06/22/Rain1/timer1.jpg" alt=""></p>
-<p>Root节点是个并行节点，接受到的返回结果是failure，那么下一次迭代直接跳转到timer，继续上一次迭代的计时，1秒后，计时结束</p>
+<p>Root节点是个并行节点，接受到的返回结果是failure，那么下一次迭代直接跳转到timer，继续上一次迭代的计时，1秒后，计时结束，就像这样：</p>
 <p><img src="/2017/06/22/Rain1/timer2.jpg" alt=""></p>
-<p>又因为我的设计使得根节点返回的是Running，那么下一次迭代会直接跳转到Running状态的节点，所以我这里的eye detect节点选择了Repeating，让他一直循环监测周围玩家的可视状态。否则的话，他会使得我的根节点返回的结果为succeed，然后让我的timer节点一直是重新计时的状态，陷入死循环。</p>
+<p>又因为我的设计使得根节点返回的是Running，那么下一次迭代会直接跳转到Running状态的节点，所以我这里的eye detect节点选择了Repeating，让他一直循环监测周围玩家的可视状态。否则的话，他会使得我的根节点返回的结果为succeed，然后让我的timer节点一直是重新计时的状态，陷入死循环，就像这样：</p>
 <p><img src="/2017/06/22/Rain1/selector.jpg" alt=""></p>
 <h4 id="并行节点与Running状态节点之间的关系"><a href="#并行节点与Running状态节点之间的关系" class="headerlink" title="并行节点与Running状态节点之间的关系"></a>并行节点与Running状态节点之间的关系</h4><p>并行节点的返回结果是可以强制控制的。并且是以并行节点返回结果控制的结果为优先。比如并行节点的设置是只要并行节点下有一个节点返回的是失败，则并行节点的返回结果是失败，例如，如果在当前并行节点下有一个Running状态的节点，并行节点返回结果是失败。</p>
 <h4 id="选择与Running状态节点之间的关系"><a href="#选择与Running状态节点之间的关系" class="headerlink" title="选择与Running状态节点之间的关系"></a>选择与Running状态节点之间的关系</h4><p>Running状态的节点和返回成功的节点有些类似，按照选择节点的规则正常进行，先碰到“Running”或者“Succeed”就直接返回“Running”或者“Succeed”，后续节点不再执行</p>
