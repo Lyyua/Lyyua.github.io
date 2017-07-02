@@ -105,7 +105,7 @@
 <meta property="og:image" content="http://yoursite.com/2017/07/02/Rain2/Sensor.png">
 <meta property="og:image" content="http://yoursite.com/2017/07/02/Rain2/Entity.png">
 <meta property="og:image" content="http://yoursite.com/2017/07/02/Rain2/Extensions.png">
-<meta property="og:updated_time" content="2017-07-02T12:40:15.018Z">
+<meta property="og:updated_time" content="2017-07-02T13:49:00.396Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Rain AI，从实现一个内部小队通信的角度谈谈（一）">
 <meta name="twitter:description" content="Unity开发过程中，通常会选择在Unity组件上挂脚本去实现具体功能，在RainAI 里的处理方法有些不同，但是根本来说是一样的，AI_Rig就相当于我们的UnityEngine，在AI行为树的轮询逻辑下去处理我们写的脚本，比如说什么并行节点，选择节点，顺序节点云云；UnityEngine角度来看就是Awake、Start、物理碰撞、销毁等等生命周期。">
@@ -348,6 +348,7 @@
 <p><img src="/2017/07/02/Rain2/Extensions.png" alt=""></p>
 <p>作为一个功能拓展，看起来像是把Memory对象化了，他需要继承于CustomAIElement，他存在自己的生命周期，因为看不到源码，简单测试得出Act()函数和Mono中的Update是一个频率。我们可以继承他做一些初始化，对AI行为设计中出的复杂对象保存，本身脚本的生命周期执行。综合说来，AI_Rig是类似Unity的组件系统。嗯，CustomAIElement就长这样：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">namespace RAIN.Core</div><div class="line">&#123;</div><div class="line">    [RAINSerializableClass]</div><div class="line">    public abstract class CustomAIElement : RAINAIElement</div><div class="line">    &#123;</div><div class="line">        protected CustomAIElement();</div><div class="line">        public virtual string Name &#123; get; set; &#125;</div><div class="line">        public virtual void Act();</div><div class="line">        public virtual void Destroy();</div><div class="line">        public virtual void IK(int aLayerIndex);</div><div class="line">        public virtual void Post();</div><div class="line">        public virtual void Pre();</div><div class="line">        public virtual void RootMotion();</div><div class="line">        public virtual void Sense();</div><div class="line">        public virtual void Think();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>之所以需要Memory和CustomAIElement，是因为，在行为树逻辑中会使用到一些变量，一些定义的对象。有这两个模块的管理，方便我们的逻辑调用。比如说一个士兵Sensor寻找到一个进攻目标，通知队长，队长根据分析策略，比如目标是个大型杀伤力单位，队长选择寻找掩体，逐步推进消灭目标。这其中就需要目标属性、士兵消息通知、队长选择进攻策略、队长通知士兵、士兵执行策略等等。具体使用在后续介绍会有所感觉。</p>
 <p>其余几个一看便知，无需多言。<br>接下来进入主题，使用RainAI来构建一个小队的通信系统，就需要定制化一些对象，单纯的变量无法满足我们的需求。</p>
 
       
