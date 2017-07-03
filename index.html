@@ -321,7 +321,7 @@
 
       
         
-          <p>Unity开发过程中，通常会选择在Unity组件上挂脚本去实现具体功能，在RainAI 里的处理方法有些不同，但是根本来说是一样的，AI_Rig就相当于我们的UnityEngine，在AI行为树的轮询逻辑下去处理我们写的脚本，比如说什么并行节点，选择节点，顺序节点云云；UnityEngine角度来看就是Awake、Start、物理碰撞、销毁等等生命周期。</p>
+          <p>Unity开发过程中，通常会选择在Unity组件上挂脚本去实现具体功能，在RainAI 里的处理方法有些不同，但是根本来说是一样的，AI_Rig也有他的生命周期，在AI行为树的轮询逻辑下去处理我们写的脚本，比如说什么并行节点，选择节点，顺序节点，下一次轮询应该从何处开始云云。而且Rain提供了一套类似UnityComponent的解决方案。</p>
           <!--noindex-->
           <div class="post-button text-center">
             <a class="btn" href="/2017/07/02/Rain2/#more" rel="contents">
