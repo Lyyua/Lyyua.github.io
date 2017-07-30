@@ -1,0 +1,873 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Unity,C#," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="随便写点轻松的话题，大概是去年到现在陆陆续续记得一些小玩意，不仅限与此，2333 小Tips写在Awake周期里的代码，如果挂载脚本的gameobject的activeSelf为false，不会运行，如果gameobject的activeSelf为true，而脚本本身的enable为false，会运行 GameObject在activefalse的情况下也能被Find出来对activefalse的">
+<meta name="keywords" content="Unity,C#">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity小技巧">
+<meta property="og:url" content="http://yoursite.com/2017/07/30/UnityKey/index.html">
+<meta property="og:site_name" content="Back">
+<meta property="og:description" content="随便写点轻松的话题，大概是去年到现在陆陆续续记得一些小玩意，不仅限与此，2333 小Tips写在Awake周期里的代码，如果挂载脚本的gameobject的activeSelf为false，不会运行，如果gameobject的activeSelf为true，而脚本本身的enable为false，会运行 GameObject在activefalse的情况下也能被Find出来对activefalse的">
+<meta property="og:updated_time" content="2017-07-30T09:36:24.725Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity小技巧">
+<meta name="twitter:description" content="随便写点轻松的话题，大概是去年到现在陆陆续续记得一些小玩意，不仅限与此，2333 小Tips写在Awake周期里的代码，如果挂载脚本的gameobject的activeSelf为false，不会运行，如果gameobject的activeSelf为true，而脚本本身的enable为false，会运行 GameObject在activefalse的情况下也能被Find出来对activefalse的">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2017/07/30/UnityKey/"/>
+
+
+
+
+
+  <title>Unity小技巧 | Back</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d4860eb791209892b971cbc05d6eb81a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Back</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2017/07/30/UnityKey/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Unity小技巧</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-30T17:33:45+08:00">
+                2017-07-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/30/UnityKey/" class="leancloud_visitors" data-flag-title="Unity小技巧">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>随便写点轻松的话题，大概是去年到现在陆陆续续记得一些小玩意，不仅限与此，2333</p>
+<h2 id="小Tips"><a href="#小Tips" class="headerlink" title="小Tips"></a>小Tips</h2><p>写在Awake周期里的代码，如果挂载脚本的gameobject的activeSelf为false，不会运行，如果gameobject的activeSelf为true，而脚本本身的enable为false，会运行</p>
+<p>GameObject在activefalse的情况下也能被Find出来<br>对activefalse的物体也能进行Transfrom变换</p>
+<p>脚本某一处报错，不会继续往下执行，如果是在脚本周期的Awake或Start中出现错误，整个脚本不能工作，所以在调试的时候，最好先把把所有的报错解决。</p>
+<p>回放功能 记录关键操作，时间间隔或者操作周期等标记,但是实际操作起来，并不会那么简单。回放系统在设计之初就应该考虑在内的，比如命令模式，而不是后期来加。</p>
+<p>Unity引擎中  Resources.Load()   Resources文件夹位置可以任意，但是最好外部统一</p>
+<p>project投影绘制脚底光环，投射内容由png贴图决定,当然也可以用来投射其他的东西。</p>
+<p>Camera的CullingMask 通过+- 1&lt;&lt;(层数) 来控制Mask层 </p>
+<p>在构造函数或字段初始化方法中调用Unity API函数是不科学的使用方法</p>
+<p>当Tag和Layer过多时，一个字符串管理类会使调用很方便也很准确。</p>
+<p>使用Vector3.Scale计算物体正前方向量在(1,0,1)，也就是XZ平面个上的分量Camera.main.transform.position += Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized * Time.deltaTime; 其实换言之就是把一个前向向量的高度给变成0。比如某一个前向向量是(1,1,1),这个方向呢，就是前向左转45°，再仰头这么多角度$$arctan(1/\sqrt{2})$$,如果按照这个前向向量来移动的话，肯定是朝斜向上的角度移动，但是我不希望如此，于是我把它变成(1,0,1)，也就是他只旋转，不仰头。</p>
+<p>http协议永远都是客户端发起请求，服务端回送响应，服务器不会主动发送消息给客户端。</p>
+<h2 id="利用委托进行异步线程与Unity主线程的通信："><a href="#利用委托进行异步线程与Unity主线程的通信：" class="headerlink" title="利用委托进行异步线程与Unity主线程的通信："></a>利用委托进行异步线程与Unity主线程的通信：</h2><p>在专用于处理通信的工具类中，规范委托，建立事件，Update中检测事件是否有注册方法，如果有注册方法在进行处理，</p>
+<p>1、记得要在事件注册的地方加锁，在事件处理的地方也加锁。不然在没有注销的时候，出现再一次调用和注册，相当于把相同的方法多处理了几次。</p>
+<p>2、但是委托的多播只能传一次参。使用起来会不方便，若是不传参倒也无所谓。</p>
+<p>这种思路产生的原因在，在写代码时我希望接收到msg之后解析，然后直接调用某个方法，但是没考虑到msg的执行顺序对程序运行的影响。<br>其实最简洁明了的方法是，在当前脚本下起一个协程去定时监测某个变量，如果其他的异步线程需要调用到主线程的方法时，就把变量翻过来，然后协程的下文就是执行内容。这样的弊端是可能会有很多标记。</p>
+<p>建立一个委托方法队列delegateMethodQueue，在Update中检测是否列表不为空，循环列表长度次，每次pop一个方法</p>
+<p>但是队列会使整个流程变得很清晰，以上的方法都是少不更事时想出来的歪点子。</p>
+<p>Async异步编程中的 await作用相当于Unity中的协程，在WaitForSeconds（）后才能执行后面的语句。</p>
+<p>开启异步线程进行复杂计算，防止帧卡顿，比如说深拷贝的过程，我不希望卡住我Unity的主线程</p>
+<p>委托注册记得注销，在Unity中，组件销毁的同时，需要把当前组件下的委托注销，比如文件IO,网络IO，WWW类，都需要手动释放资源</p>
+<h2 id="AssetBundle打包数据："><a href="#AssetBundle打包数据：" class="headerlink" title="AssetBundle打包数据："></a>AssetBundle打包数据：</h2><p>把对象打包成.asset文件，只能打简单的基本类型，可以打包Vector3，Vector3[]不能打包，再把.aseet打包至AssetBundle，资源动态加载,支持热更新。<br>最后使用json把结构体转成string，再把string打包成AssetBundle<br>保存的结构体继承ScriptableObject，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public class NodesSaveInfoStruct : ScriptableObject</div></pre></td></tr></table></figure>
+<p>ScriptableObject像是享元模式的应用，表现形式就像mesh，假设一个动画有120帧，模型有80个节点，构建了80个数组，每个数组存储对应一个节点的euler和localposition，假设存储动画的结构体大小大概是200kb，如果实例化十次该预制体，不使用享元模式，也不使用ScriptableObject打包的.aseet文件，需要耗费2MB左右的空间，如果使用ScriptableObject，只需要200KB，而不是2MB。</p>
+<p>同时你也可以选择将结构体转成string，写入txt，xml之类的文件，再给他们标记为打包状态，然后你把这些txt，xml文件打包，读取的时候解包，再按照约定解析你在txt，xml保存的数据。</p>
+<p>编辑器下手动导出.asset文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[MenuItem(&quot;Assets/Export&quot;)]</div><div class="line">public static void Execute()</div><div class="line">&#123;</div><div class="line">    Debug.Log(all.Count);</div><div class="line">    NodesSaveInfoStruct ns = ScriptableObject.CreateInstance&lt;NodesSaveInfoStruct&gt;();</div><div class="line">    string json = JsonMapper.ToJson(all);</div><div class="line">    ns.SetNodesInfo(json);</div><div class="line">    AssetDatabase.CreateAsset(ns, string.Format(&quot;Assets/&#123;0&#125;.asset&quot;, _saveAssetName));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>json转double 不能float<br>转换成保留4位小数点的double</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">this.x = double.Parse(Convert.ToDouble(x).ToString(&quot;0.0000&quot;));</div><div class="line">this.y = double.Parse(Convert.ToDouble(y).ToString(&quot;0.0000&quot;));</div><div class="line">this.z = double.Parse(Convert.ToDouble(z).ToString(&quot;0.0000&quot;));</div></pre></td></tr></table></figure>
+<p>打包成AssetBundle</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">[MenuItem(&quot;Assets/Build AssetBundles&quot;)]</div><div class="line">    static void BuildAllAssetBundles()</div><div class="line">    &#123;</div><div class="line">        BuildPipeline.BuildAssetBundles(&quot;Assets/AssetBundles&quot;, BuildAssetBundleOptions.None, BuildTarget.StandaloneWindows64);</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<p>开启协程异步加载</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">IEnumerator LoadAssetAsync()</div><div class="line">    &#123;</div><div class="line">        //加载AssetBundle</div><div class="line">        WWW www = new WWW(&quot;file://&quot; + localPath + assetBundleName);</div><div class="line">        yield return www;</div><div class="line">        NodesSaveInfoStruct ns = www.assetBundle.LoadAsset&lt;NodesSaveInfoStruct&gt;(loadAssetName);</div><div class="line">        animNodesList = JsonMapper.ToObject&lt;List&lt;List&lt;Nodes&gt;&gt;&gt;(ns.GetNodesInfo());</div><div class="line">        //Debug.Log(string.Format(&quot;一共&#123;0&#125;条数据&quot;, animNodesList.Count));</div><div class="line">    &#125;</div></pre></td></tr></table></figure>
+<h2 id="屏幕录制："><a href="#屏幕录制：" class="headerlink" title="屏幕录制："></a>屏幕录制：</h2><p>AVProCapture插件，,虽然支持自定义编码器，效果太差（视频导出太大，亦或x264编码占用Unity主线程资源导致帧数太低不忍直视，亦或牺牲大量视频质量换取小文件输出）<br>使用PC上使用ffmpeg，后续有关于ffmpeg的用法</p>
+<h2 id="方法调用和传递"><a href="#方法调用和传递" class="headerlink" title="方法调用和传递"></a>方法调用和传递</h2><p>不要使用“Invoke”和“SendMessage”。这些MonoBehaviour方法通过名称调用其他方法。通过名称调用的方法难以在代码中追踪（无法找到“Usages”，而“发SendMessage”的范围更宽，因此更难以追踪）。</p>
+<p>较简便的方法是使用Coroutines和C#委托，像这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">public static Coroutine Invoke(this MonoBehaviour monoBehaviour, Action action, float time) </div><div class="line">&#123; </div><div class="line">   return monoBehaviour.StartCoroutine(InvokeImpl(action, time)); </div><div class="line">&#125; </div><div class="line">private static IEnumerator InvokeImpl(Action action, float time) </div><div class="line">&#123; </div><div class="line">   yield return new WaitForSeconds(time); </div><div class="line">   action(); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果你实现自己的基础MonoBehaviour，你可以向其中添加自己的“Invoke”。<br>另一种较安全的“SendMessage”方法更难以实施。通常使用GetComponent获取当前游戏对象或子对象的组件，并直接执行调用。</p>
+<h2 id="null处理"><a href="#null处理" class="headerlink" title="null处理"></a>null处理</h2><p>明确是否要将空值（null）作为一个合法值，并尽量避免这么做<br>空值可辅助检测错误代码。但是，如果你使“if”默默地通过空值成为一种习惯，错误代码将很快运行，同时你只能在很久之后才会注意到错误。尝试避免将空值整体作为一个合法值。</p>
+<p>优先采用的常用语不是进行任何空检查，倘若它是一个问题，让代码失败。有时，在“可重用”方法中，我将检查出一个值为空的变量，并抛出一个异常，而不是将它传递至其它可能失败的方法。<br>在某些情形下，值可以合法为空，并且需要采取不同的方式处理。在此类情况下，添加注释来解释什么时候某些内容可能为空，并说明为什么可能为空。曾经因为草率的使用空值，使得找了一下午才定位到问题所在。</p>
+<p>使用另一种防御性GetComponent方法。有时通过RequiredComponent强制组件关系可能难以操作，但是这总是可能和可取的，特别是当你调用其它类上的GetComponent。作为一种替代方法，但需要某个组件打印找到的错误信息时，可以使用下述GameObject扩展。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public static T GetRequiredComponent(this GameObject obj) where T : MonoBehaviour </div><div class="line">&#123; </div><div class="line">   T component = obj.GetComponent();  </div><div class="line">   if(component == null) </div><div class="line">   &#123; </div><div class="line">      Debug.LogError(&quot;Expected to find component of type &quot; </div><div class="line">         + typeof(T) + &quot; but found none&quot;, obj); </div><div class="line">   &#125;   </div><div class="line">   return component; </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="变量控制"><a href="#变量控制" class="headerlink" title="变量控制"></a>变量控制</h2><p>分离配置，状态和簿记。<br>配置变量是指一类被inspector调整从而通过其属性定义对象的变量。如maxHealth。<br>状态变量是指一类可完全确定对象当前状态的变量，以及如果你的游戏支持保存操作，你需要保存的一类变量。如currentHealth。<br>簿记变量是指用于速度、方便或过度状态。它们总是完全可以通过状态变量确定。如previousHealth。</p>
+<p>通过分离这些变量类型，你可以更容易知道哪些是可以更改的，哪些是需要保存的，哪些是需要通过网络发送/检索的，并允许你在某种程度上强制执行此类操作。下面给出了一个关于此设置的简单示例。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">public class Player </div><div class="line">&#123; </div><div class="line">   [Serializable] </div><div class="line">   public class PlayerConfigurationData </div><div class="line">   &#123; </div><div class="line">      public float maxHealth; </div><div class="line">   &#125; </div><div class="line">   [Serializable] </div><div class="line">   public class PlayerStateData </div><div class="line">   &#123; </div><div class="line">      public float health; </div><div class="line">   &#125;</div><div class="line">   //配置变量  </div><div class="line">   public PlayerConfigurationData configuration; </div><div class="line">   //状态变量   </div><div class="line">   private PlayerState stateData; </div><div class="line">   //簿记变量 </div><div class="line">   private float previousHealth;  </div><div class="line">   public float Health </div><div class="line">   &#123; </div><div class="line">      public get &#123; return stateData.health; &#125; </div><div class="line">      private set &#123; stateData.health = value; &#125; </div><div class="line">   &#125; </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h2 id="类风格编程"><a href="#类风格编程" class="headerlink" title="类风格编程"></a>类风格编程</h2><p>避免使用public索引耦合数组。例如，不要定义任何武器数组，任何子弹数组，以及任何粒子数组，从而使你的代码类似于：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public void SelectWeapon(int index) </div><div class="line">&#123;  </div><div class="line">   currentWeaponIndex = index; </div><div class="line">   Player.SwitchWeapon(weapons[currentWeapon]); </div><div class="line">&#125; </div><div class="line">  public void Shoot() </div><div class="line">&#123; </div><div class="line">   Fire(bullets[currentWeapon]); </div><div class="line">   FireParticles(particles[currentWeapon]); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这类问题不出在代码中，而是在inspector进行设置时不发出错误。相反，定义封装三个变量的类，并创建下述数组：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[Serializable] </div><div class="line">public class Weapon </div><div class="line">&#123; </div><div class="line">   public GameObject prefab; </div><div class="line">   public ParticleSystem particles; </div><div class="line">   public Bullet bullet; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>此代码看起来更整洁，但最重要的一点是，在inspector中设置数据更难以出错。 </p>
+<p>避免使用除序列以外的结构数组。例如，玩家可能有三种攻击类型。每种类型使用当前武器，但生成不同的子弹和不通过的行为。<br>你可能会尝试将三个子弹转储到某个数组中，然后使用此类逻辑：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public void FireAttack() </div><div class="line">&#123; </div><div class="line">   /// behaviour </div><div class="line">   Fire(bullets[0]); </div><div class="line">&#125; </div><div class="line">public void IceAttack() </div><div class="line">&#123; </div><div class="line">   /// behaviour </div><div class="line">   Fire(bullets[1]); </div><div class="line">&#125; </div><div class="line">public void WindAttack() </div><div class="line">&#123; </div><div class="line">   /// behaviour </div><div class="line">   Fire(bullets[2]); </div><div class="line">&#125; </div><div class="line">Enums can make things look better in code… </div><div class="line">public void WindAttack() </div><div class="line">&#123; </div><div class="line">   /// behaviour </div><div class="line">   Fire(bullets[WeaponType.Wind]); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>最好使用分离变量以便于名称辅助显示将放入的内容。使用一类使其整洁。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[Serializable] </div><div class="line">public class Bullets </div><div class="line">&#123; </div><div class="line">   public Bullet fireBullet; </div><div class="line">   public Bullet iceBullet; </div><div class="line">   public Bullet windBullet; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
+            <a href="/tags/C/" rel="tag"># C#</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/07/09/Rain3/" rel="next" title="Rain AI，从实现一个内部小队通信的角度谈谈（二）">
+                <i class="fa fa-chevron-left"></i> Rain AI，从实现一个内部小队通信的角度谈谈（二）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTgyMy82Mzg5"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Lyu" />
+          <p class="site-author-name" itemprop="name">Lyu</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">8</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">5</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#小Tips"><span class="nav-number">1.</span> <span class="nav-text">小Tips</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用委托进行异步线程与Unity主线程的通信："><span class="nav-number">2.</span> <span class="nav-text">利用委托进行异步线程与Unity主线程的通信：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AssetBundle打包数据："><span class="nav-number">3.</span> <span class="nav-text">AssetBundle打包数据：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#屏幕录制："><span class="nav-number">4.</span> <span class="nav-text">屏幕录制：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法调用和传递"><span class="nav-number">5.</span> <span class="nav-text">方法调用和传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#null处理"><span class="nav-number">6.</span> <span class="nav-text">null处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量控制"><span class="nav-number">7.</span> <span class="nav-text">变量控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类风格编程"><span class="nav-number">8.</span> <span class="nav-text">类风格编程</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lyu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9nfwurrfWspn4Ca1tpt8c4Bb-gzGzoHsz", "SmeoWp4XeDOxoGNiSegxpw2g");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
