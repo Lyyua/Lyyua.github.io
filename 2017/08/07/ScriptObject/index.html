@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="设计模式," />
+  <meta name="keywords" content="Unity," />
 
 
 
@@ -93,19 +93,17 @@
 
 
 
-<meta name="description" content="写在前面-设计模式的必要性开发过程中，经常发现：  时间和序列化往往是一个游戏架构的核心部分  事情必须按照正确的顺序和正确的时间发生，比如说炉石传说，你可能会提前结束回合，也可能在90秒以内还没有操作完成以至于强制结束回合。并且在服务器返回操作成功消息之前，你是不能做任何对战交互操作的。   开发周期高度压缩的情况下，程序员们需要能快速构建和迭代一组丰富且相异的行为，同时不牵涉到他人或者弄乱代码">
-<meta name="keywords" content="设计模式">
+<meta name="description" content="动机曾经因为需求原因，需要把每一个动画的动作数据全部保存下来，一个模型71个节点，一个动画大概四五十帧，然后把每一帧的每一个节点euler和position全部记录下来保存成txt文件，播放动画的时候读取文件，然后遍历每一帧的数据。后来觉得txt太多，就决定用AssetBundle打包一下。这个时候发现可以用ScriptObject记录成.asset文件再打包，可以省下读取txt再解析的过程，只需">
+<meta name="keywords" content="Unity">
 <meta property="og:type" content="article">
-<meta property="og:title" content="《游戏编程模式》设计模式之命令模式(一)">
-<meta property="og:url" content="http://lyyua.com/2017/06/10/GPP1/index.html">
+<meta property="og:title" content="UnityKey">
+<meta property="og:url" content="http://lyyua.com/2017/08/07/ScriptObject/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="写在前面-设计模式的必要性开发过程中，经常发现：  时间和序列化往往是一个游戏架构的核心部分  事情必须按照正确的顺序和正确的时间发生，比如说炉石传说，你可能会提前结束回合，也可能在90秒以内还没有操作完成以至于强制结束回合。并且在服务器返回操作成功消息之前，你是不能做任何对战交互操作的。   开发周期高度压缩的情况下，程序员们需要能快速构建和迭代一组丰富且相异的行为，同时不牵涉到他人或者弄乱代码">
-<meta property="og:image" content="http://lyyua.com/2017/06/10/GPP1/AICommand.png">
-<meta property="og:updated_time" content="2017-06-11T10:20:23.419Z">
+<meta property="og:description" content="动机曾经因为需求原因，需要把每一个动画的动作数据全部保存下来，一个模型71个节点，一个动画大概四五十帧，然后把每一帧的每一个节点euler和position全部记录下来保存成txt文件，播放动画的时候读取文件，然后遍历每一帧的数据。后来觉得txt太多，就决定用AssetBundle打包一下。这个时候发现可以用ScriptObject记录成.asset文件再打包，可以省下读取txt再解析的过程，只需">
+<meta property="og:updated_time" content="2017-08-14T13:48:09.357Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="《游戏编程模式》设计模式之命令模式(一)">
-<meta name="twitter:description" content="写在前面-设计模式的必要性开发过程中，经常发现：  时间和序列化往往是一个游戏架构的核心部分  事情必须按照正确的顺序和正确的时间发生，比如说炉石传说，你可能会提前结束回合，也可能在90秒以内还没有操作完成以至于强制结束回合。并且在服务器返回操作成功消息之前，你是不能做任何对战交互操作的。   开发周期高度压缩的情况下，程序员们需要能快速构建和迭代一组丰富且相异的行为，同时不牵涉到他人或者弄乱代码">
-<meta name="twitter:image" content="http://lyyua.com/2017/06/10/GPP1/AICommand.png">
+<meta name="twitter:title" content="UnityKey">
+<meta name="twitter:description" content="动机曾经因为需求原因，需要把每一个动画的动作数据全部保存下来，一个模型71个节点，一个动画大概四五十帧，然后把每一帧的每一个节点euler和position全部记录下来保存成txt文件，播放动画的时候读取文件，然后遍历每一帧的数据。后来觉得txt太多，就决定用AssetBundle打包一下。这个时候发现可以用ScriptObject记录成.asset文件再打包，可以省下读取txt再解析的过程，只需">
 
 
 
@@ -133,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://lyyua.com/2017/06/10/GPP1/"/>
+  <link rel="canonical" href="http://lyyua.com/2017/08/07/ScriptObject/"/>
 
 
 
 
 
-  <title>《游戏编程模式》设计模式之命令模式(一) | Back</title>
+  <title>UnityKey | Back</title>
   
 
 
@@ -268,7 +266,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/06/10/GPP1/">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/08/07/ScriptObject/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lyu">
@@ -285,7 +283,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">《游戏编程模式》设计模式之命令模式(一)</h2>
+          <h2 class="post-title" itemprop="name headline">UnityKey</h2>
         
 
         <div class="post-meta">
@@ -297,8 +295,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-10T23:43:21+08:00">
-                2017-06-10
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-07T20:33:45+08:00">
+                2017-08-07
               </time>
             
 
@@ -315,7 +313,7 @@
 
           
           
-             <span id="/2017/06/10/GPP1/" class="leancloud_visitors" data-flag-title="《游戏编程模式》设计模式之命令模式(一)">
+             <span id="/2017/08/07/ScriptObject/" class="leancloud_visitors" data-flag-title="UnityKey">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -343,43 +341,22 @@
       
 
       
-        <h2 id="写在前面-设计模式的必要性"><a href="#写在前面-设计模式的必要性" class="headerlink" title="写在前面-设计模式的必要性"></a>写在前面-设计模式的必要性</h2><p>开发过程中，经常发现：</p>
-<ul>
-<li><p>时间和序列化往往是一个游戏架构的核心部分</p>
-<blockquote>
-<p>事情必须按照正确的顺序和正确的时间发生，比如说炉石传说，你可能会提前结束回合，也可能在90秒以内还没有操作完成以至于强制结束回合。并且在服务器返回操作成功消息之前，你是不能做任何对战交互操作的。</p>
-</blockquote>
-</li>
-<li><p>开发周期高度压缩的情况下，程序员们需要能快速构建和迭代一组丰富且相异的行为，同时不牵涉到他人或者弄乱代码库</p>
-</li>
-<li><p>游戏主流程定义完毕后，游戏开始互动，怪物攻击英雄，单体技能，或者是范围伤害，aoe波动到队友或者是小怪物… </p>
-</li>
-</ul>
-<p>原书中是用C++表述，这里所有代码我用C#形式编写，在Unity引擎下运行，作为思路，其实不受限于这些的，伪代码也是可以的。<a id="more"></a></p>
-<h2 id="进入主题"><a href="#进入主题" class="headerlink" title="进入主题"></a>进入主题</h2><h3 id="命令模式"><a href="#命令模式" class="headerlink" title="命令模式"></a>命令模式</h3><p>将一个请求（request） 封装成一个对象，从而让你使用不同的请求，请求队列或者请求日志来参数化客户端，同时支持请求操作的撤销与恢复</p>
-<p>或者可以理解成：命令就是一个对象化（实例化）的方法调用，这一点在Rain AI行为树的自定义action中有所运用，每个执行节点可以很方便的自定义需求，和这里所说的命令模式有异曲同工之妙。</p>
-<h3 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h3><p>&emsp;&emsp;每个游戏都有一处代码块用来读取用户原始输入-按钮点击，键盘事件，鼠标点击等待<br>一般的处理方法是直接在每一帧输入检测，然后调用相应的函数，比如这样<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">void Update()</div><div class="line">&#123;</div><div class="line">if (Input.GetKeydown(KeyCode.K)) jump();</div><div class="line">else if (Input.GetKeydown(KeyCode.J)fireGun();</div><div class="line">else if (Input.GetKeydown(KeyCode.R) swapWeapon();</div><div class="line">else if (Input.GetKeydown(KeyCode.L) lurchIneffectively();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>&emsp;&emsp;但是为了支持自定义配置，我们需要把这些jump(),fireGun(),swapWeapon()对象化，也就是命令模式</p>
-<p>&emsp;&emsp;定义一个基类用来代表一个可激活的游戏命令：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public class Command : MonoBehaviour</div><div class="line">&#123;</div><div class="line">    public virtual void Execute() &#123; &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>&emsp;&emsp;为每个动作创建一个子类：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">public class FireCommand : Command</div><div class="line">&#123;</div><div class="line">    public override void Execute()</div><div class="line">    &#123;</div><div class="line">        Fire();</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">public class JumpCommand : Command</div><div class="line">&#123;</div><div class="line">    public override void Execute()</div><div class="line">    &#123;</div><div class="line">        Jump();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>&emsp;&emsp;现在输入处理成了下面这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">FireCommand fire;</div><div class="line">JumpCommand jump;</div><div class="line">private void Start()</div><div class="line">&#123;</div><div class="line">   fire = gameObject.AddComponent&lt;FireCommand&gt;();</div><div class="line">   jump = gameObject.AddComponent&lt;JumpCommand&gt;();</div><div class="line">&#125;</div><div class="line">void Update()</div><div class="line">&#123;</div><div class="line">if (Input.GetKeydown(KeyCode.K)) jump.execute();</div><div class="line">else if (Input.GetKeydown(KeyCode.J)fire.execute();</div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>&emsp;&emsp;是不是感觉有那么点意思，接下来，我们放宽限制，我们传进去一个我们想要控制的对象而不是命令对象自身（从原书的角度看似可以直接获取到Player，如果Unity里的话也可以直接获取到Player，但是我想不是一回事，应该是引擎的区别，不过不影响命令模式的学习）来调用函数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">public class Command</div><div class="line">&#123;</div><div class="line">public virtual void execute(GameObject go);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>&emsp;&emsp;此时的内部实现可能会是这样的<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">class JumpCommand : Command</div><div class="line">&#123;</div><div class="line">public override void execute(GameObject go)&#123;go.jump();&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>&emsp;&emsp;其实就是在命令选择和角色之间加入间接层使得我们可以让玩家控制游戏中的角色。</p>
-<p>&emsp;&emsp;临时想到，他的应用场景可能会存在类似文明，魔兽争霸的游戏中，选择目标，进行可以进行的操作，比如说选择伊利丹，你可以使用恶魔变身;选择剑圣，你可以使用剑刃风暴，不管是从UI还是技能释放都可以从Command中扩充。</p>
-<p>&emsp;&emsp;他可能会像是这样的伪代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">class SelectCommand : Command</div><div class="line">&#123;</div><div class="line">public override void execute(GameObject go)&#123;go.GetComponent&lt;SomeUI&gt;().show();&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>&emsp;&emsp;然而实践中，不太会去这么使用。这样的做法只是把所有功能块解耦，类风格化而不是函数化。<strong><font color="red" size="4">命令模式对于没有闭包的语言来说是模拟闭包的一种方式。</font></strong></p>
-<blockquote>
-<p>闭包：调用函数结束后，函数内的变量的生存周期拉长到调用者的生命</p>
-</blockquote>
-<p>&emsp;&emsp;但是有一种情况却经常见到，迄今而止，我们只考虑了玩家驱动角色，但是对于游戏世界中的其他角色呢，他们由游戏的AI来驱动，我们可以使用命令模式来作为AI引擎和角色的接口；AI代码部分（行为树就是一种表现形式）提供命令对象用来执行，在Rain AI插件中，他们就是这么使用的。</p>
-<p>&emsp;&emsp;AI选择命令，角色执行命令，譬如巡逻移动，站立不动聊天，攻击目标等等AI行为。它们之间的解耦给予我们很大的灵活性。</p>
-<h3 id="升华"><a href="#升华" class="headerlink" title="升华"></a>升华</h3><p>&emsp;&emsp;通过将控制角色的命令作为第一类对象，我们便去掉了直接的函数调用这样的紧耦合。相反的，把它想象成一个队列或者一个命令流（queue or stream of commands）：</p>
-<p><img src="/2017/06/10/GPP1/AICommand.png" alt=""></p>
-<p>&emsp;&emsp;一些代码（输入处理（the input handler）或者AI）生成命令并将它们放置于命令流中，一些代码（发送者（thedispatcher）或者角色自身（actor））执行命令并且调用它们。通过中间的队列，我们解耦了一端的生产者和另一端的消费者。</p>
-<p>&emsp;&emsp;如果我们把这些命令序列化，我们便可以通过互联网发送数据流。我们可以把玩家的输入，通过网络发送到另外一台机器上，然后进行回放。这是多人网络游戏很重要的一块。</p>
+        <h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>曾经因为需求原因，需要把每一个动画的动作数据全部保存下来，一个模型71个节点，一个动画大概四五十帧，然后把每一帧的每一个节点euler和position全部记录下来保存成txt文件，播放动画的时候读取文件，然后遍历每一帧的数据。后来觉得txt太多，就决定用AssetBundle打包一下。这个时候发现可以用ScriptObject记录成.asset文件再打包，可以省下读取txt再解析的过程，只需要LoadAsset<t>即可，当时以为是一个unity封装的序列化工具。后来看了下官方文档，发现不是这么回事，以下是具体内容。<br><a id="more"></a></t></p>
+<h2 id="官方原话："><a href="#官方原话：" class="headerlink" title="官方原话："></a>官方原话：</h2><p>ScriptableObject is a class that allows you to store large quantities of <strong>shared data independent from script instances</strong>. Do not confuse this class with the similarly named SerializableObject, which is an editor class and fills a different purpose. Consider for example that you have made a prefab with a script which has an array of a million integers. The array occupies 4MB of memory and is owned by the prefab. Each time you instantiate that prefab, you will get a copy of that array. If you created 10 game objects, then you would end up with 40MB of array data for the 10 instances.</p>
+<p>Unity serializes all primitive types, strings, arrays, lists, types specific to Unity such as Vector3 and your custom classes with the Serializable attribute as copies belonging to the object they were declared in. This means that if you created a ScriptableObject and stored the million integers in an array it declares then the array will be stored with that instance. The instances are thought to own their individual data. ScriptableObject fields, or any UnityEngine.Object fields, such as MonoBehaviour, Mesh, GameObject and so on, are stored by reference as opposed to by value. If you have a script with a reference to the ScriptableObject with the million integers, Unity will only store a reference to the ScriptableObject in the script data. The ScriptableObject in turn stores the array. 10 instances of a prefab that has a reference to a ScriptableObject, that holds 4MB data, would total to roughly 4MB and not 40MB as discussed in the other example.</p>
+<p>The intended use case for using ScriptableObject is to reduce memory usage by avoiding copies of values, but you could also use it to define pluggable data sets. An example of this would be to imagine a NPC shop in a RPG game. You could create multiple assets of your custom ShopContents ScriptableObject, each defining a set of items that are available for purchase. In a scenario where the game has three zones, each zone could offer different tier items. Your shop script would reference a ShopContents object that defines what items are available. Please see the scripting reference for examples.</p>
+<p>翻译过来说：</p>
+<p>ScriptableObject是一个类，可以让您独立于脚本实例来存储大量的共享数据。也就是说，起到配置表的作用，他是唯一的。</p>
+<p>不要将这个类与名为S​​erializableObject的类混淆。</p>
+<p>它是一个编辑器类，并且填充不同的用途。可以很方便的在编辑器下进行编辑，修改字段内容，通俗的形容就像txt，xml。</p>
+<p>同时，</p>
+<p>考虑一下，您已经使用了一个具有数百个整数的数组的脚本。该阵列占用4MB内存并由预制所有。每次您实例化该预制，您将获得该数组的副本。如果你创建了10个游戏对象，那么最终会有10个实例的40MB数组数据。<br>Unity将所有原始类型，字符串，数组，列表，特定于Unity的类型（如Vector3）和您的自定义类序列化为Serializable属性，作为它们声明的对象的副本。这意味着如果您创建了一个ScriptableObject并存储了百万数组中的整数声明，然后数组将与该实例一起存储。这些实例被认为拥有其个人数据。 ScriptableObject字段或任何UnityEngine.Object字段（如MonoBehaviour，Mesh，GameObject等）通过引用存储，而不是按值。如果您有一个脚本，引用了具有百万整数的ScriptableObject，Unity将仅在脚本数据中存储对ScriptableObject的引用。 ScriptableObject反过来存储数组。参考另一个例子中讨论的10个具有引用ScriptableObject（具有4MB数据）的预制的实例将总共大约为4MB，而不是40MB。<br>使用ScriptableObject的预期用例是通过避免值的复制来减少内存使用，但也可以使用它来定义可插拔数据集。</p>
+<p>一个例子就是想象一个RPG游戏中的NPC商店。您可以创建自定义ShopContents ScriptableObject的多个资产，每个都定义一组可供购买的项目。在游戏有三个区域的情况下，每个区域可以提供不同的层级项目。您的店铺脚本将引用一个ShopContents对象，该对象定义了可用的项目。请参阅脚本参考的例子</p>
+<h2 id="举例："><a href="#举例：" class="headerlink" title="举例："></a>举例：</h2><p>构建一个数据类型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public class WeaponInfo : ScriptableObject</div><div class="line">&#123;</div><div class="line">    public string weaponName;</div><div class="line">    public float damage;</div><div class="line">    public float cd;</div><div class="line">    public override string ToString()</div><div class="line">    &#123;</div><div class="line">        return weaponName.ToString() + &quot;\t&quot; + &quot;伤害：&quot; + damage + &quot;  冷却：&quot; + cd;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>创建.asset文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">public class CreateAsset : MonoBehaviour</div><div class="line">&#123;</div><div class="line">    [MenuItem(&quot;Assets/Export&quot;)]</div><div class="line">    public static void Execute()</div><div class="line">    &#123;</div><div class="line">        WeaponInfo info = ScriptableObject.CreateInstance&lt;WeaponInfo&gt;();</div><div class="line">        info.weaponName = &quot;黑骑士大剑&quot;;</div><div class="line">        info.damage = 170;</div><div class="line">        info.cd = 6;</div><div class="line">        AssetDatabase.CreateAsset(info, string.Format(&quot;Assets/&#123;0&#125;.asset&quot;, &quot;config&quot;));</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>加载.asset文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">public class LoadAsset : MonoBehaviour</div><div class="line">&#123;</div><div class="line">    private WeaponInfo info;</div><div class="line">    void Start()</div><div class="line">    &#123;</div><div class="line">        info = AssetDatabase.LoadAssetAtPath(&quot;Assets/config.asset&quot;, typeof(WeaponInfo)) as WeaponInfo;</div><div class="line">        print(info.ToString());</div><div class="line">        StartCoroutine(Wait());</div><div class="line">    &#125;</div><div class="line">    IEnumerator Wait()</div><div class="line">    &#123;</div><div class="line">        yield return new WaitForSeconds(0.2f);</div><div class="line">        info.weaponName = &quot;法兰大剑&quot;;</div><div class="line">        WeaponInfo info2 = AssetDatabase.LoadAssetAtPath(&quot;Assets/config.asset&quot;, typeof(WeaponInfo)) as WeaponInfo;</div><div class="line">        print(info2.ToString());</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>可以看到，初次加载时，武器名字是“黑骑士大剑”，对武器名字修改后，重新加载.asset时，就变成修改后的“法兰大剑”了。也就是说，实际上的AssetDataBase.LoadAsset底层实现类似从对象池里取一个东西，如果存在则把存在的那个引用给出来。也就是第一行所说的共享数据，类似享元模式的实际应用，就像Material一样，如果你修改了某个材质，当前场景所用用到了那个材质球的模型全部会发生改变，原因也是因为我们没必要每个模型使用一个材质球，这样会造成很大的资源浪费，在Unity中一个材质就是一个DrawCall。</p>
+<p>说到这种地步，Rain AI里的行为数据，其实用的就是ScriptObject来存储AI的行为数据，节省了资源，同时还可以在编辑器下动态的修改。</p>
 
       
     </div>
@@ -409,7 +386,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
           
         </div>
       
@@ -422,14 +399,18 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
+              <a href="/2017/07/30/UnityKey/" rel="next" title="UnityKey">
+                <i class="fa fa-chevron-left"></i> UnityKey
+              </a>
+            
           </div>
 
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/06/11/GPP2/" rel="prev" title="《游戏编程模式》设计模式之命令模式(二)">
-                《游戏编程模式》设计模式之命令模式(二) <i class="fa fa-chevron-right"></i>
+              <a href="/2017/08/14/3DMath/" rel="prev" title="3DMath - 多坐标系">
+                3DMath - 多坐标系 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -553,7 +534,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#写在前面-设计模式的必要性"><span class="nav-number">1.</span> <span class="nav-text">写在前面-设计模式的必要性</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#进入主题"><span class="nav-number">2.</span> <span class="nav-text">进入主题</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#命令模式"><span class="nav-number">2.1.</span> <span class="nav-text">命令模式</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#动机"><span class="nav-number">2.2.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#升华"><span class="nav-number">2.3.</span> <span class="nav-text">升华</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#动机"><span class="nav-number">1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#官方原话："><span class="nav-number">2.</span> <span class="nav-text">官方原话：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#举例："><span class="nav-number">3.</span> <span class="nav-text">举例：</span></a></li></ol></div>
             
 
           </div>
