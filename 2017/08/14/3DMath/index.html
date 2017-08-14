@@ -102,7 +102,7 @@
 <meta property="og:description" content="动机Unity开发中经常用到一些transform变换，坐标或欧拉角，之前只是知道本地坐标和世界坐标的区别，但是对他们的实际意义和转换不甚了解，亦或者说了解的不太清晰，这次借用惯性坐标系较好的解释清楚了转换过程。">
 <meta property="og:image" content="http://lyyua.com/2017/08/14/3DMath/Internal.png">
 <meta property="og:image" content="http://lyyua.com/2017/08/14/3DMath/3DMath.png">
-<meta property="og:updated_time" content="2017-08-14T14:19:49.145Z">
+<meta property="og:updated_time" content="2017-08-14T14:26:43.640Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="3DMath - 多坐标系">
 <meta name="twitter:description" content="动机Unity开发中经常用到一些transform变换，坐标或欧拉角，之前只是知道本地坐标和世界坐标的区别，但是对他们的实际意义和转换不甚了解，亦或者说了解的不太清晰，这次借用惯性坐标系较好的解释清楚了转换过程。">
@@ -366,7 +366,7 @@
 <p>cube.transform.right是世界坐标系下的右向轴。需要转换到Space.Self坐标系，也就是cube的物体坐标系下计算旋转。</p>
 <p>1、先把向量从世界坐标系下平移到惯性坐标系，得到向量A</p>
 <p>2、再把惯性坐标系下的向量A旋转到Cube的物体坐标系下，得到向量B</p>
-<p>可以发现此时的向量B不是想当然的那个坐标。并且随着不断的旋转，他还在不停的变化。</p>
+<p>可以发现此时的向量B不是想当然的那个坐标。并且随着不断的旋转，他还在不停的变化，表现出来就是，Cube先绕着一个不正确的轴旋转，同时导致Cube的物体坐标系下的右向轴发生了变化，再绕着另一个不正确的轴旋转，如此迭代（有机会附张GIF图）。</p>
 
       
     </div>
