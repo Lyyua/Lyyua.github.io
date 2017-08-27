@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Unity,AI," />
+  <meta name="keywords" content="设计模式," />
 
 
 
@@ -93,23 +93,33 @@
 
 
 
-<meta name="description" content="Unity开发过程中，通常会选择在Unity组件上挂脚本去实现具体功能，在RainAI 里的处理方法有些不同，但是根本来说是一样的，AI_Rig也有他的生命周期，在AI行为树的轮询逻辑下去处理我们写的脚本，比如说什么并行节点，选择节点，顺序节点，下一次轮询应该从何处开始云云。而且Rain提供了一套类似UnityComponent的解决方案。">
-<meta name="keywords" content="Unity,AI">
+<meta name="description" content="降低DrawCall既然知道了渲染管线的流程，了解到DrawCall对于游戏性能的影响，只从降低DrawCall的角度来谈，可以看出有些优化方案的核心即是享元。（由于是讲享元模式，所以不讨论关于顶点，片元，纹理带宽，光照，Log等方面的优化）">
+<meta name="keywords" content="设计模式">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Rain AI，从实现一个内部小队通信的角度谈谈（一）">
-<meta property="og:url" content="http://lyyua.com/2017/07/02/Rain2/index.html">
+<meta property="og:title" content="《游戏编程模式》设计模式之享元模式（二）">
+<meta property="og:url" content="http://lyyua.com/2017/08/24/Flyweight2/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="Unity开发过程中，通常会选择在Unity组件上挂脚本去实现具体功能，在RainAI 里的处理方法有些不同，但是根本来说是一样的，AI_Rig也有他的生命周期，在AI行为树的轮询逻辑下去处理我们写的脚本，比如说什么并行节点，选择节点，顺序节点，下一次轮询应该从何处开始云云。而且Rain提供了一套类似UnityComponent的解决方案。">
-<meta property="og:image" content="http://lyyua.com/2017/07/02/Rain2/Mind.png">
-<meta property="og:image" content="http://lyyua.com/2017/07/02/Rain2/Memory.png">
-<meta property="og:image" content="http://lyyua.com/2017/07/02/Rain2/Sensor.png">
-<meta property="og:image" content="http://lyyua.com/2017/07/02/Rain2/Entity.png">
-<meta property="og:image" content="http://lyyua.com/2017/07/02/Rain2/Extensions.png">
-<meta property="og:updated_time" content="2017-07-03T12:16:52.902Z">
+<meta property="og:description" content="降低DrawCall既然知道了渲染管线的流程，了解到DrawCall对于游戏性能的影响，只从降低DrawCall的角度来谈，可以看出有些优化方案的核心即是享元。（由于是讲享元模式，所以不讨论关于顶点，片元，纹理带宽，光照，Log等方面的优化）">
+<meta property="og:image" content="http://lyyua.com/2017/08/24/Flyweight2/DynamicBatch00.png">
+<meta property="og:image" content="http://lyyua.com/2017/08/24/Flyweight2/DynamicBatch01.png">
+<meta property="og:image" content="http://lyyua.com/2017/08/24/Flyweight2/DynamicBatch02.png">
+<meta property="og:image" content="http://lyyua.com/2017/08/24/Flyweight2/DynamicBatch10.png">
+<meta property="og:image" content="http://lyyua.com/2017/08/24/Flyweight2/DynamicBatch11.png">
+<meta property="og:image" content="http://lyyua.com/2017/08/24/Flyweight2/DynamicBatch12.png">
+<meta property="og:image" content="http://lyyua.com/2017/08/24/Flyweight2/StaticMesh.png">
+<meta property="og:image" content="http://lyyua.com/2017/08/24/Flyweight2/StaticBatch00.png">
+<meta property="og:image" content="http://lyyua.com/2017/08/24/Flyweight2/StaticBatch01.png">
+<meta property="og:image" content="http://lyyua.com/2017/08/24/Flyweight2/StaticBatch02.png">
+<meta property="og:image" content="http://lyyua.com/2017/08/24/Flyweight2/StaticBatch10.png">
+<meta property="og:image" content="http://lyyua.com/2017/08/24/Flyweight2/StaticBatch11.png">
+<meta property="og:image" content="http://lyyua.com/2017/08/24/Flyweight2/StaticBatch12.png">
+<meta property="og:image" content="http://lyyua.com/2017/08/24/Flyweight2/DynamicBatch02.png">
+<meta property="og:image" content="http://lyyua.com/2017/08/24/Flyweight2/StaticBatch02.png">
+<meta property="og:updated_time" content="2017-08-27T12:30:26.415Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Rain AI，从实现一个内部小队通信的角度谈谈（一）">
-<meta name="twitter:description" content="Unity开发过程中，通常会选择在Unity组件上挂脚本去实现具体功能，在RainAI 里的处理方法有些不同，但是根本来说是一样的，AI_Rig也有他的生命周期，在AI行为树的轮询逻辑下去处理我们写的脚本，比如说什么并行节点，选择节点，顺序节点，下一次轮询应该从何处开始云云。而且Rain提供了一套类似UnityComponent的解决方案。">
-<meta name="twitter:image" content="http://lyyua.com/2017/07/02/Rain2/Mind.png">
+<meta name="twitter:title" content="《游戏编程模式》设计模式之享元模式（二）">
+<meta name="twitter:description" content="降低DrawCall既然知道了渲染管线的流程，了解到DrawCall对于游戏性能的影响，只从降低DrawCall的角度来谈，可以看出有些优化方案的核心即是享元。（由于是讲享元模式，所以不讨论关于顶点，片元，纹理带宽，光照，Log等方面的优化）">
+<meta name="twitter:image" content="http://lyyua.com/2017/08/24/Flyweight2/DynamicBatch00.png">
 
 
 
@@ -137,13 +147,13 @@
 
 
 
-  <link rel="canonical" href="http://lyyua.com/2017/07/02/Rain2/"/>
+  <link rel="canonical" href="http://lyyua.com/2017/08/24/Flyweight2/"/>
 
 
 
 
 
-  <title>Rain AI，从实现一个内部小队通信的角度谈谈（一） | Back</title>
+  <title>《游戏编程模式》设计模式之享元模式（二） | Back</title>
   
 
 
@@ -272,7 +282,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/07/02/Rain2/">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/08/24/Flyweight2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lyu">
@@ -289,7 +299,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Rain AI，从实现一个内部小队通信的角度谈谈（一）</h2>
+          <h2 class="post-title" itemprop="name headline">《游戏编程模式》设计模式之享元模式（二）</h2>
         
 
         <div class="post-meta">
@@ -301,8 +311,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-02T20:30:28+08:00">
-                2017-07-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-24T19:54:10+08:00">
+                2017-08-24
               </time>
             
 
@@ -319,7 +329,7 @@
 
           
           
-             <span id="/2017/07/02/Rain2/" class="leancloud_visitors" data-flag-title="Rain AI，从实现一个内部小队通信的角度谈谈（一）">
+             <span id="/2017/08/24/Flyweight2/" class="leancloud_visitors" data-flag-title="《游戏编程模式》设计模式之享元模式（二）">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -347,31 +357,41 @@
       
 
       
-        <p>Unity开发过程中，通常会选择在Unity组件上挂脚本去实现具体功能，在RainAI 里的处理方法有些不同，但是根本来说是一样的，AI_Rig也有他的生命周期，在AI行为树的轮询逻辑下去处理我们写的脚本，比如说什么并行节点，选择节点，顺序节点，下一次轮询应该从何处开始云云。而且Rain提供了一套类似UnityComponent的解决方案。<a id="more"></a></p>
-<p>首先需要了解AI_Rig组件的几个基本模块。</p>
-<p>Mind:</p>
-<p><img src="/2017/07/02/Rain2/Mind.png" alt=""></p>
-<p>存放我们所定制的行为树，可以存在多个行为树。也就是设计好的行为树可以在其他树中作为一颗子树来进行使用，最大可能的复用子树可以减少开发量。</p>
-<p>Memory:</p>
-<p><img src="/2017/07/02/Rain2/Memory.png" alt=""></p>
-<p>支持float int bool string Vector3 GameObject 等。相当于提供了一个变量集中管理的区域。</p>
-<p>Sensor:</p>
-<p><img src="/2017/07/02/Rain2/Sensor.png" alt=""></p>
-<p>AI的眼睛，或者可以叫做监测器。可以设置过滤层。比如你不能AI不能透过墙就发现你，对吧？还可以自定义监测策略。比如Rain里面有个基本的Detect监测器,应该就是继承于PhysicalSensor抽象类，PhysicalSensor抽象类又继承于RainSensor抽象类，通常会让定制的Sensor继承于PhysicalSensor，本质上他的根本意义就是选择合适的时机调用这个方法去匹配我们定制的Aspect,不过可惜Aspect是靠名字来匹配。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public abstract void Sense(string aAspectName, MatchType aMatchType);</div></pre></td></tr></table></figure>
-<p>然后他会得到一个Aspect列表。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public override IList&lt;RAINAspect&gt; Matches &#123; get; &#125;</div></pre></td></tr></table></figure>
-<p>也就是说光有眼睛还不行，还需要存在观察的对象，上面的Aspect就是那个对象，被观察者需要挂载的组件Entity，在Entity上可以添加接收器Aspect，Sensor以一定频率去搜索Aspect。Aspect也是可以定制的。Aspect对象可以从Aspect列表中获取到。</p>
-<p>Entity长这样，可以在上面选择Aspect：</p>
-<p><img src="/2017/07/02/Rain2/Entity.png" alt=""></p>
-<p>Extensions:</p>
-<p><img src="/2017/07/02/Rain2/Extensions.png" alt=""></p>
-<p>作为一个功能拓展，看起来像是把Memory对象化了，他需要继承于CustomAIElement，他存在自己的生命周期，因为看不到源码，简单测试得出Act()函数和Mono中的Update是一个频率。我们可以继承他做一些初始化，对AI行为设计中出的复杂对象保存，本身脚本的生命周期执行。综合说来，AI_Rig是类似Unity的组件系统。嗯，CustomAIElement就长这样：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">namespace RAIN.Core</div><div class="line">&#123;</div><div class="line">    [RAINSerializableClass]</div><div class="line">    public abstract class CustomAIElement : RAINAIElement</div><div class="line">    &#123;</div><div class="line">        protected CustomAIElement();</div><div class="line">        public virtual string Name &#123; get; set; &#125;</div><div class="line">        public virtual void Act();</div><div class="line">        public virtual void Destroy();</div><div class="line">        public virtual void IK(int aLayerIndex);</div><div class="line">        public virtual void Post();</div><div class="line">        public virtual void Pre();</div><div class="line">        public virtual void RootMotion();</div><div class="line">        public virtual void Sense();</div><div class="line">        public virtual void Think();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>之所以需要Memory和CustomAIElement，是因为，在行为树逻辑中会使用到一些变量，一些定义的对象。有这两个模块的管理，方便我们的逻辑调用。</p>
-<p>跟行为有关的东西，虽然可以直接在我们的GameObject上面挂载脚本，然后在自定义的action中通过ai.body.GetComponent<t>这种方式来获取，不过这种显然不是插件推荐的方式。这种方法用起来很笨拙，也不好看。</t></p>
-<p>出于行为树的可阅读性，通用性的考虑，属于行为树的东西就交由Rain的那套框架来使用是很有必要的。比如说一个士兵Sensor寻找到一个进攻目标，通知队长，队长根据分析策略，比如目标是个大型杀伤力单位，队长选择寻找掩体，逐步推进消灭目标。这其中就需要目标属性、士兵消息通知、队长选择进攻策略、队长通知士兵、士兵执行策略等等。具体使用在后续介绍会有所感觉。</p>
-<p>其余几个一看便知，无需多言。<br>接下来进入主题，使用RainAI来构建一个小队的通信系统，就需要定制化一些对象，单纯的变量无法满足我们的需求。</p>
+        <h2 id="降低DrawCall"><a href="#降低DrawCall" class="headerlink" title="降低DrawCall"></a>降低DrawCall</h2><p>既然知道了渲染管线的流程，了解到DrawCall对于游戏性能的影响，只从降低DrawCall的角度来谈，可以看出有些优化方案的核心即是享元。（由于是讲享元模式，所以不讨论关于顶点，片元，纹理带宽，光照，Log等方面的优化）<a id="more"></a></p>
+<h2 id="动态批处理"><a href="#动态批处理" class="headerlink" title="动态批处理"></a>动态批处理</h2><p>在Unity中使用了动态批处理来进行类似的优化，场景中一些模型共享了一个材质，并且满足一些条件，Unity就可以自动把它们进行批处理，从而只需要花费一个DrawCall就可以渲染所有模型。他的基本原理是：每一帧把可以进行批处理的网格进行合并，再把合并后的模型数据传递给GPU，然后使用同一个材质对其渲染，动态批处理的好处是仍然可以移动，这是因为只要满足限制条件，Unity每帧都会对他们重新合并一次网格。</p>
+<p>听起来很不错，但很多时候事与愿违，如下：</p>
+<h3 id="情景0-1："><a href="#情景0-1：" class="headerlink" title="情景0-1："></a>情景0-1：</h3><p>当前场景只有一个平行光，为了方便观察帧调试器，把天空盒子和阴影关闭:</p>
+<p><img src="/2017/08/24/Flyweight2/DynamicBatch00.png" alt=""></p>
+<p><img src="/2017/08/24/Flyweight2/DynamicBatch01.png" alt=""></p>
+<p><img src="/2017/08/24/Flyweight2/DynamicBatch02.png" alt=""></p>
+<p>三个白色的Cube，共用的是一个白色的材质，虽然模型大小被缩放了，但是他们都被动态批处理了。可以在第一张图上看到<strong>Saved by batching</strong>数字为2，第二张图上出现了Dynamic Batch，第三张图上看到Dynamic Batch数为3。也就是说动态批处理帮我们节省了2个DrawCall。</p>
+<p>因为场景中的物体都使用了多个Pass的Shader，因此，多个光源会对他们产生光照影响。</p>
+<h3 id="情景0-2："><a href="#情景0-2：" class="headerlink" title="情景0-2："></a>情景0-2：</h3><p>此时场景中添加了一个点光源，为了方便观察帧调试器，仍然把阴影关闭：<br><img src="/2017/08/24/Flyweight2/DynamicBatch10.png" alt=""></p>
+<p><img src="/2017/08/24/Flyweight2/DynamicBatch11.png" alt=""></p>
+<p><img src="/2017/08/24/Flyweight2/DynamicBatch12.png" alt=""></p>
+<p>此时，动态批处理失败了，DrawCall增加到10，在点光源范围内，受点光源影响的1个plane和2个Cube；平行光下因为动态批处理失败而增加的2个。较之前的5个，加上那5个刚好10个。（当然，如果那两个白色的Cube不在点光源范围内，那么三个白色的Cube还是会被动态批处理的，那样的话，就只会增加一个点光源对plane的DrawCall）</p>
+<h2 id="静态批处理"><a href="#静态批处理" class="headerlink" title="静态批处理"></a>静态批处理</h2><p>与之对应的就是静态批处理，静态批处理时，会把静态标记（就是勾上Static）的模型合并到一个新的Mesh中，意味着这些模型不能在运行时对他进行操作。同时他往往需要占用更多的内存来存储合并后的网格，比如对1000颗相同的树进行静态批处理，那么他会把这一千颗树的网格合并，相比动态批处理会需要1000倍的内存占用。这是种牺牲内存来换取性能的策略。</p>
+<p>照旧搬几个例子：</p>
+<h3 id="情景1-1："><a href="#情景1-1：" class="headerlink" title="情景1-1："></a>情景1-1：</h3><p>当前场景只有一个平行光，为了方便观察帧调试器，把天空盒子和阴影关闭:</p>
+<p><img src="/2017/08/24/Flyweight2/StaticMesh.png" alt=""></p>
+<p><img src="/2017/08/24/Flyweight2/StaticBatch00.png" alt=""></p>
+<p><img src="/2017/08/24/Flyweight2/StaticBatch01.png" alt=""></p>
+<p><img src="/2017/08/24/Flyweight2/StaticBatch02.png" alt=""></p>
+<p>其一：使用了静态批处理后，在静态GameObject上多出了一个CombinedMesh，这个网格合并了所有被标记为“static”的Mesh，场景中见到的plane，六个Cube都是被标记了static。在第一幅图的底端，可以看到有写到“7submeshs”，意思是合并后的网格其实包含了7个子网格，unity会判断使用同一材质的子网格，然后对他进行批处理。</p>
+<p>其二：在第三幅图的帧调试器中可以看到一个StaticBatch，一共五个DrawCall，地板一个，绿色Cube，蓝色Cube，红色Cube，三个白色的Cube合并成一个StaticBatch，此时发现，虽然使用了静态批处理，但是DrawCall的数量并没有降低，和情景0-1帧调试窗口显示没有多少区别，唯一不同的就是DynamicBatch变成了StaticBatch。书中有这样解释到：<strong>对于使用了不同材质的物体，静态批处理同样可以提升渲染性能，尽管这些物体仍然需要调用多个DrawCall，但静态批处理可以减少这些DrawCall之间的状态切换，这些切换是耗时操作。</strong>在我理解下，是不是说，虽然材质各不相同，但是Mesh网格合并成了一个，意味着只需要Cpu传递一次网格给Gpu，那么GPU只需要在这一个大的网格内进行DrawCall切换，自然就能够降低切换的成本。</p>
+<p>其三：因为静态批处理会把所有被静态标记的Mesh合并，所以在内存上较之动态批处理，它会是重复材质模型的个数的倍数。从下两张图可以看到VBO(Vertex Buffer Object，顶点缓冲对象)，比动态批处理高出两个，是因为存在三个相同材质的白色Cube，他们的Mesh进行了合并。</p>
+<h3 id="情景1-2："><a href="#情景1-2：" class="headerlink" title="情景1-2："></a>情景1-2：</h3><p><img src="/2017/08/24/Flyweight2/StaticBatch10.png" alt=""></p>
+<p><img src="/2017/08/24/Flyweight2/StaticBatch11.png" alt=""></p>
+<p><img src="/2017/08/24/Flyweight2/StaticBatch12.png" alt=""></p>
+<p>场景中的材质都存在多个Pass的Shader，第二幅图可以看到，在平行光行下的pass仍然进行了静态批处理，额外的Pass（点光源下的pass）没有进行批处理。反观情景0-2中的第二幅图，平行光下的Pass并没有进行动态批处理，意味着，静态批处理在增加点光源后仍然节省了1个DrawCall（点光源只辐射到两个白色Cube，合并的就是那两个，平行光和点光源的交集，共同辐射的对象）</p>
+<p><img src="/2017/08/24/Flyweight2/DynamicBatch02.png" alt=""> <img src="/2017/08/24/Flyweight2/StaticBatch02.png" alt=""></p>
+<h2 id="共享材质"><a href="#共享材质" class="headerlink" title="共享材质"></a>共享材质</h2><p>不论是动态批处理，还是静态批处理，都要求模型之间需要共享同一个材质，但不同模型之间总会需要有不同的渲染属性，比如纹理，颜色。</p>
+<p>其一：如果两个材质之间只有使用的纹理不同，我们可以把这些纹理合并到一张更大的纹理中，这样就只需要对同一个材质中纹理的不同uv坐标进行采样即可。</p>
+<p>典型应用：</p>
+<p>1、NGUI制作字体图集</p>
+<p>2、龙之谷手游优化中提到的相同材质模型合并蒙皮网格，UV贴图合并</p>
+<p>其二：但有时，除了纹理不同外，不同的物体在材质上还有一些微小的参数变化，比如颜色，高光聚集度。<br>由于这些物体都使用了同一个材质，所以在材质上的改动会反馈到所有物体上，而我的需求是只修改其中一个物体的属性。</p>
+<p>此时常用的方法是使用网格顶点数据来存储这些参数，经过批处理后的物体会被处理成更大的VBO发送给GPU，我们可以修改VBO中的数据作为输入（这方面unity有专门的API，配合OpenGL的类似写法），传递给顶点着色器，降低了DrawCall，代价是更多的内存消耗。</p>
 
       
     </div>
@@ -401,9 +421,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Unity/" rel="tag"># Unity</a>
-          
-            <a href="/tags/AI/" rel="tag"># AI</a>
+            <a href="/tags/设计模式/" rel="tag"># 设计模式</a>
           
         </div>
       
@@ -416,8 +434,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/07/01/Thread/" rel="next" title="线程处理中的计时器、传参、返回值">
-                <i class="fa fa-chevron-left"></i> 线程处理中的计时器、传参、返回值
+              <a href="/2017/08/19/Flyweight1/" rel="next" title="《游戏编程模式》设计模式之享元模式（一）">
+                <i class="fa fa-chevron-left"></i> 《游戏编程模式》设计模式之享元模式（一）
               </a>
             
           </div>
@@ -426,8 +444,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/07/09/Rain3/" rel="prev" title="Rain AI，从实现一个内部小队通信的角度谈谈（二）">
-                Rain AI，从实现一个内部小队通信的角度谈谈（二） <i class="fa fa-chevron-right"></i>
+              <a href="/2017/08/27/Flyweight3/" rel="prev" title="《游戏编程模式》设计模式之享元模式（三）">
+                《游戏编程模式》设计模式之享元模式（三） <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -478,8 +496,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -532,6 +559,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#降低DrawCall"><span class="nav-number">1.</span> <span class="nav-text">降低DrawCall</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#动态批处理"><span class="nav-number">2.</span> <span class="nav-text">动态批处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#情景0-1："><span class="nav-number">2.1.</span> <span class="nav-text">情景0-1：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#情景0-2："><span class="nav-number">2.2.</span> <span class="nav-text">情景0-2：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态批处理"><span class="nav-number">3.</span> <span class="nav-text">静态批处理</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#情景1-1："><span class="nav-number">3.1.</span> <span class="nav-text">情景1-1：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#情景1-2："><span class="nav-number">3.2.</span> <span class="nav-text">情景1-2：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#共享材质"><span class="nav-number">4.</span> <span class="nav-text">共享材质</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
