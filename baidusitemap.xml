@@ -4,25 +4,8 @@
 
     
   <url>
-    <loc>http://lyyua.com/2017/08/24/Flyweight2/</loc>
-    <lastmod>2017-08-27T12:30:26.415Z</lastmod>
-    <data>
-        <display>
-        <title>《游戏编程模式》设计模式之享元模式（二）</title>
-        <pubTime>2017-08-24T11:54:10.000Z</pubTime>
-        
-        <tag>设计模式</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
     <loc>http://lyyua.com/2017/08/27/Flyweight3/</loc>
-    <lastmod>2017-08-27T12:28:30.534Z</lastmod>
+    <lastmod>2017-08-27T12:39:13.780Z</lastmod>
     <data>
         <display>
         <title>《游戏编程模式》设计模式之享元模式（三）</title>
@@ -38,8 +21,25 @@
 
     
   <url>
+    <loc>http://lyyua.com/2017/08/24/Flyweight2/</loc>
+    <lastmod>2017-08-27T12:38:59.174Z</lastmod>
+    <data>
+        <display>
+        <title>《游戏编程模式》设计模式之享元模式（二）</title>
+        <pubTime>2017-08-24T11:54:10.000Z</pubTime>
+        
+        <tag>设计模式</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://lyyua.com/2017/08/19/Flyweight1/</loc>
-    <lastmod>2017-08-27T12:22:53.958Z</lastmod>
+    <lastmod>2017-08-27T12:38:28.925Z</lastmod>
     <data>
         <display>
         <title>《游戏编程模式》设计模式之享元模式（一）</title>
