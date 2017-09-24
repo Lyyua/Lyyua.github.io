@@ -93,13 +93,13 @@
 
 
 
-<meta name="description" content="动机去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。 矩阵是怎么转换向量的向量[1,-3,-4]可以被解释成 $$\begin{align}\begin{bmatrix}">
+<meta name="description" content="动机去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。">
 <meta name="keywords" content="3DMath">
 <meta property="og:type" content="article">
 <meta property="og:title" content="矩阵的几何解释 - 旋转">
 <meta property="og:url" content="http://lyyua.com/2017/09/04/Matrix/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="动机去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。 矩阵是怎么转换向量的向量[1,-3,-4]可以被解释成 $$\begin{align}\begin{bmatrix}">
+<meta property="og:description" content="动机去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。">
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/2DMatrixLine.png">
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/2DMatrix.jpg">
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/3DMatrixZRot0.png">
@@ -108,10 +108,10 @@
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Y.png">
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Z.png">
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Rotate.png">
-<meta property="og:updated_time" content="2017-09-24T14:04:15.563Z">
+<meta property="og:updated_time" content="2017-09-24T14:11:02.508Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="矩阵的几何解释 - 旋转">
-<meta name="twitter:description" content="动机去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。 矩阵是怎么转换向量的向量[1,-3,-4]可以被解释成 $$\begin{align}\begin{bmatrix}">
+<meta name="twitter:description" content="动机去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。">
 <meta name="twitter:image" content="http://lyyua.com/2017/09/04/Matrix/2DMatrixLine.png">
 
 
@@ -350,7 +350,7 @@
       
 
       
-        <h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。</p>
+        <h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。<a id="more"></a></p>
 <h2 id="矩阵是怎么转换向量的"><a href="#矩阵是怎么转换向量的" class="headerlink" title="矩阵是怎么转换向量的"></a>矩阵是怎么转换向量的</h2><p>向量[1,-3,-4]可以被解释成</p>
 <p>$$<br>\begin{align}<br>\begin{bmatrix}<br>    1  \\<br>    3  \\<br>    -4 \\<br>\end{bmatrix}=<br>\begin{bmatrix}<br>    1  \\<br>    0  \\<br>    0 \\<br>\end{bmatrix}+<br>\begin{bmatrix}<br>    0  \\<br>    3  \\<br>    0 \\<br>\end{bmatrix}+<br>\begin{bmatrix}<br>    0  \\<br>    0  \\<br>    -4 \\<br>\end{bmatrix}<br>\end{align}<br>$$</p>
 <p>以此扩展，任意向量v</p>
@@ -404,22 +404,22 @@
 <p><img src="/2017/09/04/Matrix/3DMatrixZRot0.png" alt=""><br><img src="/2017/09/04/Matrix/3DMatrixZRot.png" alt=""></p>
 <p>在图中表现形式，即是绕z轴顺时针旋转45°，同时在y轴上进行2倍放大。</p>
 <p>进展到此时，可以很容易的推出绕x，y轴的旋转矩阵</p>
-<h2 id="绕X轴旋转，x轴基向量不变，只需要关注yz平面："><a href="#绕X轴旋转，x轴基向量不变，只需要关注yz平面：" class="headerlink" title="绕X轴旋转，x轴基向量不变，只需要关注yz平面："></a>绕X轴旋转，x轴基向量不变，只需要关注yz平面：</h2><p><img src="/2017/09/04/Matrix/X.png" alt=""></p>
+<h3 id="绕X轴旋转，x轴基向量不变，只需要关注yz平面："><a href="#绕X轴旋转，x轴基向量不变，只需要关注yz平面：" class="headerlink" title="绕X轴旋转，x轴基向量不变，只需要关注yz平面："></a>绕X轴旋转，x轴基向量不变，只需要关注yz平面：</h3><p><img src="/2017/09/04/Matrix/X.png" alt=""></p>
 <div><br>$$<br>\begin{align}<br>y’ = (0，cos\theta,sin\theta) \<br>z’ =  (0，-sin\theta，cos\theta) \<br>\end{align}<br>$$<br></div>
 
 <div><br>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 \<br>    0 &amp; cos\theta &amp; sin\theta  \<br>    0 &amp; -sin\theta &amp; cos\theta \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
 
-<h2 id="绕y轴旋转，y轴基向量不变，只需要关注xz平面："><a href="#绕y轴旋转，y轴基向量不变，只需要关注xz平面：" class="headerlink" title="绕y轴旋转，y轴基向量不变，只需要关注xz平面："></a>绕y轴旋转，y轴基向量不变，只需要关注xz平面：</h2><p><img src="/2017/09/04/Matrix/Y.png" alt=""></p>
+<h3 id="绕y轴旋转，y轴基向量不变，只需要关注xz平面："><a href="#绕y轴旋转，y轴基向量不变，只需要关注xz平面：" class="headerlink" title="绕y轴旋转，y轴基向量不变，只需要关注xz平面："></a>绕y轴旋转，y轴基向量不变，只需要关注xz平面：</h3><p><img src="/2017/09/04/Matrix/Y.png" alt=""></p>
 <div><br>$$<br>\begin{align}<br>z’ = (sin\theta，0，cos\theta) \<br>x’ =  (cos\theta，0，-sin\theta) \<br>\end{align}<br>$$<br></div>
 
 <div><br>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    cos\theta &amp; 0 &amp; -sin\theta \<br>    0 &amp; 1 &amp; 0  \<br>    sin\theta &amp; 0 &amp; cos\theta \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
 
-<h2 id="绕z轴旋转，z轴基向量不变，只需要关注xy平面："><a href="#绕z轴旋转，z轴基向量不变，只需要关注xy平面：" class="headerlink" title="绕z轴旋转，z轴基向量不变，只需要关注xy平面："></a>绕z轴旋转，z轴基向量不变，只需要关注xy平面：</h2><p><img src="/2017/09/04/Matrix/Z.png" alt=""></p>
+<h3 id="绕z轴旋转，z轴基向量不变，只需要关注xy平面："><a href="#绕z轴旋转，z轴基向量不变，只需要关注xy平面：" class="headerlink" title="绕z轴旋转，z轴基向量不变，只需要关注xy平面："></a>绕z轴旋转，z轴基向量不变，只需要关注xy平面：</h3><p><img src="/2017/09/04/Matrix/Z.png" alt=""></p>
 <div><br>$$<br>\begin{align}<br>x’ = (cos\theta，-sin\theta，0) \<br>y’ =  (sin\theta，cos\theta，0) \<br>\end{align}<br>$$<br></div>
 
 <div><br>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    cos\theta &amp; -sin\theta &amp; 0 \<br>    sin\theta &amp; cos\theta &amp; 0  \<br>    0 &amp; 0 &amp; 1 \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
 
-<h1 id="绕任意轴旋转"><a href="#绕任意轴旋转" class="headerlink" title="绕任意轴旋转"></a>绕任意轴旋转</h1><p><img src="/2017/09/04/Matrix/Rotate.png" alt=""></p>
+<h3 id="绕任意轴旋转"><a href="#绕任意轴旋转" class="headerlink" title="绕任意轴旋转"></a>绕任意轴旋转</h3><p><img src="/2017/09/04/Matrix/Rotate.png" alt=""></p>
 <p>v绕n轴旋转至v’</p>
 <p>1、v在n上的投影 </p>
 <div><br>$$<br>\begin{align}<br>    v_{||} = (v·n)n<br>\end{align}<br>$$<br></div>
@@ -631,7 +631,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#动机"><span class="nav-number">1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵是怎么转换向量的"><span class="nav-number">2.</span> <span class="nav-text">矩阵是怎么转换向量的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将向量表示为基向量的线性组合"><span class="nav-number">3.</span> <span class="nav-text">将向量表示为基向量的线性组合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2D变换矩阵"><span class="nav-number">4.</span> <span class="nav-text">2D变换矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3D变换矩阵"><span class="nav-number">5.</span> <span class="nav-text">3D变换矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绕X轴旋转，x轴基向量不变，只需要关注yz平面："><span class="nav-number">6.</span> <span class="nav-text">绕X轴旋转，x轴基向量不变，只需要关注yz平面：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绕y轴旋转，y轴基向量不变，只需要关注xz平面："><span class="nav-number">7.</span> <span class="nav-text">绕y轴旋转，y轴基向量不变，只需要关注xz平面：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绕z轴旋转，z轴基向量不变，只需要关注xy平面："><span class="nav-number">8.</span> <span class="nav-text">绕z轴旋转，z轴基向量不变，只需要关注xy平面：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#绕任意轴旋转"><span class="nav-number"></span> <span class="nav-text">绕任意轴旋转</span></a></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#动机"><span class="nav-number">1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵是怎么转换向量的"><span class="nav-number">2.</span> <span class="nav-text">矩阵是怎么转换向量的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将向量表示为基向量的线性组合"><span class="nav-number">3.</span> <span class="nav-text">将向量表示为基向量的线性组合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2D变换矩阵"><span class="nav-number">4.</span> <span class="nav-text">2D变换矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3D变换矩阵"><span class="nav-number">5.</span> <span class="nav-text">3D变换矩阵</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#绕X轴旋转，x轴基向量不变，只需要关注yz平面："><span class="nav-number">5.1.</span> <span class="nav-text">绕X轴旋转，x轴基向量不变，只需要关注yz平面：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绕y轴旋转，y轴基向量不变，只需要关注xz平面："><span class="nav-number">5.2.</span> <span class="nav-text">绕y轴旋转，y轴基向量不变，只需要关注xz平面：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绕z轴旋转，z轴基向量不变，只需要关注xy平面："><span class="nav-number">5.3.</span> <span class="nav-text">绕z轴旋转，z轴基向量不变，只需要关注xy平面：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#绕任意轴旋转"><span class="nav-number">5.4.</span> <span class="nav-text">绕任意轴旋转</span></a></li></ol></li></ol></div>
             
 
           </div>
