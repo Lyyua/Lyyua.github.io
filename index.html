@@ -266,6 +266,236 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/09/04/Matrix/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/09/04/Matrix/" itemprop="url">矩阵的几何解释 - 旋转</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-04T21:56:49+08:00">
+                2017-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/09/04/Matrix/" class="leancloud_visitors" data-flag-title="矩阵的几何解释 - 旋转">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。</p>
+<h2 id="矩阵是怎么转换向量的"><a href="#矩阵是怎么转换向量的" class="headerlink" title="矩阵是怎么转换向量的"></a>矩阵是怎么转换向量的</h2><p>向量[1,-3,-4]可以被解释成</p>
+<p>$$<br>\begin{align}<br>\begin{bmatrix}<br>    1  \\<br>    3  \\<br>    -4 \\<br>\end{bmatrix}=<br>\begin{bmatrix}<br>    1  \\<br>    0  \\<br>    0 \\<br>\end{bmatrix}+<br>\begin{bmatrix}<br>    0  \\<br>    3  \\<br>    0 \\<br>\end{bmatrix}+<br>\begin{bmatrix}<br>    0  \\<br>    0  \\<br>    -4 \\<br>\end{bmatrix}<br>\end{align}<br>$$</p>
+<p>以此扩展，任意向量v</p>
+<p>$$<br>\begin{align}<br>v=<br>\begin{bmatrix}<br>    x  \\<br>    y  \\<br>    z \\<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    x  \\<br>    0  \\<br>    0 \\<br>\end{bmatrix}<br>+\begin{bmatrix}<br>    0  \\<br>    y  \\<br>    0 \\<br>\end{bmatrix}<br>+\begin{bmatrix}<br>    0  \\<br>    0  \\<br>    z \\<br>\end{bmatrix}<br>\end{align}<br>$$</p>
+<p>或者</p>
+<p>$$<br>\begin{align}<br>v=<br>\begin{bmatrix}<br>    x  \\<br>    y  \\<br>    z \\<br>\end{bmatrix}<br>=x\begin{bmatrix}<br>    1  \\<br>    0  \\<br>    0 \\<br>\end{bmatrix}<br>+y\begin{bmatrix}<br>    0  \\<br>    1  \\<br>    0 \\<br>\end{bmatrix}<br>+z\begin{bmatrix}<br>    0  \\<br>    0  \\<br>    1 \\<br>\end{bmatrix}<br>\end{align}<br>$$</p>
+<p>此时右边的单位向量就是x，y，z轴，<strong>向量的每个坐标都表明平行于相应坐标轴的有向位移。</strong><br>那么根据这个原则，把上面的向量重新写一边，分别将p,q,r定义为指向+x,+y,+z方向的单位向量，得出</p>
+<p>$$<br>\begin{align}<br>  v=xp+yq+zr<br>\end{align}<br>$$</p>
+<h2 id="将向量表示为基向量的线性组合"><a href="#将向量表示为基向量的线性组合" class="headerlink" title="将向量表示为基向量的线性组合"></a>将向量表示为基向量的线性组合</h2><p>引入基向量的概念，方便观察矩阵变换的效果，向量v就被表示成向量p,q,r的线性变换。向量p,q,r称作基向量，一个坐标系能用任意三个线性无关的基向量表示，即相互垂直。</p>
+<p>以p,q,r为行向量构建一个3X3的矩阵M：</p>
+<div><br>$$<br>\begin{align}<br>M=<br>\begin{bmatrix}<br>    p  \<br>    q  \<br>    r  \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    p_x &amp; p_y &amp; p_z \<br>    q_x &amp; q_y &amp; q_z \<br>    r_x &amp; r_y &amp; r_z \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<p>用一个行向量左乘矩阵M</p>
+<div><br>$$<br>\begin{align}<br>\begin{bmatrix}<br>    x &amp; y &amp; z \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    p_x &amp; p_y &amp; p_z \<br>    q_x &amp; q_y &amp; q_z \<br>    r_x &amp; r_y &amp; r_z \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    xp_x+yq_x+zr_x &amp;  xp_y+yq_y+zr_y &amp; xp_z+yq_z+zr_z \<br>\end{bmatrix}<br>= xp+yq+zr<br>\end{align}<br>$$<br></div>
+
+<p>上式中的<br>$$<br>\begin{align}<br>  v=xp+yq+zr<br>\end{align}<br>$$</p>
+<p>就可以解释成：</p>
+<div><br>$$<br>\begin{align}<br>\begin{bmatrix}<br>    x &amp; y &amp; z \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 \<br>    0 &amp; 1 &amp; 0 \<br>    0 &amp; 0 &amp; 1 \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    x &amp;  y &amp; z \<br>\end{bmatrix}<br>= xp+yq+zr<br>\end{align}<br>$$<br></div>
+
+<p>可以看出一个行向量左乘一个3x3矩阵可以进行一些变换,具体发生什么变换目前还看不出来。</p>
+<p>接下来看一下基向量[1,0,0]，[0,1,0]，[0,0,1]乘任意3x3矩阵M的情况：</p>
+<div><br>$$<br>\begin{align}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    m<em>{11} &amp; m</em>{12} &amp; m<em>{13} \<br>    m</em>{21} &amp; m<em>{22} &amp; m</em>{23} \<br>    m<em>{31} &amp; m</em>{32} &amp; m<em>{33} \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    m</em>{11} &amp; m<em>{12} &amp; m</em>{13} \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<div><br>$$<br>\begin{align}<br>\begin{bmatrix}<br>    0 &amp; 1 &amp; 0 \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    m<em>{11} &amp; m</em>{12} &amp; m<em>{13} \<br>    m</em>{21} &amp; m<em>{22} &amp; m</em>{23} \<br>    m<em>{31} &amp; m</em>{32} &amp; m<em>{33} \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    m</em>{21} &amp; m<em>{22} &amp; m</em>{23} \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<div><br>$$<br>\begin{align}<br>\begin{bmatrix}<br>    0 &amp; 0 &amp; 1 \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    m<em>{11} &amp; m</em>{12} &amp; m<em>{13} \<br>    m</em>{21} &amp; m<em>{22} &amp; m</em>{23} \<br>    m<em>{31} &amp; m</em>{32} &amp; m<em>{33} \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    m</em>{31} &amp; m<em>{32} &amp; m</em>{33} \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<p>基向量[1,0,0]乘以M矩阵时，结果是M的第一行，相应的其他两行也是如此。说明，<strong>矩阵的每一行都能解释为转换后的基向量。</strong><br>从此，有了一种简单的方法形象化的解释矩阵所代表的变换。同时可以构造一个矩阵代表一些变换，比如缩放，旋转。</p>
+<h2 id="2D变换矩阵"><a href="#2D变换矩阵" class="headerlink" title="2D变换矩阵"></a>2D变换矩阵</h2><p>先看看在2D情况下的变换,假定矩阵</p>
+<div><br>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    2 &amp; 1  \<br>    -1 &amp; 2  \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<p><img src="/2017/09/04/Matrix/2DMatrixLine.png" alt=""></p>
+<blockquote>
+<ul>
+<li>x基向量(1,0)经过M矩阵变换，转换至p向量(2,1)，x方向上实际起作用的只有M矩阵中的p向量</li>
+<li>z基向量(0,1)经过M矩阵变换，转换至q向量(-1,2)，y方向上实际起作用的只有M矩阵中的q向量</li>
+</ul>
+</blockquote>
+<p><img src="/2017/09/04/Matrix/2DMatrix.jpg" alt=""></p>
+<p>从图中可以看到他发生的是逆时针旋转26°的变换，同时还发生了等比缩放，矩形框变大，填充一张图片上去或许比较容易观察。</p>
+<h2 id="3D变换矩阵"><a href="#3D变换矩阵" class="headerlink" title="3D变换矩阵"></a>3D变换矩阵</h2><div><br>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    0.707 &amp; -0.707 &amp; 0 \<br>    1.250 &amp; 1.250 &amp; 0  \<br>    0 &amp; 0 &amp; 1 \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<p>按照上面的分析</p>
+<blockquote>
+<ul>
+<li>x基向量（1，0，0）经过矩阵M变换，转换至p向量（0.707，-0.707，0）</li>
+<li>y基向量（0，1，0）经过矩阵M变换，转换至q向量（1.25，1.25，0）</li>
+<li>z基向量（0，0，1）经过矩阵M变换，转换至r向量（0，0，1），没有发生变换</li>
+</ul>
+</blockquote>
+<p><img src="/2017/09/04/Matrix/3DMatrixZRot0.png" alt=""><br><img src="/2017/09/04/Matrix/3DMatrixZRot.png" alt=""></p>
+<p>在图中表现形式，即是绕z轴顺时针旋转45°，同时在y轴上进行2倍放大。</p>
+<p>进展到此时，可以很容易的推出绕x，y轴的旋转矩阵</p>
+<h2 id="绕X轴旋转，x轴基向量不变，只需要关注yz平面："><a href="#绕X轴旋转，x轴基向量不变，只需要关注yz平面：" class="headerlink" title="绕X轴旋转，x轴基向量不变，只需要关注yz平面："></a>绕X轴旋转，x轴基向量不变，只需要关注yz平面：</h2><p><img src="/2017/09/04/Matrix/X.png" alt=""></p>
+<div><br>$$<br>\begin{align}<br>y’ = (0，cos\theta,sin\theta) \<br>z’ =  (0，-sin\theta，cos\theta) \<br>\end{align}<br>$$<br></div>
+
+<div><br>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 \<br>    0 &amp; cos\theta &amp; sin\theta  \<br>    0 &amp; -sin\theta &amp; cos\theta \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<h2 id="绕y轴旋转，y轴基向量不变，只需要关注xz平面："><a href="#绕y轴旋转，y轴基向量不变，只需要关注xz平面：" class="headerlink" title="绕y轴旋转，y轴基向量不变，只需要关注xz平面："></a>绕y轴旋转，y轴基向量不变，只需要关注xz平面：</h2><p><img src="/2017/09/04/Matrix/Y.png" alt=""></p>
+<div><br>$$<br>\begin{align}<br>z’ = (sin\theta，0，cos\theta) \<br>x’ =  (cos\theta，0，-sin\theta) \<br>\end{align}<br>$$<br></div>
+
+<div><br>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    cos\theta &amp; 0 &amp; -sin\theta \<br>    0 &amp; 1 &amp; 0  \<br>    sin\theta &amp; 0 &amp; cos\theta \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<h2 id="绕z轴旋转，z轴基向量不变，只需要关注xy平面："><a href="#绕z轴旋转，z轴基向量不变，只需要关注xy平面：" class="headerlink" title="绕z轴旋转，z轴基向量不变，只需要关注xy平面："></a>绕z轴旋转，z轴基向量不变，只需要关注xy平面：</h2><p><img src="/2017/09/04/Matrix/Z.png" alt=""></p>
+<div><br>$$<br>\begin{align}<br>x’ = (cos\theta，-sin\theta，0) \<br>y’ =  (sin\theta，cos\theta，0) \<br>\end{align}<br>$$<br></div>
+
+<div><br>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    cos\theta &amp; -sin\theta &amp; 0 \<br>    sin\theta &amp; cos\theta &amp; 0  \<br>    0 &amp; 0 &amp; 1 \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<h1 id="绕任意轴旋转"><a href="#绕任意轴旋转" class="headerlink" title="绕任意轴旋转"></a>绕任意轴旋转</h1><p><img src="/2017/09/04/Matrix/Rotate.png" alt=""></p>
+<p>v绕n轴旋转至v’</p>
+<p>1、v在n上的投影 </p>
+<div><br>$$<br>\begin{align}<br>    v_{||} = (v·n)n<br>\end{align}<br>$$<br></div>
+
+<p>2、此时可以得出v垂直于n的分量</p>
+<div><br>$$<br>\begin{align}<br>    v<em>{⊥} = v - v</em>{||}<br>\end{align}<br>$$<br></div>
+
+<p>3、同时垂直于n和 v<sub>||</sub>的向量w</p>
+<div><br>$$<br>\begin{align}<br>    w &amp; = n &amp;times v<em>{⊥}  &amp;&amp; 因为v</em>{⊥}是v垂直于n的分量,n是单位向量，叉乘结果说明w的长度和v<em>{⊥}一致，就是说，实质上他是v</em>{⊥}绕n旋转90°的结果 \<br>    &amp;= n &amp;times (v - v<em>{||}) \<br>    &amp;= n &amp;times v - n &amp;times v</em>{||} \<br>    &amp;= n &amp;times v - 0  \<br>    &amp;= n &amp;times v \<br>\end{align}<br>$$<br></div>
+
+<p>4、得出v<sub>⊥</sub>‘</p>
+<div><br>$$<br>\begin{align}<br>    v<em>{⊥}’ &amp;= v</em>{⊥}cos\theta + wsin\theta \<br>            &amp;= (v-(v·n)n)cos\theta + (n &amp;times v)sin\theta<br>\end{align}<br>$$<br></div>
+
+<p>5、得出v’</p>
+<div><br>$$<br>\begin{align}<br>    v’ &amp;= v<em>{⊥}’ + v</em>{||} \<br>            &amp;= (v-(v·n)n)cos\theta + (n &amp;times v)sin\theta + （v·n）n<br>\end{align}<br>$$<br></div>
+
+<p>得出v’的公式后，于是可以用它计算变换后的基向量并且构建矩阵</p>
+<p>第一个基向量：</p>
+<div><br>$$<br>p=\begin{bmatrix}<br>    1 &amp; 0 &amp; 0<br>\end{bmatrix}<br>$$<br></div>
+
+<p>根据上诉公式得出p’</p>
+<div><br>$$<br>\begin{align}<br>    p’ &amp;= (p-(p·n)n)cos\theta + (n &amp;times p)sin\theta + （p·n）n \<br>       &amp;= (<br>\begin{bmatrix}<br>    1  \<br>    0  \<br>    0 \<br>\end{bmatrix}<br>-(<br>\begin{bmatrix}<br>    1  \<br>    0  \<br>    0 \<br>\end{bmatrix}<br>·<br>\begin{bmatrix}<br>    n_x  \<br>    n_y  \<br>    n_z \<br>\end{bmatrix}<br>)<br>\begin{bmatrix}<br>    n_x  \<br>    n_y  \<br>    n_z \<br>\end{bmatrix}<br>)cos\theta + (<br>\begin{bmatrix}<br>    n_x  \<br>    n_y  \<br>    n_z \<br>\end{bmatrix}<br>&amp;times<br>\begin{bmatrix}<br>    1  \<br>    0  \<br>    0 \<br>\end{bmatrix}<br>)sin\theta + (<br>\begin{bmatrix}<br>    1  \<br>    0  \<br>    0 \<br>\end{bmatrix}<br>·<br>\begin{bmatrix}<br>    n_x  \<br>    n_y  \<br>    n_z \<br>\end{bmatrix}<br>)<br>\begin{bmatrix}<br>    n_x  \<br>    n_y  \<br>    n_z \<br>\end{bmatrix}<br><br>\    &amp;= (<br>\begin{bmatrix}<br>    1  \<br>    0  \<br>    0 \<br>\end{bmatrix}<br>- n_x<br>\begin{bmatrix}<br>    n_x  \<br>    n_y  \<br>    n_z \<br>\end{bmatrix}<br>)cos\theta +<br>\begin{bmatrix}<br>    0  \<br>    n_z  \<br>    -n_y \<br>\end{bmatrix}<br>sin\theta + n_x<br>\begin{bmatrix}<br>    n_x  \<br>    n_y  \<br>    n<em>z \<br>\end{bmatrix}<br>\ &amp;=<br>\begin{bmatrix}<br>    1-n</em>{x}^2  \<br>    -n_x n_y  \<br>    -n_x n_z \<br>\end{bmatrix}<br>cos\theta +<br>\begin{bmatrix}<br>    0  \<br>    n_z  \<br>    -n_y \<br>\end{bmatrix}<br>sin\theta +<br>\begin{bmatrix}<br>    n_x ^2  \<br>    n_x n_y  \<br>    n_x n_z \<br>\end{bmatrix}<br>\ &amp;=<br>\begin{bmatrix}<br>    cos\theta -n_x ^2 cos\theta  \<br>    -n_x n_y cos\theta  \<br>    -n_x n_z cos\theta \<br>\end{bmatrix}<br>+<br>\begin{bmatrix}<br>    0  \<br>    n_z sin\theta  \<br>    -n_y sin\theta \<br>\end{bmatrix}<br>+<br>\begin{bmatrix}<br>    n_x ^2  \<br>    n_x n_y  \<br>    n_x n_z \<br>\end{bmatrix}<br>\ &amp;=<br>\begin{bmatrix}<br>    cos\theta -n_x ^2 cos\theta + n_x ^2  \<br>    -n_x n_y cos\theta + n_z sin\theta +n_x n_y  \<br>    -n_x n_z cos\theta - n_y sin\theta + n_x n_z\<br>\end{bmatrix}<br>\ &amp;=<br>\begin{bmatrix}<br>    n_x ^2 (1-cos\theta)+cos\theta  \<br>    n_x n_y (1-cos\theta) +n_z sin\theta  \<br>    n_x n_z (1-cos\theta) - n_y sin\theta \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<p>另外两个基向量的推导类似</p>
+<div><br>$$<br>q=\begin{bmatrix}<br>    0 &amp; 1 &amp; 0<br>\end{bmatrix}<br>$$<br></div>
+
+<div><br>$$<br>\begin{align}<br>    q’ &amp;= (q-(q·n)n)cos\theta + (n &amp;times q)sin\theta + （q·n）n \<br>       &amp;=<br>\begin{bmatrix}<br>    n_x n_y (1-cos\theta) -n_z sin\theta  \<br>    n_y ^2 (1-cos\theta)+cos\theta  \<br>    n_y n_z (1-cos\theta) + n_x sin\theta \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<div><br>$$<br>r=\begin{bmatrix}<br>    0 &amp; 0 &amp; 1<br>\end{bmatrix}<br>$$<br></div>
+
+<div><br>$$<br>\begin{align}<br>    r’ &amp;= (r-(r·n)n)cos\theta + (n &amp;times r)sin\theta + （r·n）n \<br>       &amp;=<br>\begin{bmatrix}<br>    n_x n_z (1-cos\theta) + n_y sin\theta \<br>    n_y n_z (1-cos\theta) -n_x sin\theta  \<br>    n_x ^2 (1-cos\theta)+cos\theta  \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<blockquote>
+<ul>
+<li>注意：上面的推导只使用了列向量，这样做的目的是使等式整洁清晰、易于理解</li>
+</ul>
+</blockquote>
+<p>根据这些基向量构造矩阵，可以得到公式：</p>
+<div><br>$$<br>\begin{align}<br>    R(n,\theta)=<br>\begin{bmatrix}<br>    p’ \<br>    q’  \<br>    r’  \<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>    n_x ^2 (1-cos\theta)+cos\theta &amp; n_x n_y (1-cos\theta) +n_z sin\theta &amp;    n_x n_z (1-cos\theta) - n_y sin\theta \<br>    n_x n_y (1-cos\theta) -n_z sin\theta &amp; n_y ^2 (1-cos\theta)+cos\theta &amp;    n_y n_z (1-cos\theta) + n_x sin\theta \<br>    n_x n_z (1-cos\theta) + n_y sin\theta &amp;    n_y n_z (1-cos\theta) -n_x sin\theta &amp; n_x ^2 (1-cos\theta)+cos\theta  \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/08/27/Flyweight3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1402,134 +1632,6 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/06/22/Rain1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lyu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Back">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/06/22/Rain1/" itemprop="url">Rain AI，先从行为树的角度谈谈</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-06-22T22:46:47+08:00">
-                2017-06-22
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/06/22/Rain1/" class="leancloud_visitors" data-flag-title="Rain AI，先从行为树的角度谈谈">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="状态机与行为树"><a href="#状态机与行为树" class="headerlink" title="状态机与行为树"></a>状态机与行为树</h2><h3 id="状态机"><a href="#状态机" class="headerlink" title="状态机"></a>状态机</h3><p><strong><font color="red" size="4">状态机</font></strong>简单的说，是基于当前状态下，存在若干种跳转条件，满足某种跳转条件后，切换到另一个状态，类似Unity的Mecanim动画系统。</p>
-<p>如果状态较多，情况切换复杂，就会看起来一团麻，比如一个简单AI策略的实现，就会产生如下图一般的效果，线条杂乱，不紧不易理清，而且也不容易，不过早期的大多游戏AI都是用FSM实现，后续的事实证明选择适合需求的解决方案才是最好的：</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/06/22/Rain1/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
@@ -1580,7 +1682,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">13</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

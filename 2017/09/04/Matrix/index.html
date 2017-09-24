@@ -1,0 +1,951 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="3DMath," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="动机去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。 矩阵是怎么转换向量的向量[1,-3,-4]可以被解释成 $$\begin{align}\begin{bmatrix}">
+<meta name="keywords" content="3DMath">
+<meta property="og:type" content="article">
+<meta property="og:title" content="矩阵的几何解释 - 旋转">
+<meta property="og:url" content="http://lyyua.com/2017/09/04/Matrix/index.html">
+<meta property="og:site_name" content="Back">
+<meta property="og:description" content="动机去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。 矩阵是怎么转换向量的向量[1,-3,-4]可以被解释成 $$\begin{align}\begin{bmatrix}">
+<meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/2DMatrixLine.png">
+<meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/2DMatrix.jpg">
+<meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/3DMatrixZRot0.png">
+<meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/3DMatrixZRot.png">
+<meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/X.png">
+<meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Y.png">
+<meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Z.png">
+<meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Rotate.png">
+<meta property="og:updated_time" content="2017-09-24T14:04:15.563Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="矩阵的几何解释 - 旋转">
+<meta name="twitter:description" content="动机去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。 矩阵是怎么转换向量的向量[1,-3,-4]可以被解释成 $$\begin{align}\begin{bmatrix}">
+<meta name="twitter:image" content="http://lyyua.com/2017/09/04/Matrix/2DMatrixLine.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lyyua.com/2017/09/04/Matrix/"/>
+
+
+
+
+
+  <title>矩阵的几何解释 - 旋转 | Back</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d4860eb791209892b971cbc05d6eb81a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Back</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/09/04/Matrix/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">矩阵的几何解释 - 旋转</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-04T21:56:49+08:00">
+                2017-09-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/09/04/Matrix/" class="leancloud_visitors" data-flag-title="矩阵的几何解释 - 旋转">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。</p>
+<h2 id="矩阵是怎么转换向量的"><a href="#矩阵是怎么转换向量的" class="headerlink" title="矩阵是怎么转换向量的"></a>矩阵是怎么转换向量的</h2><p>向量[1,-3,-4]可以被解释成</p>
+<p>$$<br>\begin{align}<br>\begin{bmatrix}<br>    1  \\<br>    3  \\<br>    -4 \\<br>\end{bmatrix}=<br>\begin{bmatrix}<br>    1  \\<br>    0  \\<br>    0 \\<br>\end{bmatrix}+<br>\begin{bmatrix}<br>    0  \\<br>    3  \\<br>    0 \\<br>\end{bmatrix}+<br>\begin{bmatrix}<br>    0  \\<br>    0  \\<br>    -4 \\<br>\end{bmatrix}<br>\end{align}<br>$$</p>
+<p>以此扩展，任意向量v</p>
+<p>$$<br>\begin{align}<br>v=<br>\begin{bmatrix}<br>    x  \\<br>    y  \\<br>    z \\<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    x  \\<br>    0  \\<br>    0 \\<br>\end{bmatrix}<br>+\begin{bmatrix}<br>    0  \\<br>    y  \\<br>    0 \\<br>\end{bmatrix}<br>+\begin{bmatrix}<br>    0  \\<br>    0  \\<br>    z \\<br>\end{bmatrix}<br>\end{align}<br>$$</p>
+<p>或者</p>
+<p>$$<br>\begin{align}<br>v=<br>\begin{bmatrix}<br>    x  \\<br>    y  \\<br>    z \\<br>\end{bmatrix}<br>=x\begin{bmatrix}<br>    1  \\<br>    0  \\<br>    0 \\<br>\end{bmatrix}<br>+y\begin{bmatrix}<br>    0  \\<br>    1  \\<br>    0 \\<br>\end{bmatrix}<br>+z\begin{bmatrix}<br>    0  \\<br>    0  \\<br>    1 \\<br>\end{bmatrix}<br>\end{align}<br>$$</p>
+<p>此时右边的单位向量就是x，y，z轴，<strong>向量的每个坐标都表明平行于相应坐标轴的有向位移。</strong><br>那么根据这个原则，把上面的向量重新写一边，分别将p,q,r定义为指向+x,+y,+z方向的单位向量，得出</p>
+<p>$$<br>\begin{align}<br>  v=xp+yq+zr<br>\end{align}<br>$$</p>
+<h2 id="将向量表示为基向量的线性组合"><a href="#将向量表示为基向量的线性组合" class="headerlink" title="将向量表示为基向量的线性组合"></a>将向量表示为基向量的线性组合</h2><p>引入基向量的概念，方便观察矩阵变换的效果，向量v就被表示成向量p,q,r的线性变换。向量p,q,r称作基向量，一个坐标系能用任意三个线性无关的基向量表示，即相互垂直。</p>
+<p>以p,q,r为行向量构建一个3X3的矩阵M：</p>
+<div><br>$$<br>\begin{align}<br>M=<br>\begin{bmatrix}<br>    p  \<br>    q  \<br>    r  \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    p_x &amp; p_y &amp; p_z \<br>    q_x &amp; q_y &amp; q_z \<br>    r_x &amp; r_y &amp; r_z \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<p>用一个行向量左乘矩阵M</p>
+<div><br>$$<br>\begin{align}<br>\begin{bmatrix}<br>    x &amp; y &amp; z \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    p_x &amp; p_y &amp; p_z \<br>    q_x &amp; q_y &amp; q_z \<br>    r_x &amp; r_y &amp; r_z \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    xp_x+yq_x+zr_x &amp;  xp_y+yq_y+zr_y &amp; xp_z+yq_z+zr_z \<br>\end{bmatrix}<br>= xp+yq+zr<br>\end{align}<br>$$<br></div>
+
+<p>上式中的<br>$$<br>\begin{align}<br>  v=xp+yq+zr<br>\end{align}<br>$$</p>
+<p>就可以解释成：</p>
+<div><br>$$<br>\begin{align}<br>\begin{bmatrix}<br>    x &amp; y &amp; z \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 \<br>    0 &amp; 1 &amp; 0 \<br>    0 &amp; 0 &amp; 1 \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    x &amp;  y &amp; z \<br>\end{bmatrix}<br>= xp+yq+zr<br>\end{align}<br>$$<br></div>
+
+<p>可以看出一个行向量左乘一个3x3矩阵可以进行一些变换,具体发生什么变换目前还看不出来。</p>
+<p>接下来看一下基向量[1,0,0]，[0,1,0]，[0,0,1]乘任意3x3矩阵M的情况：</p>
+<div><br>$$<br>\begin{align}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    m<em>{11} &amp; m</em>{12} &amp; m<em>{13} \<br>    m</em>{21} &amp; m<em>{22} &amp; m</em>{23} \<br>    m<em>{31} &amp; m</em>{32} &amp; m<em>{33} \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    m</em>{11} &amp; m<em>{12} &amp; m</em>{13} \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<div><br>$$<br>\begin{align}<br>\begin{bmatrix}<br>    0 &amp; 1 &amp; 0 \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    m<em>{11} &amp; m</em>{12} &amp; m<em>{13} \<br>    m</em>{21} &amp; m<em>{22} &amp; m</em>{23} \<br>    m<em>{31} &amp; m</em>{32} &amp; m<em>{33} \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    m</em>{21} &amp; m<em>{22} &amp; m</em>{23} \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<div><br>$$<br>\begin{align}<br>\begin{bmatrix}<br>    0 &amp; 0 &amp; 1 \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    m<em>{11} &amp; m</em>{12} &amp; m<em>{13} \<br>    m</em>{21} &amp; m<em>{22} &amp; m</em>{23} \<br>    m<em>{31} &amp; m</em>{32} &amp; m<em>{33} \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    m</em>{31} &amp; m<em>{32} &amp; m</em>{33} \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<p>基向量[1,0,0]乘以M矩阵时，结果是M的第一行，相应的其他两行也是如此。说明，<strong>矩阵的每一行都能解释为转换后的基向量。</strong><br>从此，有了一种简单的方法形象化的解释矩阵所代表的变换。同时可以构造一个矩阵代表一些变换，比如缩放，旋转。</p>
+<h2 id="2D变换矩阵"><a href="#2D变换矩阵" class="headerlink" title="2D变换矩阵"></a>2D变换矩阵</h2><p>先看看在2D情况下的变换,假定矩阵</p>
+<div><br>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    2 &amp; 1  \<br>    -1 &amp; 2  \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<p><img src="/2017/09/04/Matrix/2DMatrixLine.png" alt=""></p>
+<blockquote>
+<ul>
+<li>x基向量(1,0)经过M矩阵变换，转换至p向量(2,1)，x方向上实际起作用的只有M矩阵中的p向量</li>
+<li>z基向量(0,1)经过M矩阵变换，转换至q向量(-1,2)，y方向上实际起作用的只有M矩阵中的q向量</li>
+</ul>
+</blockquote>
+<p><img src="/2017/09/04/Matrix/2DMatrix.jpg" alt=""></p>
+<p>从图中可以看到他发生的是逆时针旋转26°的变换，同时还发生了等比缩放，矩形框变大，填充一张图片上去或许比较容易观察。</p>
+<h2 id="3D变换矩阵"><a href="#3D变换矩阵" class="headerlink" title="3D变换矩阵"></a>3D变换矩阵</h2><div><br>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    0.707 &amp; -0.707 &amp; 0 \<br>    1.250 &amp; 1.250 &amp; 0  \<br>    0 &amp; 0 &amp; 1 \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<p>按照上面的分析</p>
+<blockquote>
+<ul>
+<li>x基向量（1，0，0）经过矩阵M变换，转换至p向量（0.707，-0.707，0）</li>
+<li>y基向量（0，1，0）经过矩阵M变换，转换至q向量（1.25，1.25，0）</li>
+<li>z基向量（0，0，1）经过矩阵M变换，转换至r向量（0，0，1），没有发生变换</li>
+</ul>
+</blockquote>
+<p><img src="/2017/09/04/Matrix/3DMatrixZRot0.png" alt=""><br><img src="/2017/09/04/Matrix/3DMatrixZRot.png" alt=""></p>
+<p>在图中表现形式，即是绕z轴顺时针旋转45°，同时在y轴上进行2倍放大。</p>
+<p>进展到此时，可以很容易的推出绕x，y轴的旋转矩阵</p>
+<h2 id="绕X轴旋转，x轴基向量不变，只需要关注yz平面："><a href="#绕X轴旋转，x轴基向量不变，只需要关注yz平面：" class="headerlink" title="绕X轴旋转，x轴基向量不变，只需要关注yz平面："></a>绕X轴旋转，x轴基向量不变，只需要关注yz平面：</h2><p><img src="/2017/09/04/Matrix/X.png" alt=""></p>
+<div><br>$$<br>\begin{align}<br>y’ = (0，cos\theta,sin\theta) \<br>z’ =  (0，-sin\theta，cos\theta) \<br>\end{align}<br>$$<br></div>
+
+<div><br>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 \<br>    0 &amp; cos\theta &amp; sin\theta  \<br>    0 &amp; -sin\theta &amp; cos\theta \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<h2 id="绕y轴旋转，y轴基向量不变，只需要关注xz平面："><a href="#绕y轴旋转，y轴基向量不变，只需要关注xz平面：" class="headerlink" title="绕y轴旋转，y轴基向量不变，只需要关注xz平面："></a>绕y轴旋转，y轴基向量不变，只需要关注xz平面：</h2><p><img src="/2017/09/04/Matrix/Y.png" alt=""></p>
+<div><br>$$<br>\begin{align}<br>z’ = (sin\theta，0，cos\theta) \<br>x’ =  (cos\theta，0，-sin\theta) \<br>\end{align}<br>$$<br></div>
+
+<div><br>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    cos\theta &amp; 0 &amp; -sin\theta \<br>    0 &amp; 1 &amp; 0  \<br>    sin\theta &amp; 0 &amp; cos\theta \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<h2 id="绕z轴旋转，z轴基向量不变，只需要关注xy平面："><a href="#绕z轴旋转，z轴基向量不变，只需要关注xy平面：" class="headerlink" title="绕z轴旋转，z轴基向量不变，只需要关注xy平面："></a>绕z轴旋转，z轴基向量不变，只需要关注xy平面：</h2><p><img src="/2017/09/04/Matrix/Z.png" alt=""></p>
+<div><br>$$<br>\begin{align}<br>x’ = (cos\theta，-sin\theta，0) \<br>y’ =  (sin\theta，cos\theta，0) \<br>\end{align}<br>$$<br></div>
+
+<div><br>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    cos\theta &amp; -sin\theta &amp; 0 \<br>    sin\theta &amp; cos\theta &amp; 0  \<br>    0 &amp; 0 &amp; 1 \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<h1 id="绕任意轴旋转"><a href="#绕任意轴旋转" class="headerlink" title="绕任意轴旋转"></a>绕任意轴旋转</h1><p><img src="/2017/09/04/Matrix/Rotate.png" alt=""></p>
+<p>v绕n轴旋转至v’</p>
+<p>1、v在n上的投影 </p>
+<div><br>$$<br>\begin{align}<br>    v_{||} = (v·n)n<br>\end{align}<br>$$<br></div>
+
+<p>2、此时可以得出v垂直于n的分量</p>
+<div><br>$$<br>\begin{align}<br>    v<em>{⊥} = v - v</em>{||}<br>\end{align}<br>$$<br></div>
+
+<p>3、同时垂直于n和 v<sub>||</sub>的向量w</p>
+<div><br>$$<br>\begin{align}<br>    w &amp; = n &amp;times v<em>{⊥}  &amp;&amp; 因为v</em>{⊥}是v垂直于n的分量,n是单位向量，叉乘结果说明w的长度和v<em>{⊥}一致，就是说，实质上他是v</em>{⊥}绕n旋转90°的结果 \<br>    &amp;= n &amp;times (v - v<em>{||}) \<br>    &amp;= n &amp;times v - n &amp;times v</em>{||} \<br>    &amp;= n &amp;times v - 0  \<br>    &amp;= n &amp;times v \<br>\end{align}<br>$$<br></div>
+
+<p>4、得出v<sub>⊥</sub>‘</p>
+<div><br>$$<br>\begin{align}<br>    v<em>{⊥}’ &amp;= v</em>{⊥}cos\theta + wsin\theta \<br>            &amp;= (v-(v·n)n)cos\theta + (n &amp;times v)sin\theta<br>\end{align}<br>$$<br></div>
+
+<p>5、得出v’</p>
+<div><br>$$<br>\begin{align}<br>    v’ &amp;= v<em>{⊥}’ + v</em>{||} \<br>            &amp;= (v-(v·n)n)cos\theta + (n &amp;times v)sin\theta + （v·n）n<br>\end{align}<br>$$<br></div>
+
+<p>得出v’的公式后，于是可以用它计算变换后的基向量并且构建矩阵</p>
+<p>第一个基向量：</p>
+<div><br>$$<br>p=\begin{bmatrix}<br>    1 &amp; 0 &amp; 0<br>\end{bmatrix}<br>$$<br></div>
+
+<p>根据上诉公式得出p’</p>
+<div><br>$$<br>\begin{align}<br>    p’ &amp;= (p-(p·n)n)cos\theta + (n &amp;times p)sin\theta + （p·n）n \<br>       &amp;= (<br>\begin{bmatrix}<br>    1  \<br>    0  \<br>    0 \<br>\end{bmatrix}<br>-(<br>\begin{bmatrix}<br>    1  \<br>    0  \<br>    0 \<br>\end{bmatrix}<br>·<br>\begin{bmatrix}<br>    n_x  \<br>    n_y  \<br>    n_z \<br>\end{bmatrix}<br>)<br>\begin{bmatrix}<br>    n_x  \<br>    n_y  \<br>    n_z \<br>\end{bmatrix}<br>)cos\theta + (<br>\begin{bmatrix}<br>    n_x  \<br>    n_y  \<br>    n_z \<br>\end{bmatrix}<br>&amp;times<br>\begin{bmatrix}<br>    1  \<br>    0  \<br>    0 \<br>\end{bmatrix}<br>)sin\theta + (<br>\begin{bmatrix}<br>    1  \<br>    0  \<br>    0 \<br>\end{bmatrix}<br>·<br>\begin{bmatrix}<br>    n_x  \<br>    n_y  \<br>    n_z \<br>\end{bmatrix}<br>)<br>\begin{bmatrix}<br>    n_x  \<br>    n_y  \<br>    n_z \<br>\end{bmatrix}<br><br>\    &amp;= (<br>\begin{bmatrix}<br>    1  \<br>    0  \<br>    0 \<br>\end{bmatrix}<br>- n_x<br>\begin{bmatrix}<br>    n_x  \<br>    n_y  \<br>    n_z \<br>\end{bmatrix}<br>)cos\theta +<br>\begin{bmatrix}<br>    0  \<br>    n_z  \<br>    -n_y \<br>\end{bmatrix}<br>sin\theta + n_x<br>\begin{bmatrix}<br>    n_x  \<br>    n_y  \<br>    n<em>z \<br>\end{bmatrix}<br>\ &amp;=<br>\begin{bmatrix}<br>    1-n</em>{x}^2  \<br>    -n_x n_y  \<br>    -n_x n_z \<br>\end{bmatrix}<br>cos\theta +<br>\begin{bmatrix}<br>    0  \<br>    n_z  \<br>    -n_y \<br>\end{bmatrix}<br>sin\theta +<br>\begin{bmatrix}<br>    n_x ^2  \<br>    n_x n_y  \<br>    n_x n_z \<br>\end{bmatrix}<br>\ &amp;=<br>\begin{bmatrix}<br>    cos\theta -n_x ^2 cos\theta  \<br>    -n_x n_y cos\theta  \<br>    -n_x n_z cos\theta \<br>\end{bmatrix}<br>+<br>\begin{bmatrix}<br>    0  \<br>    n_z sin\theta  \<br>    -n_y sin\theta \<br>\end{bmatrix}<br>+<br>\begin{bmatrix}<br>    n_x ^2  \<br>    n_x n_y  \<br>    n_x n_z \<br>\end{bmatrix}<br>\ &amp;=<br>\begin{bmatrix}<br>    cos\theta -n_x ^2 cos\theta + n_x ^2  \<br>    -n_x n_y cos\theta + n_z sin\theta +n_x n_y  \<br>    -n_x n_z cos\theta - n_y sin\theta + n_x n_z\<br>\end{bmatrix}<br>\ &amp;=<br>\begin{bmatrix}<br>    n_x ^2 (1-cos\theta)+cos\theta  \<br>    n_x n_y (1-cos\theta) +n_z sin\theta  \<br>    n_x n_z (1-cos\theta) - n_y sin\theta \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<p>另外两个基向量的推导类似</p>
+<div><br>$$<br>q=\begin{bmatrix}<br>    0 &amp; 1 &amp; 0<br>\end{bmatrix}<br>$$<br></div>
+
+<div><br>$$<br>\begin{align}<br>    q’ &amp;= (q-(q·n)n)cos\theta + (n &amp;times q)sin\theta + （q·n）n \<br>       &amp;=<br>\begin{bmatrix}<br>    n_x n_y (1-cos\theta) -n_z sin\theta  \<br>    n_y ^2 (1-cos\theta)+cos\theta  \<br>    n_y n_z (1-cos\theta) + n_x sin\theta \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<div><br>$$<br>r=\begin{bmatrix}<br>    0 &amp; 0 &amp; 1<br>\end{bmatrix}<br>$$<br></div>
+
+<div><br>$$<br>\begin{align}<br>    r’ &amp;= (r-(r·n)n)cos\theta + (n &amp;times r)sin\theta + （r·n）n \<br>       &amp;=<br>\begin{bmatrix}<br>    n_x n_z (1-cos\theta) + n_y sin\theta \<br>    n_y n_z (1-cos\theta) -n_x sin\theta  \<br>    n_x ^2 (1-cos\theta)+cos\theta  \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+
+<blockquote>
+<ul>
+<li>注意：上面的推导只使用了列向量，这样做的目的是使等式整洁清晰、易于理解</li>
+</ul>
+</blockquote>
+<p>根据这些基向量构造矩阵，可以得到公式：</p>
+<div><br>$$<br>\begin{align}<br>    R(n,\theta)=<br>\begin{bmatrix}<br>    p’ \<br>    q’  \<br>    r’  \<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>    n_x ^2 (1-cos\theta)+cos\theta &amp; n_x n_y (1-cos\theta) +n_z sin\theta &amp;    n_x n_z (1-cos\theta) - n_y sin\theta \<br>    n_x n_y (1-cos\theta) -n_z sin\theta &amp; n_y ^2 (1-cos\theta)+cos\theta &amp;    n_y n_z (1-cos\theta) + n_x sin\theta \<br>    n_x n_z (1-cos\theta) + n_y sin\theta &amp;    n_y n_z (1-cos\theta) -n_x sin\theta &amp; n_x ^2 (1-cos\theta)+cos\theta  \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/3DMath/" rel="tag"># 3DMath</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/08/27/Flyweight3/" rel="next" title="《游戏编程模式》设计模式之享元模式（三）">
+                <i class="fa fa-chevron-left"></i> 《游戏编程模式》设计模式之享元模式（三）
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTgyMy82Mzg5"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Lyu" />
+          <p class="site-author-name" itemprop="name">Lyu</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">6</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#动机"><span class="nav-number">1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵是怎么转换向量的"><span class="nav-number">2.</span> <span class="nav-text">矩阵是怎么转换向量的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#将向量表示为基向量的线性组合"><span class="nav-number">3.</span> <span class="nav-text">将向量表示为基向量的线性组合</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2D变换矩阵"><span class="nav-number">4.</span> <span class="nav-text">2D变换矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3D变换矩阵"><span class="nav-number">5.</span> <span class="nav-text">3D变换矩阵</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绕X轴旋转，x轴基向量不变，只需要关注yz平面："><span class="nav-number">6.</span> <span class="nav-text">绕X轴旋转，x轴基向量不变，只需要关注yz平面：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绕y轴旋转，y轴基向量不变，只需要关注xz平面："><span class="nav-number">7.</span> <span class="nav-text">绕y轴旋转，y轴基向量不变，只需要关注xz平面：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#绕z轴旋转，z轴基向量不变，只需要关注xy平面："><span class="nav-number">8.</span> <span class="nav-text">绕z轴旋转，z轴基向量不变，只需要关注xy平面：</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#绕任意轴旋转"><span class="nav-number"></span> <span class="nav-text">绕任意轴旋转</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lyu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9nfwurrfWspn4Ca1tpt8c4Bb-gzGzoHsz", "SmeoWp4XeDOxoGNiSegxpw2g");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
