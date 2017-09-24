@@ -108,7 +108,7 @@
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Y.png">
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Z.png">
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Rotate.png">
-<meta property="og:updated_time" content="2017-09-24T14:35:18.350Z">
+<meta property="og:updated_time" content="2017-09-24T14:37:12.033Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="矩阵的几何解释 - 旋转">
 <meta name="twitter:description" content="动机去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。">
@@ -363,15 +363,14 @@
 <p>以p,q,r为行向量构建一个3X3的矩阵M：</p>
 <p>$$<br>\begin{align}<br>M=<br>\begin{bmatrix}<br>    p  \\<br>    q  \\<br>    r  \\<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    p_x &amp; p_y &amp; p_z \\<br>    q_x &amp; q_y &amp; q_z \\<br>    r_x &amp; r_y &amp; r_z \\<br>\end{bmatrix}<br>\end{align}<br>$$</p>
 <p>用一个行向量左乘矩阵M</p>
-<p>$$<br>\begin{align}<br>\begin{bmatrix}<br>    x &amp; y &amp; z \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    p_x &amp; p_y &amp; p_z \<br>    q_x &amp; q_y &amp; q_z \<br>    r_x &amp; r_y &amp; r_z \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    xp_x+yq_x+zr_x &amp;  xp_y+yq_y+zr_y &amp; xp_z+yq_z+zr_z \<br>\end{bmatrix}<br>= xp+yq+zr<br>\end{align}<br>$$</p>
+<p>$$<br>\begin{align}<br>\begin{bmatrix}<br>    x &amp; y &amp; z \\<br>\end{bmatrix}<br>\begin{bmatrix}<br>    p_x &amp; p_y &amp; p_z \\<br>    q_x &amp; q_y &amp; q_z \\<br>    r_x &amp; r_y &amp; r_z \\<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    xp_x+yq_x+zr_x &amp;  xp_y+yq_y+zr_y &amp; xp_z+yq_z+zr_z \\<br>\end{bmatrix}<br>= xp+yq+zr<br>\end{align}<br>$$</p>
 <p>上式中的<br>$$<br>\begin{align}<br>  v=xp+yq+zr<br>\end{align}<br>$$</p>
 <p>就可以解释成：</p>
 <p>$$<br>\begin{align}<br>\begin{bmatrix}<br>    x &amp; y &amp; z \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 \<br>    0 &amp; 1 &amp; 0 \<br>    0 &amp; 0 &amp; 1 \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    x &amp;  y &amp; z \<br>\end{bmatrix}<br>= xp+yq+zr<br>\end{align}<br>$$</p>
 <p>可以看出一个行向量左乘一个3x3矩阵可以进行一些变换,具体发生什么变换目前还看不出来。</p>
 <p>接下来看一下基向量[1,0,0]，[0,1,0]，[0,0,1]乘任意3x3矩阵M的情况：</p>
 <p>$$<br>\begin{align}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    m<em>{11} &amp; m</em>{12} &amp; m<em>{13} \<br>    m</em>{21} &amp; m<em>{22} &amp; m</em>{23} \<br>    m<em>{31} &amp; m</em>{32} &amp; m<em>{33} \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    m</em>{11} &amp; m<em>{12} &amp; m</em>{13} \<br>\end{bmatrix}<br>\end{align}<br>$$</p>
-<div><br>$$<br>\begin{align}<br>\begin{bmatrix}<br>    0 &amp; 1 &amp; 0 \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    m<em>{11} &amp; m</em>{12} &amp; m<em>{13} \<br>    m</em>{21} &amp; m<em>{22} &amp; m</em>{23} \<br>    m<em>{31} &amp; m</em>{32} &amp; m<em>{33} \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    m</em>{21} &amp; m<em>{22} &amp; m</em>{23} \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
-
+<p>$$<br>\begin{align}<br>\begin{bmatrix}<br>    0 &amp; 1 &amp; 0 \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    m<em>{11} &amp; m</em>{12} &amp; m<em>{13} \<br>    m</em>{21} &amp; m<em>{22} &amp; m</em>{23} \<br>    m<em>{31} &amp; m</em>{32} &amp; m<em>{33} \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    m</em>{21} &amp; m<em>{22} &amp; m</em>{23} \<br>\end{bmatrix}<br>\end{align}<br>$$</p>
 <div><br>$$<br>\begin{align}<br>\begin{bmatrix}<br>    0 &amp; 0 &amp; 1 \<br>\end{bmatrix}<br>\begin{bmatrix}<br>    m<em>{11} &amp; m</em>{12} &amp; m<em>{13} \<br>    m</em>{21} &amp; m<em>{22} &amp; m</em>{23} \<br>    m<em>{31} &amp; m</em>{32} &amp; m<em>{33} \<br>\end{bmatrix}<br>=\begin{bmatrix}<br>    m</em>{31} &amp; m<em>{32} &amp; m</em>{33} \<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
 
 <p>基向量[1,0,0]乘以M矩阵时，结果是M的第一行，相应的其他两行也是如此。说明，<strong>矩阵的每一行都能解释为转换后的基向量。</strong><br>从此，有了一种简单的方法形象化的解释矩阵所代表的变换。同时可以构造一个矩阵代表一些变换，比如缩放，旋转。</p>
