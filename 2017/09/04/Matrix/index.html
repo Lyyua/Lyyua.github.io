@@ -108,7 +108,7 @@
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Y.png">
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Z.png">
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Rotate.png">
-<meta property="og:updated_time" content="2017-10-03T12:06:34.897Z">
+<meta property="og:updated_time" content="2017-10-03T12:08:16.495Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="矩阵的几何解释 - 旋转">
 <meta name="twitter:description" content="动机去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。">
@@ -424,7 +424,7 @@
 <p>5、得出v’</p>
 <p>$$<br>\begin{align}<br>    v’ &amp;= v_{⊥}’ + v_{||} \\\<br>            &amp;= (v-(v·n)n)cos\theta + (n \times v)sin\theta + （v·n）n<br>\end{align}<br>$$</p>
 <p>整理发现v’即是罗德里格斯公式：</p>
-<p>$$<br>\begin{align}<br>    v’ &amp;=vcos\theta + (1-cos\theta)((v\cdot n) n)+ sin\theta (v  times n)<br>\end{align}<br>$$</p>
+<p>$$<br>\begin{align}<br>    v’ &amp;=vcos\theta + (1-cos\theta)((v\cdot n) n)+ sin\theta (v \times n)<br>\end{align}<br>$$</p>
 <p>得出v’的公式后，于是可以用它计算变换后的基向量并且构建矩阵</p>
 <p>第一个基向量：</p>
 <p>$$<br>p=\begin{bmatrix}<br>    1 &amp; 0 &amp; 0<br>\end{bmatrix}<br>$$</p>
