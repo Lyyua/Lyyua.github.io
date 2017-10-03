@@ -108,7 +108,7 @@
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Y.png">
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Z.png">
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Rotate.png">
-<meta property="og:updated_time" content="2017-09-25T11:29:37.741Z">
+<meta property="og:updated_time" content="2017-10-03T12:06:34.897Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="矩阵的几何解释 - 旋转">
 <meta name="twitter:description" content="动机去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。">
@@ -415,13 +415,16 @@
 <p>2、此时可以得出v垂直于n的分量</p>
 <p>$$<br>\begin{align}<br>    v_{⊥} = v - v_{||}<br>\end{align}<br>$$</p>
 <p>3、同时垂直于n和 v<sub>||</sub>的向量w</p>
-<p>因为v<sub>⊥</sub>是v垂直于n的分量,n是单位向量，叉乘结果说明w的长度和v<sub>⊥</sub>一致，就是说，实质上他是v<sub>⊥</sub>绕n旋转90°的结果</p>
+<p>v<sub>⊥</sub>是v垂直于n的分量,n是单位向量，根据叉乘定义可知w的长度和v<sub>⊥</sub>一致，就是说，实质上他是v<sub>⊥</sub>绕n旋转90°的结果</p>
 <div><br>$$<br>\begin{align}<br>    w &amp; = n \times v_{⊥}  \\\<br>    &amp;= n \times (v - v_{||}) \\\<br>    &amp;= n \times v - n \times v_{||} \\\<br>    &amp;= n \times v - 0  \\\<br>    &amp;= n \times v \\\<br>\end{align}<br>$$<br></div>
 
 <p>4、得出v<sub>⊥</sub>‘</p>
+<p>上一步可知，w的长度和v<sub>⊥</sub>一致，那么</p>
 <p>$$<br>\begin{align}<br>    v_{⊥}‘ &amp;= v_{⊥}cos\theta + wsin\theta \\\<br>            &amp;= (v-(v·n)n)cos\theta + (n \times v)sin\theta<br>\end{align}<br>$$</p>
 <p>5、得出v’</p>
 <p>$$<br>\begin{align}<br>    v’ &amp;= v_{⊥}’ + v_{||} \\\<br>            &amp;= (v-(v·n)n)cos\theta + (n \times v)sin\theta + （v·n）n<br>\end{align}<br>$$</p>
+<p>整理发现v’即是罗德里格斯公式：</p>
+<p>$$<br>\begin{align}<br>    v’ &amp;=vcos\theta + (1-cos\theta)((v\cdot n) n)+ sin\theta (v  times n)<br>\end{align}<br>$$</p>
 <p>得出v’的公式后，于是可以用它计算变换后的基向量并且构建矩阵</p>
 <p>第一个基向量：</p>
 <p>$$<br>p=\begin{bmatrix}<br>    1 &amp; 0 &amp; 0<br>\end{bmatrix}<br>$$</p>

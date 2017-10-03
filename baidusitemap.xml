@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://lyyua.com/2017/09/04/Matrix/</loc>
+    <lastmod>2017-10-03T12:06:34.897Z</lastmod>
+    <data>
+        <display>
+        <title>矩阵的几何解释 - 旋转</title>
+        <pubTime>2017-09-04T13:56:49.000Z</pubTime>
+        
+        <tag>3DMath</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://lyyua.com/2017/08/27/Flyweight3/</loc>
     <lastmod>2017-10-03T11:27:50.236Z</lastmod>
     <data>
@@ -46,23 +63,6 @@
         <pubTime>2017-08-19T13:14:10.000Z</pubTime>
         
         <tag>设计模式</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://lyyua.com/2017/09/04/Matrix/</loc>
-    <lastmod>2017-09-25T11:29:37.741Z</lastmod>
-    <data>
-        <display>
-        <title>矩阵的几何解释 - 旋转</title>
-        <pubTime>2017-09-04T13:56:49.000Z</pubTime>
-        
-        <tag>3DMath</tag>
          
          
            
