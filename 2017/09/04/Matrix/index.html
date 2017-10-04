@@ -108,7 +108,7 @@
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Y.png">
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Z.png">
 <meta property="og:image" content="http://lyyua.com/2017/09/04/Matrix/Rotate.png">
-<meta property="og:updated_time" content="2017-10-03T12:08:16.495Z">
+<meta property="og:updated_time" content="2017-10-04T13:50:43.554Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="矩阵的几何解释 - 旋转">
 <meta name="twitter:description" content="动机去年强行把Shader的书过了一遍，有过一定的了解，但是在3D数学上的空缺导致在Shader这个方向上缺乏想象力，当然也因为我的工作并不是写Shader代码，不过有一定的数学基础后掰一些别人的shader代码来用用还是没有问题，能比较轻松的看懂shader代码的实际意义。">
@@ -387,7 +387,12 @@
 </blockquote>
 <p><img src="/2017/09/04/Matrix/2DMatrix.jpg" alt=""></p>
 <p>从图中可以看到他发生的是逆时针旋转26°的变换，同时还发生了等比缩放，矩形框变大，填充一张图片上去或许比较容易观察。</p>
-<h2 id="3D变换矩阵"><a href="#3D变换矩阵" class="headerlink" title="3D变换矩阵"></a>3D变换矩阵</h2><p>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    0.707 &amp; -0.707 &amp; 0 \\ <br>    1.250 &amp; 1.250 &amp; 0  \\\<br>    0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\end{align}<br>$$</p>
+<h2 id="3D变换矩阵"><a href="#3D变换矩阵" class="headerlink" title="3D变换矩阵"></a>3D变换矩阵</h2><blockquote>
+<ul>
+<li>以下矩阵是建立在左手坐标系下，旋转轴使用左手法则</li>
+</ul>
+</blockquote>
+<p>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    0.707 &amp; -0.707 &amp; 0 \\ <br>    1.250 &amp; 1.250 &amp; 0  \\\<br>    0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\end{align}<br>$$</p>
 <p>按照上面的分析</p>
 <blockquote>
 <ul>
@@ -396,7 +401,8 @@
 <li>z基向量（0，0，1）经过矩阵M变换，转换至r向量（0，0，1），没有发生变换</li>
 </ul>
 </blockquote>
-<p><img src="/2017/09/04/Matrix/3DMatrixZRot0.png" alt=""><br><img src="/2017/09/04/Matrix/3DMatrixZRot.png" alt=""></p>
+<p><img src="/2017/09/04/Matrix/3DMatrixZRot0.png" alt=""></p>
+<p><img src="/2017/09/04/Matrix/3DMatrixZRot.png" alt=""></p>
 <p>在图中表现形式，即是绕z轴顺时针旋转45°，同时在y轴上进行2倍放大。</p>
 <p>进展到此时，可以很容易的推出绕x，y轴的旋转矩阵</p>
 <h3 id="绕X轴旋转，x轴基向量不变，只需要关注yz平面："><a href="#绕X轴旋转，x轴基向量不变，只需要关注yz平面：" class="headerlink" title="绕X轴旋转，x轴基向量不变，只需要关注yz平面："></a>绕X轴旋转，x轴基向量不变，只需要关注yz平面：</h3><p><img src="/2017/09/04/Matrix/X.png" alt=""></p>
@@ -406,7 +412,7 @@
 <p>$$<br>\begin{align}<br>z’ = (sin\theta，0，cos\theta) \\\<br>x’ =  (cos\theta，0，-sin\theta) \\\<br>\end{align}<br>$$</p>
 <p>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    cos\theta &amp; 0 &amp; -sin\theta \\ <br>    0 &amp; 1 &amp; 0  \\\<br>    sin\theta &amp; 0 &amp; cos\theta \\<br>\end{bmatrix}<br>\end{align}<br>$$</p>
 <h3 id="绕z轴旋转，z轴基向量不变，只需要关注xy平面："><a href="#绕z轴旋转，z轴基向量不变，只需要关注xy平面：" class="headerlink" title="绕z轴旋转，z轴基向量不变，只需要关注xy平面："></a>绕z轴旋转，z轴基向量不变，只需要关注xy平面：</h3><p><img src="/2017/09/04/Matrix/Z.png" alt=""></p>
-<p>$$<br>\begin{align}<br>x’ = (cos\theta，-sin\theta，0) \\\<br>y’ =  (sin\theta，cos\theta，0) \\\<br>\end{align}<br>$$</p>
+<p>$$<br>\begin{align}<br>x’ = (cos\theta，sin\theta，0) \\\<br>y’ =  (-sin\theta，cos\theta，0) \\\<br>\end{align}<br>$$</p>
 <p>$$<br>\begin{align}<br>M=\begin{bmatrix}<br>    cos\theta &amp; -sin\theta &amp; 0 \\ <br>    sin\theta &amp; cos\theta &amp; 0  \\\<br>    0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\end{align}<br>$$</p>
 <h3 id="绕任意轴旋转"><a href="#绕任意轴旋转" class="headerlink" title="绕任意轴旋转"></a>绕任意轴旋转</h3><p><img src="/2017/09/04/Matrix/Rotate.png" alt=""></p>
 <p>v绕n轴旋转至v’</p>
