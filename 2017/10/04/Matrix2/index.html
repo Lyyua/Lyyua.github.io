@@ -108,7 +108,7 @@
 <meta property="og:image" content="http://lyyua.com/2017/10/04/Matrix2/Frustum.png">
 <meta property="og:image" content="http://lyyua.com/2017/10/04/Matrix2/FOV.png">
 <meta property="og:image" content="http://lyyua.com/2017/10/04/Matrix2/FOV2.png">
-<meta property="og:updated_time" content="2017-10-14T15:09:39.252Z">
+<meta property="og:updated_time" content="2017-10-14T15:15:33.032Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="矩阵在数学上的补充">
 <meta name="twitter:description" content="引言图形学上的一些数学知识和应用公式推导补充。">
@@ -361,7 +361,6 @@
 <p>叉乘结果说明垂直于ab两个向量构成平面的向量，叉乘方向遵循右手原则</p>
 <p>叉乘的模说明了同时垂直于a、b的<strong>向量</strong>的模</p>
 <p>a、b平行则无意义</p>
-<p>叉乘结果方向遵循右手原则</p>
 <h2 id="旋转矩阵是正交的"><a href="#旋转矩阵是正交的" class="headerlink" title="旋转矩阵是正交的"></a>旋转矩阵是正交的</h2><p>R<sup>T</sup>R = I</p>
 <p>更多旋转矩阵描述，请看<a href="http://lyyua.com/2017/09/04/Matrix/">矩阵的几何解释 - 旋转</a></p>
 <h2 id="齐次坐标"><a href="#齐次坐标" class="headerlink" title="齐次坐标"></a>齐次坐标</h2><p>可以用来表示平移矩阵亦或者后面说到的透视投影</p>
@@ -372,13 +371,13 @@
 <h2 id="矩阵变换顺序"><a href="#矩阵变换顺序" class="headerlink" title="矩阵变换顺序"></a>矩阵变换顺序</h2><p>先平移再旋转</p>
 <div><br>$$<br>\begin{align}<br>P’=(RT)P=MP=R(P+T)=RP+RT<br>\end{align}<br>$$<br></div>
 
-<div><br>$$<br>\begin{align}<br>M=<br>\begin{bmatrix}<br>    R_{11} &amp; R_{12} &amp; R_{13} &amp; 0  \\<br>    R_{21} &amp; R_{22} &amp; R_{23} &amp; 0 \\<br>    R_{31} &amp; R_{32} &amp; R_{33} &amp; 0\\<br>    0 &amp; 0 &amp; 0 &amp; 1\ <br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp; T_{x} \\<br>    0 &amp; 1 &amp; 0 &amp; T_{y} \ <br>    0 &amp; 0 &amp; 1 &amp; T_{z} \\\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>&amp;=<br>\begin{bmatrix}<br>    R_{11} &amp; R_{12} &amp; R_{13} &amp; R_{11}T_{x}+R_{12}T_{y}+R_{13}T_{z}  \\<br>    R_{21} &amp; R_{22} &amp; R_{23} &amp; R_{21}T_{x}+R_{22}T_{y}+R_{23}T_{z} \\<br>    R_{31} &amp; R_{32} &amp; R_{33} &amp; R_{31}T_{x}+R_{32}T_{y}+R_{33}T_{z}    \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\\ &amp;=<br>\begin{bmatrix}<br>    R_{3\times 3} &amp; R_{3\times 3}T_{3\times 1} \\<br>    0_{1 \times 3} &amp; 1    \\<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+<div><br>$$<br>\begin{align}<br>M=<br>\begin{bmatrix}<br>    R_{11} &amp; R_{12} &amp; R_{13} &amp; 0  \\<br>    R_{21} &amp; R_{22} &amp; R_{23} &amp; 0 \\<br>    R_{31} &amp; R_{32} &amp; R_{33} &amp; 0\\<br>    0 &amp; 0 &amp; 0 &amp; 1\\<br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp; T_{x} \\<br>    0 &amp; 1 &amp; 0 &amp; T_{y} \\<br>    0 &amp; 0 &amp; 1 &amp; T_{z} \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>&amp;=<br>\begin{bmatrix}<br>    R_{11} &amp; R_{12} &amp; R_{13} &amp; R_{11}T_{x}+R_{12}T_{y}+R_{13}T_{z}  \\<br>    R_{21} &amp; R_{22} &amp; R_{23} &amp; R_{21}T_{x}+R_{22}T_{y}+R_{23}T_{z} \\<br>    R_{31} &amp; R_{32} &amp; R_{33} &amp; R_{31}T_{x}+R_{32}T_{y}+R_{33}T_{z}    \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\\ &amp;=<br>\begin{bmatrix}<br>    R_{3\times 3} &amp; R_{3\times 3}T_{3\times 1} \\<br>    0_{1 \times 3} &amp; 1    \\<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
 
 <p>R<sub>3x3</sub>T<sub>3x1</sub>部分，实际上他就是旋转矩阵和位移向量的点乘，旋转矩阵可以看成是一个点投影到新的坐标系下</p>
 <p>先旋转再平移</p>
 <div><br>$$<br>\begin{align}<br>P’=(TR)P=MP=RP+T<br>\end{align}<br>$$<br></div>
 
-<div><br>$$<br>M=<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp; T_{x} \\<br>    0 &amp; 1 &amp; 0 &amp; T_{y} \ <br>    0 &amp; 0 &amp; 1 &amp; T_{z} \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\begin{bmatrix}<br>    R_{11} &amp; R_{12} &amp; R_{13} &amp; 0  \\<br>    R_{21} &amp; R_{22} &amp; R_{23} &amp; 0 \\<br>    R_{31} &amp; R_{32} &amp; R_{33} &amp; 0\\<br>    0 &amp; 0 &amp; 0 &amp; 1\ <br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>    R_{3\times 3} &amp; T_{3\times 1} \\<br>    0_{1 \times 3} &amp; 1    \\<br>\end{bmatrix}<br>$$<br></div>
+<div><br>$$<br>M=<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp; T_{x} \\<br>    0 &amp; 1 &amp; 0 &amp; T_{y} \\<br>    0 &amp; 0 &amp; 1 &amp; T_{z} \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\begin{bmatrix}<br>    R_{11} &amp; R_{12} &amp; R_{13} &amp; 0  \\<br>    R_{21} &amp; R_{22} &amp; R_{23} &amp; 0 \\<br>    R_{31} &amp; R_{32} &amp; R_{33} &amp; 0\\<br>    0 &amp; 0 &amp; 0 &amp; 1\\<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>    R_{3\times 3} &amp; T_{3\times 1} \\<br>    0_{1 \times 3} &amp; 1    \\<br>\end{bmatrix}<br>$$<br></div>
 
 <h2 id="法向变换"><a href="#法向变换" class="headerlink" title="法向变换"></a>法向变换</h2><p>正交矩阵的转置等于他的逆，旋转矩阵和镜像矩阵式正交的</p>
 <div><br>$$<br>\begin{align}<br> MM^{T} = I<br>\end{align}<br>$$<br></div>
@@ -419,19 +418,7 @@
 <h2 id="旋转和坐标系"><a href="#旋转和坐标系" class="headerlink" title="旋转和坐标系"></a>旋转和坐标系</h2><p>用一个题目来说明这个模块：</p>
 <p>给定标准X,Y坐标系下的一个点 i=(2，2)，现有一个新的坐标系，原点位于 j=(1，1)，新的X轴方向为 x=(1，1),Y轴的方向为 y=(−1，1)，求点i在新坐标系下的坐标 k<sub>x</sub>和 k<sub>y</sub>。</p>
 <p>可以看出新坐标系旋转了45° ,旋转矩阵为 </p>
-<p>$$<br>M=<br>\begin{bmatrix}<br>    0.7 &amp; 0.7 \\\<br>    -0.7 &amp; 0.7 \\\<br>\end{bmatrix}<br>$$</p>
-<p>新坐标系有偏移，所以原来的a（2，2）在当前惯性坐标系下是 a（1，1），所以a在新坐标系的坐标是Ma<sup>T</sup>=（1.4，0）</p>
-<h2 id="gluLookAt"><a href="#gluLookAt" class="headerlink" title="gluLookAt"></a>gluLookAt</h2><p>先引出一个问题，当camera发生旋转，位移时，如何正确的在相机坐标系下显示物体。glulookat实际上也就是把物体从世界坐标转换到视图坐标，相机坐标系下解释世界坐标系下的点。</p>
-<p><img src="/2017/10/04/Matrix2/glulookat.png" alt=""></p>
-<p>那么，如何让相机lookat物体，和上一个小节一样，只不过上一个小节是二维坐标系下。</p>
-<blockquote>
-<ul>
-<li>先把物体和相机转换到惯性坐标系下，即逆平移物体，使得物体处于惯性坐标系下。</li>
-<li>再由惯性坐标系旋转到相机坐标系，</li>
-</ul>
-</blockquote>
-<p>平移矩阵：</p>
-<div><br>$$<br>\begin{align}<br>T=<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp;  -eye.x  \\<br>    0 &amp; 1 &amp; 0 &amp; -eye.y \\<br>    0 &amp; 0 &amp; 1 &amp; -eye.z \\ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+<div><br>$$<br>M=<br>\begin{bmatrix}<br>    0.7 &amp; 0.7 \\<br>    -0.7 &amp; 0.7 \\<br>\end{bmatrix}<br>$$<br></div><br>新坐标系有偏移，所以原来的a（2，2）在当前惯性坐标系下是 a（1，1），所以a在新坐标系的坐标是Ma<sup>T</sup>=（1.4，0）<br><br>## gluLookAt<br><br>先引出一个问题，当camera发生旋转，位移时，如何正确的在相机坐标系下显示物体。glulookat实际上也就是把物体从世界坐标转换到视图坐标，相机坐标系下解释世界坐标系下的点。<br><br><img src="/2017/10/04/Matrix2/glulookat.png" alt=""><br><br>那么，如何让相机lookat物体，和上一个小节一样，只不过上一个小节是二维坐标系下。<br>&gt;<em> 先把物体和相机转换到惯性坐标系下，即逆平移物体，使得物体处于惯性坐标系下。<br>&gt;</em> 再由惯性坐标系旋转到相机坐标系，<br><br>平移矩阵：<br><br><div><br>$$<br>\begin{align}<br>T=<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp;  -eye.x  \\<br>    0 &amp; 1 &amp; 0 &amp; -eye.y \\<br>    0 &amp; 0 &amp; 1 &amp; -eye.z \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
 
 <p>旋转矩阵：</p>
 <p>确定Z轴 eye-center为相机坐标系的+Z方向</p>
@@ -693,7 +680,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#点乘"><span class="nav-number">2.</span> <span class="nav-text">点乘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#叉乘"><span class="nav-number">3.</span> <span class="nav-text">叉乘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#旋转矩阵是正交的"><span class="nav-number">4.</span> <span class="nav-text">旋转矩阵是正交的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#齐次坐标"><span class="nav-number">5.</span> <span class="nav-text">齐次坐标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵变换顺序"><span class="nav-number">6.</span> <span class="nav-text">矩阵变换顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#法向变换"><span class="nav-number">7.</span> <span class="nav-text">法向变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#旋转和坐标系"><span class="nav-number">8.</span> <span class="nav-text">旋转和坐标系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#gluLookAt"><span class="nav-number">9.</span> <span class="nav-text">gluLookAt</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正交投影"><span class="nav-number">10.</span> <span class="nav-text">正交投影</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#透视投影"><span class="nav-number">11.</span> <span class="nav-text">透视投影</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#点乘"><span class="nav-number">2.</span> <span class="nav-text">点乘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#叉乘"><span class="nav-number">3.</span> <span class="nav-text">叉乘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#旋转矩阵是正交的"><span class="nav-number">4.</span> <span class="nav-text">旋转矩阵是正交的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#齐次坐标"><span class="nav-number">5.</span> <span class="nav-text">齐次坐标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#矩阵变换顺序"><span class="nav-number">6.</span> <span class="nav-text">矩阵变换顺序</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#法向变换"><span class="nav-number">7.</span> <span class="nav-text">法向变换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#旋转和坐标系"><span class="nav-number">8.</span> <span class="nav-text">旋转和坐标系</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正交投影"><span class="nav-number">9.</span> <span class="nav-text">正交投影</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#透视投影"><span class="nav-number">10.</span> <span class="nav-text">透视投影</span></a></li></ol></div>
             
 
           </div>
