@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="C#," />
+  <meta name="keywords" content="Unity,Shader," />
 
 
 
@@ -93,17 +93,20 @@
 
 
 
-<meta name="description" content="譬如在炉石传说中，你有90秒的操作时间，时间这种敏感因子必须交由服务端来统一管理，每隔一段时间两端就需要校准一下时间（我猜的），75秒后通知烧绳子，90秒时如果还没有结束回合，强制结束等等。 在Unity中可以使用Invoke或者协程中WaitForSeconds快速达到计时目的。但是如果在其他线程中就要另辟蹊经了。">
-<meta name="keywords" content="C#">
+<meta name="description" content="Blend基本概念 流水线：   顶点着色器-&amp;gt;深度测试-&amp;gt;片元着色器-&amp;gt;透明度测试-&amp;gt;混合操作   所谓混合，即是Blending阶段之前（下一帧）的计算结果和当前屏幕显示内容（上一帧的结果）的混合，呈现出一定的颜色衰减。 Blend Off：关闭混合（这是默认值） 语法声明格式：   Blend {SrcFactor} {DstFactor}   SrcFactor是指">
+<meta name="keywords" content="Unity,Shader">
 <meta property="og:type" content="article">
-<meta property="og:title" content="线程处理中的计时器、传参、返回值">
-<meta property="og:url" content="http://lyyua.com/2017/07/01/Thread/index.html">
+<meta property="og:title" content="UnityShader-Blend">
+<meta property="og:url" content="http://lyyua.com/2017/10/13/ShaderBlend/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="譬如在炉石传说中，你有90秒的操作时间，时间这种敏感因子必须交由服务端来统一管理，每隔一段时间两端就需要校准一下时间（我猜的），75秒后通知烧绳子，90秒时如果还没有结束回合，强制结束等等。 在Unity中可以使用Invoke或者协程中WaitForSeconds快速达到计时目的。但是如果在其他线程中就要另辟蹊经了。">
-<meta property="og:updated_time" content="2017-07-02T04:14:26.702Z">
+<meta property="og:description" content="Blend基本概念 流水线：   顶点着色器-&amp;gt;深度测试-&amp;gt;片元着色器-&amp;gt;透明度测试-&amp;gt;混合操作   所谓混合，即是Blending阶段之前（下一帧）的计算结果和当前屏幕显示内容（上一帧的结果）的混合，呈现出一定的颜色衰减。 Blend Off：关闭混合（这是默认值） 语法声明格式：   Blend {SrcFactor} {DstFactor}   SrcFactor是指">
+<meta property="og:image" content="http://lyyua.com/2017/10/13/ShaderBlend/PipelineBlend.png">
+<meta property="og:image" content="http://lyyua.com/2017/10/13/ShaderBlend/BlendFactor.png">
+<meta property="og:updated_time" content="2017-10-14T13:49:19.236Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="线程处理中的计时器、传参、返回值">
-<meta name="twitter:description" content="譬如在炉石传说中，你有90秒的操作时间，时间这种敏感因子必须交由服务端来统一管理，每隔一段时间两端就需要校准一下时间（我猜的），75秒后通知烧绳子，90秒时如果还没有结束回合，强制结束等等。 在Unity中可以使用Invoke或者协程中WaitForSeconds快速达到计时目的。但是如果在其他线程中就要另辟蹊经了。">
+<meta name="twitter:title" content="UnityShader-Blend">
+<meta name="twitter:description" content="Blend基本概念 流水线：   顶点着色器-&amp;gt;深度测试-&amp;gt;片元着色器-&amp;gt;透明度测试-&amp;gt;混合操作   所谓混合，即是Blending阶段之前（下一帧）的计算结果和当前屏幕显示内容（上一帧的结果）的混合，呈现出一定的颜色衰减。 Blend Off：关闭混合（这是默认值） 语法声明格式：   Blend {SrcFactor} {DstFactor}   SrcFactor是指">
+<meta name="twitter:image" content="http://lyyua.com/2017/10/13/ShaderBlend/PipelineBlend.png">
 
 
 
@@ -131,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://lyyua.com/2017/07/01/Thread/"/>
+  <link rel="canonical" href="http://lyyua.com/2017/10/13/ShaderBlend/"/>
 
 
 
 
 
-  <title>线程处理中的计时器、传参、返回值 | Back</title>
+  <title>UnityShader-Blend | Back</title>
   
 
 
@@ -266,7 +269,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/07/01/Thread/">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/13/ShaderBlend/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lyu">
@@ -283,7 +286,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">线程处理中的计时器、传参、返回值</h2>
+          <h2 class="post-title" itemprop="name headline">UnityShader-Blend</h2>
         
 
         <div class="post-meta">
@@ -295,8 +298,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-01T23:57:45+08:00">
-                2017-07-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-13T21:15:49+08:00">
+                2017-10-13
               </time>
             
 
@@ -313,7 +316,7 @@
 
           
           
-             <span id="/2017/07/01/Thread/" class="leancloud_visitors" data-flag-title="线程处理中的计时器、传参、返回值">
+             <span id="/2017/10/13/ShaderBlend/" class="leancloud_visitors" data-flag-title="UnityShader-Blend">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -341,17 +344,87 @@
       
 
       
-        <p>譬如在炉石传说中，你有90秒的操作时间，时间这种敏感因子必须交由服务端来统一管理，每隔一段时间两端就需要校准一下时间（我猜的），75秒后通知烧绳子，90秒时如果还没有结束回合，强制结束等等。</p>
-<p>在Unity中可以使用Invoke或者协程中WaitForSeconds快速达到计时目的。但是如果在其他线程中就要另辟蹊经了。<br><a id="more"></a></p>
-<h2 id="线程计时器"><a href="#线程计时器" class="headerlink" title="线程计时器"></a>线程计时器</h2><p>线程计时器相当于起了一个新的线程，需要手动释放，不然他会一直计时执行下去。<br>先定义一个计时器参数的结构体<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public class TimerStruct</div><div class="line">&#123;</div><div class="line">    public Timer timerRef;</div><div class="line">    public bool timerRun;</div><div class="line">    public string msg;</div><div class="line">    public int timeCount = 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>在Awake中开始计时<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">private void Awake()</div><div class="line">&#123;</div><div class="line">    TimerStruct _timerStruct = new TimerStruct();</div><div class="line">    _timerStruct.timerRun = true;</div><div class="line">    _timerStruct.msg = &quot;时间到&quot;;</div><div class="line">//第一个参数是计时器调用的方法，第二个参数是向方法传的参数，第三个参数是多久后开始调用，第四个参数是调用间隔</div><div class="line">    Timer timerItem = new Timer(TimerMethod, _timerStruct, 2000, 2000);</div><div class="line">    _timerStruct.timerRef = timerItem; //保存计时器引用</div><div class="line">&#125;</div><div class="line">void TimerMethod(object obj)</div><div class="line">&#123;</div><div class="line">    TimerStruct _t = (TimerStruct)obj;</div><div class="line">    _t.timeCount++;</div><div class="line">    print(_t.msg);</div><div class="line">    if (_t.timeCount &gt;= 3)</div><div class="line">    &#123;</div><div class="line">        _t.timerRef.Dispose();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>以上例子就是实现了一个计时器，每隔两秒打印一次“时间到”，打印三次后停止计时。</p>
-<h2 id="线程传参"><a href="#线程传参" class="headerlink" title="线程传参"></a>线程传参</h2><p>为多线程方法调用提供参数的最好办法是将目标方法包装在类中，并为该类定义字段，这些字段将用作新线程的参数。 这种方法的优点是，任何时候想要启动新线程，都可以创建类的新实例，该实例带有自身的参数。其实上面的计时器就用到了这种方法。改一改就会更像了，或者说Timer本身就类似起一个线程。<br>封装的这个类可能会像这样。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public class TimerThread</div><div class="line">&#123;</div><div class="line">    public bool timerRun;</div><div class="line">    public string msg;</div><div class="line">    public int timeCount = 0;</div><div class="line">    private Timer timerRef;</div><div class="line">    public void RunTimer()</div><div class="line">    &#123;</div><div class="line">        timerRef= new Timer(TimerMethod, null, 2000, 2000);</div><div class="line">    &#125;</div><div class="line">    void TimerMethod(object obj)</div><div class="line">    &#123;</div><div class="line">        timeCount++;</div><div class="line">        if (timeCount &gt;= 3)</div><div class="line">        &#123;</div><div class="line">            timerRef.Dispose();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>在Awake中这样调用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">private void Awake()</div><div class="line">&#123;</div><div class="line">   TimerThread ttarg = new TimerThread();</div><div class="line">   ttarg.timerRun = false;</div><div class="line">   ttarg.msg = &quot;时间到&quot;;</div><div class="line">   Thread th = new Thread(ttarg.RunTimer);</div><div class="line">   th.Start();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h2 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h2><p>线程的返回值，由于这些过程不能为函数也不能使用 ByRef 参数，因而从运行于不同线程的过程返回值是很复杂的。 返回值的最简单的方法是：使用 <xref:system.componentmodel.backgroundworker> 组件来管理线程，在任务完成时引发事件，然后用事件处理程序处理结果。<br>不再用Thread.Start()来启动线程。<br>定义一个计算fibonacci数的类型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public class CaculateFib</div><div class="line">&#123;</div><div class="line">    public int fib;</div><div class="line">    public int BeginCacula()</div><div class="line">    &#123;</div><div class="line">        return Cacula(fib);</div><div class="line">    &#125;</div><div class="line">    int Cacula(int value)</div><div class="line">    &#123;</div><div class="line">        if (value &lt;= 2)</div><div class="line">        &#123;</div><div class="line">            return 1;</div><div class="line">        &#125;</div><div class="line">        return Cacula(value - 1) + Cacula(value - 2);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></xref:system.componentmodel.backgroundworker></p>
-<p>启动线程的地方代码可能是这样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">private System.ComponentModel.BackgroundWorker BackgroundWorker1</div><div class="line">    = new System.ComponentModel.BackgroundWorker();</div><div class="line">private void Awake()</div><div class="line">&#123;</div><div class="line"> 	InitializeBackgroundWorker();</div><div class="line">    CaculateFib cf = new CaculateFib();    </div><div class="line">    cf.fib = 36;</div><div class="line">    BackgroundWorker1.RunWorkerAsync(cf);  </div><div class="line">&#125;</div><div class="line">private void InitializeBackgroundWorker() </div><div class="line">&#123;    </div><div class="line">    BackgroundWorker1.DoWork +=    </div><div class="line">        new System.ComponentModel.DoWorkEventHandler(BackgroundWorker1_DoWork);    </div><div class="line">    BackgroundWorker1.RunWorkerCompleted +=    </div><div class="line">        new System.ComponentModel.RunWorkerCompletedEventHandler(BackgroundWorker1_RunWorkerCompleted);    </div><div class="line">&#125;    </div><div class="line">private void BackgroundWorker1_DoWork(</div><div class="line">        object sender,</div><div class="line">        System.ComponentModel.DoWorkEventArgs e)   </div><div class="line">&#123;    </div><div class="line">    CaculateFib cc = (CaculateFib)e.Argument;   </div><div class="line">    e.Result = cc.BeginCacula();</div><div class="line">&#125;</div><div class="line">private void BackgroundWorker1_RunWorkerCompleted(</div><div class="line">        object sender,</div><div class="line">        System.ComponentModel.RunWorkerCompletedEventArgs e)</div><div class="line">&#123;    </div><div class="line">    int fib = (int)e.Result;   </div><div class="line">    print(fib);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>在线程完成之后调用注册事件。</p>
-<h2 id="System-Timers-Timer"><a href="#System-Timers-Timer" class="headerlink" title="System.Timers.Timer"></a>System.Timers.Timer</h2><p>不用手动释放<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">void TimeWait(int time, System.Timers.ElapsedEventHandler hanler)</div><div class="line">&#123;</div><div class="line">   System.Timers.Timer t = new System.Timers.Timer(time);//实例化Timer类，设置间隔时间为10000毫秒；</div><div class="line">   t.Elapsed += new System.Timers.ElapsedEventHandler(hanler);//到达时间的时候执行事件；</div><div class="line">   t.AutoReset = false;//设置是执行一次（false）还是一直执行(true)；</div><div class="line">   t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；</div><div class="line">&#125;</div><div class="line">//注册事件需要两个参数</div><div class="line">void TimerMethod(object source, System.Timers.ElapsedEventArgs e)</div><div class="line">&#123;&#125;</div></pre></td></tr></table></figure></p>
+        <h2 id="Blend基本概念"><a href="#Blend基本概念" class="headerlink" title="Blend基本概念"></a>Blend基本概念</h2><p><img src="/2017/10/13/ShaderBlend/PipelineBlend.png" alt=""></p>
+<p>流水线：</p>
+<blockquote>
+<ul>
+<li>顶点着色器-&gt;深度测试-&gt;片元着色器-&gt;透明度测试-&gt;混合操作</li>
+</ul>
+</blockquote>
+<p><strong>所谓混合，即是Blending阶段之前（下一帧）的计算结果和当前屏幕显示内容（上一帧的结果）的混合，呈现出一定的颜色衰减。</strong></p>
+<p>Blend Off：关闭混合（这是默认值）</p>
+<p>语法声明格式：</p>
+<blockquote>
+<ul>
+<li>Blend {SrcFactor} {DstFactor}</li>
+</ul>
+</blockquote>
+<p>SrcFactor是指片元着色器输出因子，比如SrcAlpha就是指的片元着色器输出的透明度</p>
+<p>DstFactor是指帧缓存区里的因子</p>
+<p>混合操作阶段是一个固定功能的阶段，可以直接配置它，而不需要对其进行编程处理。它的配置方式是指定一个混合方程。您可以将混合方程式视为所得RGBA颜色的定义：</p>
+<p>他们的计算关系</p>
+<blockquote>
+<ul>
+<li>float4 result = SrcFactor <em> fragment_output + DstFactor </em> pixel_color;</li>
+</ul>
+</blockquote>
+<p>其中fragment_output是由片段着色器计算输出的RGBA颜色，pixel_color是当前在帧缓冲区的RGBA颜色（即当前屏幕上显示的颜色），result表达的即是经过上述公式混合的结果。</p>
+<p>SrcFactor，DstFactor都是以float4的形式定义RGBA颜色。</p>
+<p>常用的几个参数：</p>
+<p><img src="/2017/10/13/ShaderBlend/BlendFactor.png" alt=""></p>
+<h2 id="传统透明度混合"><a href="#传统透明度混合" class="headerlink" title="传统透明度混合"></a>传统透明度混合</h2><p>语义声明</p>
+<blockquote>
+<ul>
+<li>Blend SrcAlpha OneMinusSrcAlpha</li>
+</ul>
+</blockquote>
+<p>计算公式:</p>
+<blockquote>
+<ul>
+<li>float4 result = fragment_output.aaaa <em> fragment_output + (float4(1.0, 1.0, 1.0, 1.0) - fragment_output.aaaa) </em> pixel_color;</li>
+</ul>
+</blockquote>
+<p>在计算机图形学中，透明度的常见形式定义是（1 - 不透明度），而颜色的alpha分量通常被称为不透明度。</p>
+<p>需要注意两点：</p>
+<h3 id="变化趋势"><a href="#变化趋势" class="headerlink" title="变化趋势"></a>变化趋势</h3><p>根据公式可以发现，片元着色器输出颜色的alpha分量越大（越不透明），那么片元着色器输出颜色中的更多颜色混合在结果中，而帧缓冲区中的像素颜色越少。完全不透明的片元着色器输出颜色（即alpha分量为1）将完全替代像素颜色。</p>
+<h3 id="衰减"><a href="#衰减" class="headerlink" title="衰减"></a>衰减</h3><p>比如这一帧需要显示一个50%不透明度的红色，上一帧是完全不透明的红色，那么</p>
+<blockquote>
+<ul>
+<li>0.5 <em> (1，0，0，0.5)+(1，0，0，0.5)</em>（1，0，0，1）</li>
+</ul>
+</blockquote>
+<p>也就是说这种混合，会使得alpha不透明度与每个R、G和B通道相乘。</p>
+<h3 id="Shader代码编写"><a href="#Shader代码编写" class="headerlink" title="Shader代码编写"></a>Shader代码编写</h3><p>首先，深度测试需要关掉，因为camera必然可以透过透明物体观察到后面的物体。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ZWrite Off</div></pre></td></tr></table></figure></p>
+<p>因为深度测试关闭，所以所有的图形是混合叠加在一起的，此时会出现不透明物体无法挡住透明物体，所以对不透明，所以需要对渲染顺序做一个规定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"> Tags&#123; &quot;Queue&quot; = &quot;Transparent&quot; &#125;</div><div class="line">``` </div><div class="line">他的意义是在于，渲染所有不透明物体之前，渲染使用当前subshader的物体，也就是先渲染透明物体，后渲染不透明物体。</div></pre></td></tr></table></figure></p>
+<p>Shader “Cg shader using blending” {<br>   SubShader {<br>      Tags { “Queue” = “Transparent” }<br>      Pass {<br>         Cull Off // draw front and back faces<br>         ZWrite Off // don’t write to depth buffer<br>         Blend SrcAlpha OneMinusSrcAlpha // additive blending<br>\ <br>         CGPROGRAM<br> \\</p>
+<pre><code>#pragma vertex vert 
+#pragma fragment frag
+</code></pre><p> \\<br>         float4 vert(float4 vertexPos : POSITION) : SV_POSITION<br>         {<br>            return mul(UNITY_MATRIX_MVP, vertexPos);<br>         }<br> \\<br>         float4 frag(void) : COLOR<br>         {<br>            return float4(1.0, 0.0, 0.0, 0.2);<br>         }<br> \\<br>         ENDCG<br>      }<br>   }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## Premultiplied Alpha Blending 预乘透明度混合</div><div class="line"></div><div class="line">语义声明：</div><div class="line">&gt;* Blend One OneMinusSrcAlpha</div><div class="line"></div><div class="line">计算公式：</div><div class="line">&gt;* float4 result = float4(1.0, 1.0, 1.0, 1.0) * fragment_output + (float4(1.0, 1.0, 1.0, 1.0) - fragment_output.aaaa) * pixel_color;</div><div class="line"></div><div class="line">和透明度混合不一样的是，片元着色器输出部分没有做出过多处理，直接取输出的RGBA。</div><div class="line"></div><div class="line">## 叠加混合</div><div class="line"></div><div class="line">简单的语义声明</div><div class="line">&gt;* Blend One One</div><div class="line"></div><div class="line">计算公式：</div><div class="line">&gt;* float4 result = float4(1.0, 1.0, 1.0, 1.0) * fragment_output + float4(1.0, 1.0, 1.0, 1.0) * pixel_color;</div><div class="line"></div><div class="line">它将片段输出颜色添加到帧缓冲区中的颜色。然而，这种混合方程对于许多种透明效果非常有用; 例如，它们通常用于粒子系统，当它们代表火焰或其他透明并发光的物体时。</div><div class="line"></div><div class="line">需要注意，叠加混合的DstFactor部分必须是one，SrcFactor必须是和帧缓冲区的像素颜色无关，比如One, SrcColor, SrcAlpha, OneMinusSrcColor, OneMinusSrcAlpha。</div></pre></td></tr></table></figure></p>
+<p>Shader “Cg shader using additive blending” {<br>   SubShader {<br>      Tags { “Queue” = “Transparent” }<br>      Pass {<br>         Cull Off // draw front and back faces<br>         ZWrite Off // don’t write to depth buffer<br>         Blend SrcAlpha One // additive blending<br>\ <br>         CGPROGRAM<br> \\</p>
+<pre><code>#pragma vertex vert 
+#pragma fragment frag
+</code></pre><p> \\<br>         float4 vert(float4 vertexPos : POSITION) : SV_POSITION<br>         {<br>            return mul(UNITY_MATRIX_MVP, vertexPos);<br>         }<br> \\<br>         float4 frag(void) : COLOR<br>         {<br>            return float4(1.0, 0.0, 0.0, 0.2);<br>         }<br> \\<br>         ENDCG<br>      }<br>   }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## 乘法混合</div><div class="line"></div><div class="line">乘法混合可以看成相片处理的灰度过滤器，需要注意，乘法混合的SrcFactor部分必须是Zero，DstFactor必须是和片元着色器输出颜色有关，比如SrcColor, SrcAlpha, OneMinusSrcColor, OneMinusSrcAlpha。</div><div class="line"></div><div class="line">经典的乘法混合Shader</div></pre></td></tr></table></figure></p>
+<p>Shader “Cg shader using multiplicative blending” {<br>   SubShader {<br>      Tags { “Queue” = “Transparent” }<br>         // draw after all opaque geometry has been drawn<br>      Pass {<br>         Cull Off // draw front and back faces<br>         ZWrite Off // don’t write to depth buffer<br>            // in order not to occlude other objects<br>         Blend Zero OneMinusSrcAlpha // multiplicative blending<br>            // for attenuation by the fragment’s alpha<br>\\<br>         CGPROGRAM<br>\\</p>
+<pre><code>#pragma vertex vert 
+#pragma fragment frag
+</code></pre><p>\\<br>         float4 vert(float4 vertexPos : POSITION) : SV_POSITION<br>         {<br>            return mul(UNITY_MATRIX_MVP, vertexPos);<br>         }<br>\\<br>         float4 frag(void) : COLOR<br>         {<br>            return float4(1.0, 0.0, 0.0, 0.2);<br>         }<br>\\<br>         ENDCG<br>      }<br>   }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">这个Shader的DstFactor部分使用的是OneMinusSrcAlpha，只接受片元输入的不透明度，即只关注不透明度的衰减，而SrcFactor部分为Zero，所以片元输入的RGB无效。</div><div class="line"></div><div class="line">## 叠加和乘法混合</div><div class="line"></div><div class="line">使用两次pass，先进行乘法混合，忽略片元着色器输出的颜色衰减，只计算alpha衰减量，再叠加混合。</div><div class="line">两个pass顺序不能相反，否则会造成颜色衰减过多，具体原因用计算公式算一下即知。</div></pre></td></tr></table></figure></p>
+<p>Shader “Cg shader using order-independent blending” {<br>    Properties{<br>        _Alpha(“Alpha”, Float) = 1<br>    }<br>   SubShader {<br>      Tags { “Queue” = “Transparent” }<br>         // draw after all opaque geometry has been drawn<br>      Pass {<br>         Cull Off // draw front and back faces<br>         ZWrite Off // don’t write to depth buffer<br>            // in order not to occlude other objects<br>         Blend Zero OneMinusSrcAlpha // multiplicative blending<br>            // for attenuation by the fragment’s alpha<br>\\<br>         CGPROGRAM<br>\\</p>
+<pre><code>#pragma vertex vert 
+#pragma fragment frag
+float _Alpha;
+float4 vert(float4 vertexPos : POSITION) : SV_POSITION 
+{
+   return mul(UNITY_MATRIX_MVP, vertexPos);
+}
+</code></pre><p>\\<br>         float4 frag(void) : COLOR<br>         {<br>            return float4(1.0, 0.0, 0.0, _Alpha);<br>         }<br>\\<br>         ENDCG<br>      }<br>\\<br>      Pass {<br>         Cull Off // draw front and back faces<br>         ZWrite Off // don’t write to depth buffer<br>            // in order not to occlude other objects<br>         Blend SrcAlpha One // additive blending to add colors<br>\\<br>         CGPROGRAM<br>\\</p>
+<pre><code>#pragma vertex vert 
+#pragma fragment frag
+float _Alpha;
+float4 vert(float4 vertexPos : POSITION) : SV_POSITION 
+{
+   return mul(UNITY_MATRIX_MVP, vertexPos);
+}
+</code></pre><p>\\<br>         float4 frag(void) : COLOR<br>         {<br>            return float4(1.0, 0.0, 0.0, _Alpha);<br>         }<br>\ <br>         ENDCG<br>      }<br>   }<br>}<br>```</p>
 
       
     </div>
@@ -381,7 +454,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/C/" rel="tag"># C#</a>
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
+            <a href="/tags/Shader/" rel="tag"># Shader</a>
           
         </div>
       
@@ -394,8 +469,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/22/Rain1/" rel="next" title="Rain AI，先从行为树的角度谈谈">
-                <i class="fa fa-chevron-left"></i> Rain AI，先从行为树的角度谈谈
+              <a href="/2017/10/04/Matrix2/" rel="next" title="矩阵在数学上的补充">
+                <i class="fa fa-chevron-left"></i> 矩阵在数学上的补充
               </a>
             
           </div>
@@ -403,10 +478,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/02/Rain2/" rel="prev" title="Rain AI，从实现一个内部小队通信的角度谈谈（一）">
-                Rain AI，从实现一个内部小队通信的角度谈谈（一） <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -529,7 +600,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程计时器"><span class="nav-number">1.</span> <span class="nav-text">线程计时器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程传参"><span class="nav-number">2.</span> <span class="nav-text">线程传参</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#返回值"><span class="nav-number">3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#System-Timers-Timer"><span class="nav-number">4.</span> <span class="nav-text">System.Timers.Timer</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Blend基本概念"><span class="nav-number">1.</span> <span class="nav-text">Blend基本概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传统透明度混合"><span class="nav-number">2.</span> <span class="nav-text">传统透明度混合</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#变化趋势"><span class="nav-number">2.1.</span> <span class="nav-text">变化趋势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#衰减"><span class="nav-number">2.2.</span> <span class="nav-text">衰减</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Shader代码编写"><span class="nav-number">2.3.</span> <span class="nav-text">Shader代码编写</span></a></li></ol></li></ol></div>
             
 
           </div>
