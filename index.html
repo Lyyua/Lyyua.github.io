@@ -344,8 +344,7 @@
 
       
         
-          
-            <h2 id="Blend基本概念"><a href="#Blend基本概念" class="headerlink" title="Blend基本概念"></a>Blend基本概念</h2><p><img src="/2017/10/13/ShaderBlend/PipelineBlend.png" alt=""></p>
+          <h2 id="Blend基本概念"><a href="#Blend基本概念" class="headerlink" title="Blend基本概念"></a>Blend基本概念</h2><p><img src="/2017/10/13/ShaderBlend/PipelineBlend.png" alt=""></p>
 <p>流水线：</p>
 <blockquote>
 <ul>
@@ -353,81 +352,13 @@
 </ul>
 </blockquote>
 <p><strong>所谓混合，即是Blending阶段之前（下一帧）的计算结果和当前屏幕显示内容（上一帧的结果）的混合，呈现出一定的颜色衰减。</strong></p>
-<p>Blend Off：关闭混合（这是默认值）</p>
-<p>语法声明格式：</p>
-<blockquote>
-<ul>
-<li>Blend {SrcFactor} {DstFactor}</li>
-</ul>
-</blockquote>
-<p>SrcFactor是指片元着色器输出因子，比如SrcAlpha就是指的片元着色器输出的透明度</p>
-<p>DstFactor是指帧缓存区里的因子</p>
-<p>混合操作阶段是一个固定功能的阶段，可以直接配置它，而不需要对其进行编程处理。它的配置方式是指定一个混合方程。您可以将混合方程式视为所得RGBA颜色的定义：</p>
-<p>他们的计算关系</p>
-<blockquote>
-<ul>
-<li>float4 result = SrcFactor <em> fragment_output + DstFactor </em> pixel_color;</li>
-</ul>
-</blockquote>
-<p>其中fragment_output是由片段着色器计算输出的RGBA颜色，pixel_color是当前在帧缓冲区的RGBA颜色（即当前屏幕上显示的颜色），result表达的即是经过上述公式混合的结果。</p>
-<p>SrcFactor，DstFactor都是以float4的形式定义RGBA颜色。</p>
-<p>常用的几个参数：</p>
-<p><img src="/2017/10/13/ShaderBlend/BlendFactor.png" alt=""></p>
-<h2 id="传统透明度混合"><a href="#传统透明度混合" class="headerlink" title="传统透明度混合"></a>传统透明度混合</h2><p>语义声明</p>
-<blockquote>
-<ul>
-<li>Blend SrcAlpha OneMinusSrcAlpha</li>
-</ul>
-</blockquote>
-<p>计算公式:</p>
-<blockquote>
-<ul>
-<li>float4 result = fragment_output.aaaa <em> fragment_output + (float4(1.0, 1.0, 1.0, 1.0) - fragment_output.aaaa) </em> pixel_color;</li>
-</ul>
-</blockquote>
-<p>在计算机图形学中，透明度的常见形式定义是（1 - 不透明度），而颜色的alpha分量通常被称为不透明度。</p>
-<p>需要注意两点：</p>
-<h3 id="变化趋势"><a href="#变化趋势" class="headerlink" title="变化趋势"></a>变化趋势</h3><p>根据公式可以发现，片元着色器输出颜色的alpha分量越大（越不透明），那么片元着色器输出颜色中的更多颜色混合在结果中，而帧缓冲区中的像素颜色越少。完全不透明的片元着色器输出颜色（即alpha分量为1）将完全替代像素颜色。</p>
-<h3 id="衰减"><a href="#衰减" class="headerlink" title="衰减"></a>衰减</h3><p>比如这一帧需要显示一个50%不透明度的红色，上一帧是完全不透明的红色，那么</p>
-<blockquote>
-<ul>
-<li>0.5 <em> (1，0，0，0.5)+(1，0，0，0.5)</em>（1，0，0，1）</li>
-</ul>
-</blockquote>
-<p>也就是说这种混合，会使得alpha不透明度与每个R、G和B通道相乘。</p>
-<h3 id="Shader代码编写"><a href="#Shader代码编写" class="headerlink" title="Shader代码编写"></a>Shader代码编写</h3><p>首先，深度测试需要关掉，因为camera必然可以透过透明物体观察到后面的物体。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ZWrite Off</div></pre></td></tr></table></figure></p>
-<p>因为深度测试关闭，所以所有的图形是混合叠加在一起的，此时会出现不透明物体无法挡住透明物体，所以对不透明，所以需要对渲染顺序做一个规定<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"> Tags&#123; &quot;Queue&quot; = &quot;Transparent&quot; &#125;</div><div class="line">``` </div><div class="line">他的意义是在于，渲染所有不透明物体之前，渲染使用当前subshader的物体，也就是先渲染透明物体，后渲染不透明物体。</div></pre></td></tr></table></figure></p>
-<p>Shader “Cg shader using blending” {<br>   SubShader {<br>      Tags { “Queue” = “Transparent” }<br>      Pass {<br>         Cull Off // draw front and back faces<br>         ZWrite Off // don’t write to depth buffer<br>         Blend SrcAlpha OneMinusSrcAlpha // additive blending<br>\ <br>         CGPROGRAM<br> \\</p>
-<pre><code>#pragma vertex vert 
-#pragma fragment frag
-</code></pre><p> \\<br>         float4 vert(float4 vertexPos : POSITION) : SV_POSITION<br>         {<br>            return mul(UNITY_MATRIX_MVP, vertexPos);<br>         }<br> \\<br>         float4 frag(void) : COLOR<br>         {<br>            return float4(1.0, 0.0, 0.0, 0.2);<br>         }<br> \\<br>         ENDCG<br>      }<br>   }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## Premultiplied Alpha Blending 预乘透明度混合</div><div class="line"></div><div class="line">语义声明：</div><div class="line">&gt;* Blend One OneMinusSrcAlpha</div><div class="line"></div><div class="line">计算公式：</div><div class="line">&gt;* float4 result = float4(1.0, 1.0, 1.0, 1.0) * fragment_output + (float4(1.0, 1.0, 1.0, 1.0) - fragment_output.aaaa) * pixel_color;</div><div class="line"></div><div class="line">和透明度混合不一样的是，片元着色器输出部分没有做出过多处理，直接取输出的RGBA。</div><div class="line"></div><div class="line">## 叠加混合</div><div class="line"></div><div class="line">简单的语义声明</div><div class="line">&gt;* Blend One One</div><div class="line"></div><div class="line">计算公式：</div><div class="line">&gt;* float4 result = float4(1.0, 1.0, 1.0, 1.0) * fragment_output + float4(1.0, 1.0, 1.0, 1.0) * pixel_color;</div><div class="line"></div><div class="line">它将片段输出颜色添加到帧缓冲区中的颜色。然而，这种混合方程对于许多种透明效果非常有用; 例如，它们通常用于粒子系统，当它们代表火焰或其他透明并发光的物体时。</div><div class="line"></div><div class="line">需要注意，叠加混合的DstFactor部分必须是one，SrcFactor必须是和帧缓冲区的像素颜色无关，比如One, SrcColor, SrcAlpha, OneMinusSrcColor, OneMinusSrcAlpha。</div></pre></td></tr></table></figure></p>
-<p>Shader “Cg shader using additive blending” {<br>   SubShader {<br>      Tags { “Queue” = “Transparent” }<br>      Pass {<br>         Cull Off // draw front and back faces<br>         ZWrite Off // don’t write to depth buffer<br>         Blend SrcAlpha One // additive blending<br>\ <br>         CGPROGRAM<br> \\</p>
-<pre><code>#pragma vertex vert 
-#pragma fragment frag
-</code></pre><p> \\<br>         float4 vert(float4 vertexPos : POSITION) : SV_POSITION<br>         {<br>            return mul(UNITY_MATRIX_MVP, vertexPos);<br>         }<br> \\<br>         float4 frag(void) : COLOR<br>         {<br>            return float4(1.0, 0.0, 0.0, 0.2);<br>         }<br> \\<br>         ENDCG<br>      }<br>   }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"></div><div class="line">## 乘法混合</div><div class="line"></div><div class="line">乘法混合可以看成相片处理的灰度过滤器，需要注意，乘法混合的SrcFactor部分必须是Zero，DstFactor必须是和片元着色器输出颜色有关，比如SrcColor, SrcAlpha, OneMinusSrcColor, OneMinusSrcAlpha。</div><div class="line"></div><div class="line">经典的乘法混合Shader</div></pre></td></tr></table></figure></p>
-<p>Shader “Cg shader using multiplicative blending” {<br>   SubShader {<br>      Tags { “Queue” = “Transparent” }<br>         // draw after all opaque geometry has been drawn<br>      Pass {<br>         Cull Off // draw front and back faces<br>         ZWrite Off // don’t write to depth buffer<br>            // in order not to occlude other objects<br>         Blend Zero OneMinusSrcAlpha // multiplicative blending<br>            // for attenuation by the fragment’s alpha<br>\\<br>         CGPROGRAM<br>\\</p>
-<pre><code>#pragma vertex vert 
-#pragma fragment frag
-</code></pre><p>\\<br>         float4 vert(float4 vertexPos : POSITION) : SV_POSITION<br>         {<br>            return mul(UNITY_MATRIX_MVP, vertexPos);<br>         }<br>\\<br>         float4 frag(void) : COLOR<br>         {<br>            return float4(1.0, 0.0, 0.0, 0.2);<br>         }<br>\\<br>         ENDCG<br>      }<br>   }<br>}<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">这个Shader的DstFactor部分使用的是OneMinusSrcAlpha，只接受片元输入的不透明度，即只关注不透明度的衰减，而SrcFactor部分为Zero，所以片元输入的RGB无效。</div><div class="line"></div><div class="line">## 叠加和乘法混合</div><div class="line"></div><div class="line">使用两次pass，先进行乘法混合，忽略片元着色器输出的颜色衰减，只计算alpha衰减量，再叠加混合。</div><div class="line">两个pass顺序不能相反，否则会造成颜色衰减过多，具体原因用计算公式算一下即知。</div></pre></td></tr></table></figure></p>
-<p>Shader “Cg shader using order-independent blending” {<br>    Properties{<br>        _Alpha(“Alpha”, Float) = 1<br>    }<br>   SubShader {<br>      Tags { “Queue” = “Transparent” }<br>         // draw after all opaque geometry has been drawn<br>      Pass {<br>         Cull Off // draw front and back faces<br>         ZWrite Off // don’t write to depth buffer<br>            // in order not to occlude other objects<br>         Blend Zero OneMinusSrcAlpha // multiplicative blending<br>            // for attenuation by the fragment’s alpha<br>\\<br>         CGPROGRAM<br>\\</p>
-<pre><code>#pragma vertex vert 
-#pragma fragment frag
-float _Alpha;
-float4 vert(float4 vertexPos : POSITION) : SV_POSITION 
-{
-   return mul(UNITY_MATRIX_MVP, vertexPos);
-}
-</code></pre><p>\\<br>         float4 frag(void) : COLOR<br>         {<br>            return float4(1.0, 0.0, 0.0, _Alpha);<br>         }<br>\\<br>         ENDCG<br>      }<br>\\<br>      Pass {<br>         Cull Off // draw front and back faces<br>         ZWrite Off // don’t write to depth buffer<br>            // in order not to occlude other objects<br>         Blend SrcAlpha One // additive blending to add colors<br>\\<br>         CGPROGRAM<br>\\</p>
-<pre><code>#pragma vertex vert 
-#pragma fragment frag
-float _Alpha;
-float4 vert(float4 vertexPos : POSITION) : SV_POSITION 
-{
-   return mul(UNITY_MATRIX_MVP, vertexPos);
-}
-</code></pre><p>\\<br>         float4 frag(void) : COLOR<br>         {<br>            return float4(1.0, 0.0, 0.0, _Alpha);<br>         }<br>\ <br>         ENDCG<br>      }<br>   }<br>}<br>```</p>
-
-          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/13/ShaderBlend/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -547,178 +478,14 @@ float4 vert(float4 vertexPos : POSITION) : SV_POSITION
 
       
         
-          
-            <h2 id="点乘"><a href="#点乘" class="headerlink" title="点乘"></a>点乘</h2><p>$$<br>a\cdot b = |a||b|cos\theta<br>$$</p>
-<p>也可以表示为</p>
-<div><br>$$<br>a\cdot b = a_1 b_1 + a_2 b_2+…<br>$$<br></div>
-
-<p>即是</p>
-<div><br>$$<br>a\cdot b = a^T b<br>$$<br></div>
-
-<p>点乘表示a在b上的<strong>投影向量</strong></p>
-<p>点乘的模可以用来表达向量a在向量b上的投影长度</p>
-<p>正负说明，向量a在向量b的前方还是后方，这一点取决于两个向量的夹角</p>
-<h2 id="叉乘"><a href="#叉乘" class="headerlink" title="叉乘"></a>叉乘</h2><p>$$<br>a\times b = -b\times a \\\<br>|a\times b| = |a||b|sin\theta<br>$$</p>
-<p>叉乘结果说明垂直于ab两个向量构成平面的向量，叉乘方向遵循右手原则</p>
-<p>叉乘的模说明了同时垂直于a、b的<strong>向量</strong>的模</p>
-<p>a、b平行则无意义</p>
-<p>叉乘结果方向遵循右手原则</p>
-<h2 id="旋转矩阵是正交的"><a href="#旋转矩阵是正交的" class="headerlink" title="旋转矩阵是正交的"></a>旋转矩阵是正交的</h2><p>R<sup>T</sup>R = I</p>
-<p>更多旋转矩阵描述，请看</p>
-<h2 id="齐次坐标的优点"><a href="#齐次坐标的优点" class="headerlink" title="齐次坐标的优点"></a>齐次坐标的优点</h2><h3 id="平移"><a href="#平移" class="headerlink" title="平移"></a>平移</h3><p>很简单的操作</p>
-<div><br>$$<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp; T_{x}  \\<br>    0 &amp; 1 &amp; 0 &amp; T_{y} \\<br>    0 &amp; 0 &amp; 1 &amp; T_{z}\ <br>    0 &amp; 0 &amp; 0 &amp; 1    \ <br>\end{bmatrix}<br>$$<br></div>
-
-<p>计算机科学中，除法较之加法乘法耗费较多的时钟周期，比如你需要透视投影，使得远处的物体看起来更小，所以你不得不除以深度，齐次坐标的优点是只需要在渲染管线的最后一步做一次除法把齐次坐标变换成非齐次（非线性映射），即可避免了除法</p>
-<p>计算两直线平行，公式会出错，但是齐次坐标不会，因为无穷远点在齐次坐标中的初始定义为w=0，他描述了一个方向而不是一个位置</p>
-<h3 id="矩阵变换顺序"><a href="#矩阵变换顺序" class="headerlink" title="矩阵变换顺序"></a>矩阵变换顺序</h3><p>先平移再旋转</p>
-<div><br>$$<br>\begin{align}<br>P’=(RT)P=MP=R(P+T)=RP+RT<br>\end{align}<br>$$<br></div>
-
-<div><br>$$<br>\begin{align}<br>M=<br>\begin{bmatrix}<br>    R_{11} &amp; R_{12} &amp; R_{13} &amp; 0  \\<br>    R_{21} &amp; R_{22} &amp; R_{23} &amp; 0 \\<br>    R_{31} &amp; R_{32} &amp; R_{33} &amp; 0\\<br>    0 &amp; 0 &amp; 0 &amp; 1\ <br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp; T_{x} \\<br>    0 &amp; 1 &amp; 0 &amp; T_{y} \ <br>    0 &amp; 0 &amp; 1 &amp; T_{z} \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>&amp;=<br>\begin{bmatrix}<br>    R_{11} &amp; R_{12} &amp; R_{13} &amp; R_{11}T_{x}+R_{12}T_{y}+R_{13}T_{z}  \\<br>    R_{21} &amp; R_{22} &amp; R_{23} &amp; R_{21}T_{x}+R_{22}T_{y}+R_{23}T_{z} \\<br>    R_{31} &amp; R_{32} &amp; R_{33} &amp; R_{31}T_{x}+R_{32}T_{y}+R_{33}T_{z}    \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\ &amp;=<br>\begin{bmatrix}<br>    R_{3\times 3} &amp; R_{3\times 3}T_{3\times 1} \\<br>    0_{1 \times 3} &amp; 1    \\<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
-
-<p>R<sub>3x3</sub>T<sub>3x1</sub>部分，实际上他就是旋转矩阵和位移向量的点乘，旋转矩阵可以看成是一个点投影到新的坐标系下</p>
-<p>先旋转再平移</p>
-<div><br>$$<br>\begin{align}<br>P’=(TR)P=MP=RP+T<br>\end{align}<br>$$<br></div>
-
-<div><br>$$<br>M=<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp; T_{x} \\<br>    0 &amp; 1 &amp; 0 &amp; T_{y} \ <br>    0 &amp; 0 &amp; 1 &amp; T_{z} \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\begin{bmatrix}<br>    R_{11} &amp; R_{12} &amp; R_{13} &amp; 0  \\<br>    R_{21} &amp; R_{22} &amp; R_{23} &amp; 0 \\<br>    R_{31} &amp; R_{32} &amp; R_{33} &amp; 0\\<br>    0 &amp; 0 &amp; 0 &amp; 1\ <br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>    R_{3\times 3} &amp; T_{3\times 1} \\<br>    0_{1 \times 3} &amp; 1    \\<br>\end{bmatrix}<br>$$<br></div>
-
-<h3 id="法向变换"><a href="#法向变换" class="headerlink" title="法向变换"></a>法向变换</h3><p>正交矩阵的转置等于他的逆，旋转矩阵和镜像矩阵式正交的</p>
-<div><br>$$<br>\begin{align}<br> MM^{T} = I<br>\end{align}<br>$$<br></div>
-
-<div><br>$$<br>\begin{align}<br>M^{T} = M^{-1}<br>\end{align}<br>$$<br></div>
-
-
-
-<p><img src="/2017/10/04/Matrix2/Normal.png" alt=""></p>
-<p>切向t实际上就是曲面上的几何位置，因此他们的变换矩阵和曲面的变换矩阵保持一致</p>
-<p>t’ = Mt</p>
-<p>假设法向变换矩阵为Q</p>
-<p>n’ = Qn</p>
-<p>法向必须垂直切向，所以法向和切向的点积等于0</p>
-<blockquote>
-<ul>
-<li>n·t = 0 </li>
-</ul>
-<blockquote>
-<ul>
-<li><p>n<sup>T</sup>t = 0  </p>
-</li>
-<li><p>(Qn)<sup>T</sup>t = 0</p>
-</li>
-<li><p>n<sup>T</sup>Q<sup>T</sup>t = 0</p>
-</li>
-<li><p>n<sup>T</sup>Q<sup>T</sup>Mt = 0</p>
-</li>
-<li><p>Q<sup>T</sup>M = I</p>
-</li>
-<li><p>Q = (M<sup>-1</sup>)<sup>T</sup></p>
-</li>
-</ul>
-</blockquote>
-</blockquote>
-<p>所以根据这个结果，如果你有一个物体需要绕某一个轴发生旋转，即R(n,\theta)，t向量即是物体坐标减去原点，此时希望可以实时更新物体Up方向的向量，也就是当前小节下的n，由上述结果可知法向变换的矩阵是旋转矩阵的逆的转置。因为旋转矩阵式正交的，所以 M<sup>T</sup> = M<sup>-1</sup>，故而可以很轻松的发现，法向变换的矩阵和旋转矩阵是一致的。</p>
-<p>所以当一个物体发生旋转变换时，他的up方向也只需右乘旋转矩阵。</p>
-<h3 id="旋转和坐标系"><a href="#旋转和坐标系" class="headerlink" title="旋转和坐标系"></a>旋转和坐标系</h3><p>用一个题目来说明这个模块：</p>
-<p>给定标准X,Y坐标系下的一个点 i=(2，2)，现有一个新的坐标系，原点位于 j=(1，1)，新的X轴方向为 x=(1，1),Y轴的方向为 y=(−1，1)，求点i在新坐标系下的坐标 k<sub>x</sub>和 k<sub>y</sub>。</p>
-<p>可以看出新坐标系旋转了45° ,旋转矩阵为 </p>
-<p>$$<br>M=<br>\begin{bmatrix}<br>    0.7 &amp; 0.7 \\\<br>    -0.7 &amp; 0.7 \\\<br>\end{bmatrix}<br>$$</p>
-<p>新坐标系有偏移，所以原来的a（2，2）在当前惯性坐标系下是 a（1，1），所以a在新坐标系的坐标是Ma<sup>T</sup>=（1.4，0）</p>
-<h3 id="gluLookAt"><a href="#gluLookAt" class="headerlink" title="gluLookAt"></a>gluLookAt</h3><p>先引出一个问题，当camera发生旋转，位移时，如何正确的在相机坐标系下显示物体。glulookat实际上也就是把物体从世界坐标转换到视图坐标，相机坐标系下解释世界坐标系下的点。</p>
-<p><img src="/2017/10/04/Matrix2/glulookat.png" alt=""></p>
-<p>那么，如何让相机lookat物体，和上一个小节一样，只不过上一个小节是二维坐标系下。</p>
-<blockquote>
-<ul>
-<li>先把物体和相机转换到惯性坐标系下，即逆平移物体，使得物体处于惯性坐标系下。</li>
-<li>再由惯性坐标系旋转到相机坐标系，</li>
-</ul>
-</blockquote>
-<p>平移矩阵：</p>
-<div><br>$$<br>\begin{align}<br>T=<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp;  -eye.x  \\<br>    0 &amp; 1 &amp; 0 &amp; -eye.y \\<br>    0 &amp; 0 &amp; 1 &amp; -eye.z \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
-
-<p>旋转矩阵：</p>
-<p>确定Z轴 eye-center为相机坐标系的+Z方向</p>
-<div><br>$$<br>w=\frac{eye-center}{|eye-center|}<br>$$<br></div>
-
-<div><br>$$<br>u=\frac{up \times w}{|up \times w|}<br>$$<br></div>
-
-<div><br>$$<br>v= w \times u<br>$$<br></div>
-
-<p>如此便构建了相机的坐标基，可以确定旋转矩阵即是</p>
-<div><br>$$<br>R=<br>\begin{bmatrix}<br>    u.x &amp; u.y &amp; u.z &amp; 0  \\<br>    v.x &amp; v.y &amp; v.z &amp; 0 \\<br>    w.x &amp; w.y &amp; w.z &amp; 0 \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>$$<br></div>
-
-<p>那么glulookat矩阵即是：</p>
-<div><br>$$<br>M= RT<br>\begin{bmatrix}<br>    u.x &amp; u.y &amp; u.z &amp; 0  \\<br>    v.x &amp; v.y &amp; v.z &amp; 0 \\<br>    w.x &amp; w.y &amp; w.z &amp; 0 \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp;  -eye.x  \\<br>    0 &amp; 1 &amp; 0 &amp; -eye.y \\<br>    0 &amp; 0 &amp; 1 &amp; -eye.z \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>    u.x &amp; u.y &amp; u.z &amp; -eye.x<em>u.x-eye.y</em>u.y-eye.z<em>u.z  \\<br>    v.x &amp; v.y &amp; v.z &amp; -eye.x</em>v.x-eye.y<em>v.y-eye.z</em>v.z \\<br>    w.x &amp; w.y &amp; w.z &amp; -eye.x<em>w.x-eye.y</em>w.y-eye.z*w.z \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>$$<br></div>
-
-<h3 id="正交投影"><a href="#正交投影" class="headerlink" title="正交投影"></a>正交投影</h3><p>给定情景：<br><img src="/2017/10/04/Matrix2/Orthgraphic.png" alt=""></p>
-<p>我们的目的是把不规则的cube，平移到相机的坐标空间，然后缩放成单位cube</p>
-<p>r l t b f n 分别是对应轴的offset<br>首先平移矩阵，中心对齐原点：</p>
-<div><br>$$<br>T=<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp;  -\frac{r+l}2  \\<br>    0 &amp; 1 &amp; 0 &amp; -\frac{t+b}2 \\<br>    0 &amp; 0 &amp; 1 &amp; -\frac{f+n}2 \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>$$<br></div>
-
-<p>接下来是缩放</p>
-<div><br>$$<br>S=<br>\begin{bmatrix}<br>    \frac{2}{r-l} &amp; 0 &amp; 0 &amp; 0  \\<br>    0 &amp; \frac{2}{t-b} &amp; 0 &amp; 0 \\<br>    0 &amp; 0 &amp; -\frac{2}{f-n} &amp; 0 \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>$$<br></div>
-
-<p>先平移后缩放</p>
-<div><br>$$<br>\begin{align}<br>M=ST &amp;=<br>\begin{bmatrix}<br>    \frac{2}{r-l} &amp; 0 &amp; 0 &amp; 0  \\<br>    0 &amp; \frac{2}{t-b} &amp; 0 &amp; 0 \\<br>    0 &amp; 0 &amp; \frac{2}{f-n} &amp; 0 \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp;  -\frac{r+l}2  \\<br>    0 &amp; 1 &amp; 0 &amp; -\frac{t+b}2 \\<br>    0 &amp; 0 &amp; 1 &amp; -\frac{f+n}2 \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\ &amp;=<br>\begin{bmatrix}<br>    \frac{2}{r-l} &amp; 0 &amp; 0 &amp;  -\frac{r+l}{r-l} \\<br>    0 &amp; \frac{2}{t-b} &amp; 0 &amp; -\frac{t+b}{t-b} \\<br>    0 &amp; 0 &amp; \frac{2}{f-n} &amp; -\frac{f+n}{f-n} \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
-
-<p>观察方向是-Z方向，Z轴上的缩放系数为负，所以f,n,所以要加个负号</p>
-<p>所以最终矩阵形式为</p>
-<div><br>$$<br>\begin{bmatrix}<br>    \frac{2}{r-l} &amp; 0 &amp; 0 &amp;  -\frac{r+l}{r-l} \\<br>    0 &amp; \frac{2}{t-b} &amp; 0 &amp; -\frac{t+b}{t-b} \\<br>    0 &amp; 0 &amp; -\frac{2}{f-n} &amp; -\frac{f+n}{f-n} \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>$$<br></div>
-
-<p>上式亦是OpenGL中见到的glOrtho函数</p>
-<h3 id="透视投影"><a href="#透视投影" class="headerlink" title="透视投影"></a>透视投影</h3><p><img src="/2017/10/04/Matrix2/Perspective2.png" alt=""></p>
-<p>由图可知，这个变换的过程是将视锥体较小的部分放大，较大的部分缩小，以形成最终的单位立方体。这就是投影变换会产生近大远小的效果的原因。变换后的x坐标范围是[-1, 1]，y坐标范围是[-1, 1]，z坐标范围是[-1,1]。</p>
-<p><img src="/2017/10/04/Matrix2/Perspective.png" alt=""></p>
-<p>那么，已知d,(x,y,z)很显然可以快速的求出</p>
-<div><br>$$<br>\begin{align}<br>    x’ = \frac{dx}z \\<br>    y’ = \frac{dy}z \\<br>\end{align}<br>$$<br></div>
-
-<p>用4x4矩阵来表示</p>
-<div><br>$$<br>\begin{align}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp; 0 \\<br>    0 &amp; 1 &amp; 0 &amp; 0 \\<br>    0 &amp; 0 &amp; 1 &amp; 0 \\<br>    0 &amp; 0 &amp; -\frac{1}d &amp; 0 \\<br>\end{bmatrix}<br>\begin{bmatrix}<br>    x \\<br>    y \\<br>    z \\<br>    w \\<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>    x \\<br>    y \\<br>    z \\<br>    -\frac{z}d \\<br>\end{bmatrix}<br>&amp;=<br>\begin{bmatrix}<br>    -\frac{dx}z \\<br>    -\frac{dy}z \\<br>    z \\<br>    1 \\<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
-
-<p>为了充实透视变换的过程，给出视锥体的图方便想象</p>
-<p><img src="/2017/10/04/Matrix2/Frustum.png" alt=""></p>
-<p>定义FOV</p>
-<p><img src="/2017/10/04/Matrix2/FOV.png" alt=""></p>
-<p>同时可知像素横纵比，用来按固定像素比缩放</p>
-<div><br>$$<br>    Aspect = -\frac{width}{height} \\<br>$$<br></div>
-
-<p>已知FOV度数，又知(x,y,z)投影到一个单位立方体上</p>
-<p><img src="/2017/10/04/Matrix2/FOV2.png" alt=""></p>
-<div><br>$$<br>    \theta = \frac{fovy}2 \\<br>    d = cot\theta \\<br>$$<br></div>
-
-<p>像素横纵比缩放，再结合glulookat透视变换</p>
-<div><br>\begin{bmatrix}<br>    \frac{1}{Aspect} &amp; 0 &amp; 0 &amp; 0 \\<br>    0 &amp; 1 &amp; 0 &amp; 0 \\<br>    0 &amp; 0 &amp; 1 &amp; 0 \\<br>    0 &amp; 0 &amp; -\frac{1}d &amp; 0 \\<br>\end{bmatrix}<br></div>
-
-<p>如何把他转换成以下的形式</p>
-<div><br>\begin{bmatrix}<br>    \frac{1}{Aspect} &amp; 0 &amp; 0 &amp; 0 \\<br>    0 &amp; 1 &amp; 0 &amp; 0 \\<br>    0 &amp; 0 &amp; A &amp; B \\<br>    0 &amp; 0 &amp; -1 &amp; 0 \\<br>\end{bmatrix}<br></div>
-
-<p>只关注这个部分</p>
-<div><br>\begin{bmatrix}<br>     A &amp; B \\<br>      -1 &amp; 0 \\<br>\end{bmatrix}<br></div>
-
-<p>那么</p>
-<div><br>\begin{align}<br>\begin{bmatrix}<br>     A &amp; B \\<br>      -1 &amp; 0 \\<br>\end{bmatrix}<br>\begin{bmatrix}<br>    z \\<br>      1 \\<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>    Az+B \\<br>     -z \\<br>\end{bmatrix}<br>\end{align}<br></div>
-
-<p>再把结果非齐次化</p>
-<div><br>$$<br>\begin{bmatrix}<br>    Az+B \\<br>     -z \\<br>\end{bmatrix}<br>=-A-\frac{B}z<br>$$<br></div>
-
-<p>已知n,f分别是近远两个剪切面在他们的坐标系下的z轴上的分量，他们处于Camera的-z轴</p>
-<p>故而</p>
-<blockquote>
-<ul>
-<li>z=-n时，因为是映射到单位立方体上，所以投影结果应该是等于-1</li>
-<li>z=-f时，因为是映射到单位立方体上，所以投影结果应该是等于+1</li>
-</ul>
-</blockquote>
-<p>把以上两种情况带入上面推导的式子</p>
-<div><br>$$<br>\begin{align}<br>-A + \frac{B}n = -1 \\<br>-A + \frac{B}f = 1 \\<br>\end{align}<br>$$<br></div>
-
-<p>两式联立</p>
-<div><br>$$<br>\begin{align}<br>A=-\frac{f+n}{f-n} \\<br>B=-\frac{2fn}{f-n}    \\<br>\end{align}<br>$$<br></div>
-
-<p>给出最后的矩阵</p>
-<div><br>\begin{bmatrix}<br>    \frac{1}{Aspect} &amp; 0 &amp; 0 &amp; 0 \\<br>    0 &amp; 1 &amp; 0 &amp; 0 \\<br>    0 &amp; 0 &amp; -\frac{f+n}{f-n} &amp; -\frac{2fn}{f-n} \\<br>    0 &amp; 0 &amp; -1 &amp; 0 \\<br>\end{bmatrix}<br></div>
-
-
-
-          
+          <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>图形学上的一些数学知识和应用公式推导补充。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/04/Matrix2/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>

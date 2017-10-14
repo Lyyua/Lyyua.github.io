@@ -93,13 +93,13 @@
 
 
 
-<meta name="description" content="点乘$$a\cdot b = |a||b|cos\theta$$ 也可以表示为 $$a\cdot b = a_1 b_1 + a_2 b_2+…$$  即是 $$a\cdot b = a^T b$$  点乘表示a在b上的投影向量 点乘的模可以用来表达向量a在向量b上的投影长度 正负说明，向量a在向量b的前方还是后方，这一点取决于两个向量的夹角 叉乘$$a\times b = -b\times a">
+<meta name="description" content="引言图形学上的一些数学知识和应用公式推导补充。">
 <meta name="keywords" content="3DMath">
 <meta property="og:type" content="article">
 <meta property="og:title" content="矩阵在数学上的补充">
 <meta property="og:url" content="http://lyyua.com/2017/10/04/Matrix2/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="点乘$$a\cdot b = |a||b|cos\theta$$ 也可以表示为 $$a\cdot b = a_1 b_1 + a_2 b_2+…$$  即是 $$a\cdot b = a^T b$$  点乘表示a在b上的投影向量 点乘的模可以用来表达向量a在向量b上的投影长度 正负说明，向量a在向量b的前方还是后方，这一点取决于两个向量的夹角 叉乘$$a\times b = -b\times a">
+<meta property="og:description" content="引言图形学上的一些数学知识和应用公式推导补充。">
 <meta property="og:image" content="http://lyyua.com/2017/10/04/Matrix2/Normal.png">
 <meta property="og:image" content="http://lyyua.com/2017/10/04/Matrix2/glulookat.png">
 <meta property="og:image" content="http://lyyua.com/2017/10/04/Matrix2/Orthgraphic.png">
@@ -108,10 +108,10 @@
 <meta property="og:image" content="http://lyyua.com/2017/10/04/Matrix2/Frustum.png">
 <meta property="og:image" content="http://lyyua.com/2017/10/04/Matrix2/FOV.png">
 <meta property="og:image" content="http://lyyua.com/2017/10/04/Matrix2/FOV2.png">
-<meta property="og:updated_time" content="2017-10-08T13:53:17.713Z">
+<meta property="og:updated_time" content="2017-10-14T14:43:52.265Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="矩阵在数学上的补充">
-<meta name="twitter:description" content="点乘$$a\cdot b = |a||b|cos\theta$$ 也可以表示为 $$a\cdot b = a_1 b_1 + a_2 b_2+…$$  即是 $$a\cdot b = a^T b$$  点乘表示a在b上的投影向量 点乘的模可以用来表达向量a在向量b上的投影长度 正负说明，向量a在向量b的前方还是后方，这一点取决于两个向量的夹角 叉乘$$a\times b = -b\times a">
+<meta name="twitter:description" content="引言图形学上的一些数学知识和应用公式推导补充。">
 <meta name="twitter:image" content="http://lyyua.com/2017/10/04/Matrix2/Normal.png">
 
 
@@ -350,7 +350,8 @@
       
 
       
-        <h2 id="点乘"><a href="#点乘" class="headerlink" title="点乘"></a>点乘</h2><p>$$<br>a\cdot b = |a||b|cos\theta<br>$$</p>
+        <h2 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h2><p>图形学上的一些数学知识和应用公式推导补充。<a id="more"></a></p>
+<h2 id="点乘"><a href="#点乘" class="headerlink" title="点乘"></a>点乘</h2><p>$$<br>a\cdot b = |a||b|cos\theta<br>$$</p>
 <p>也可以表示为</p>
 <div><br>$$<br>a\cdot b = a_1 b_1 + a_2 b_2+…<br>$$<br></div>
 
@@ -368,14 +369,14 @@
 <h2 id="旋转矩阵是正交的"><a href="#旋转矩阵是正交的" class="headerlink" title="旋转矩阵是正交的"></a>旋转矩阵是正交的</h2><p>R<sup>T</sup>R = I</p>
 <p>更多旋转矩阵描述，请看</p>
 <h2 id="齐次坐标的优点"><a href="#齐次坐标的优点" class="headerlink" title="齐次坐标的优点"></a>齐次坐标的优点</h2><h3 id="平移"><a href="#平移" class="headerlink" title="平移"></a>平移</h3><p>很简单的操作</p>
-<div><br>$$<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp; T_{x}  \\<br>    0 &amp; 1 &amp; 0 &amp; T_{y} \\<br>    0 &amp; 0 &amp; 1 &amp; T_{z}\ <br>    0 &amp; 0 &amp; 0 &amp; 1    \ <br>\end{bmatrix}<br>$$<br></div>
+<div><br>$$<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp; T_{x}  \\<br>    0 &amp; 1 &amp; 0 &amp; T_{y} \\<br>    0 &amp; 0 &amp; 1 &amp; T_{z} \\ <br>    0 &amp; 0 &amp; 0 &amp; 1    \ <br>\end{bmatrix}<br>$$<br></div>
 
 <p>计算机科学中，除法较之加法乘法耗费较多的时钟周期，比如你需要透视投影，使得远处的物体看起来更小，所以你不得不除以深度，齐次坐标的优点是只需要在渲染管线的最后一步做一次除法把齐次坐标变换成非齐次（非线性映射），即可避免了除法</p>
 <p>计算两直线平行，公式会出错，但是齐次坐标不会，因为无穷远点在齐次坐标中的初始定义为w=0，他描述了一个方向而不是一个位置</p>
 <h3 id="矩阵变换顺序"><a href="#矩阵变换顺序" class="headerlink" title="矩阵变换顺序"></a>矩阵变换顺序</h3><p>先平移再旋转</p>
 <div><br>$$<br>\begin{align}<br>P’=(RT)P=MP=R(P+T)=RP+RT<br>\end{align}<br>$$<br></div>
 
-<div><br>$$<br>\begin{align}<br>M=<br>\begin{bmatrix}<br>    R_{11} &amp; R_{12} &amp; R_{13} &amp; 0  \\<br>    R_{21} &amp; R_{22} &amp; R_{23} &amp; 0 \\<br>    R_{31} &amp; R_{32} &amp; R_{33} &amp; 0\\<br>    0 &amp; 0 &amp; 0 &amp; 1\ <br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp; T_{x} \\<br>    0 &amp; 1 &amp; 0 &amp; T_{y} \ <br>    0 &amp; 0 &amp; 1 &amp; T_{z} \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>&amp;=<br>\begin{bmatrix}<br>    R_{11} &amp; R_{12} &amp; R_{13} &amp; R_{11}T_{x}+R_{12}T_{y}+R_{13}T_{z}  \\<br>    R_{21} &amp; R_{22} &amp; R_{23} &amp; R_{21}T_{x}+R_{22}T_{y}+R_{23}T_{z} \\<br>    R_{31} &amp; R_{32} &amp; R_{33} &amp; R_{31}T_{x}+R_{32}T_{y}+R_{33}T_{z}    \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\ &amp;=<br>\begin{bmatrix}<br>    R_{3\times 3} &amp; R_{3\times 3}T_{3\times 1} \\<br>    0_{1 \times 3} &amp; 1    \\<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+<div><br>$$<br>\begin{align}<br>M=<br>\begin{bmatrix}<br>    R_{11} &amp; R_{12} &amp; R_{13} &amp; 0  \\<br>    R_{21} &amp; R_{22} &amp; R_{23} &amp; 0 \\<br>    R_{31} &amp; R_{32} &amp; R_{33} &amp; 0\\<br>    0 &amp; 0 &amp; 0 &amp; 1\ <br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp; T_{x} \\<br>    0 &amp; 1 &amp; 0 &amp; T_{y} \ <br>    0 &amp; 0 &amp; 1 &amp; T_{z} \\\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>&amp;=<br>\begin{bmatrix}<br>    R_{11} &amp; R_{12} &amp; R_{13} &amp; R_{11}T_{x}+R_{12}T_{y}+R_{13}T_{z}  \\<br>    R_{21} &amp; R_{22} &amp; R_{23} &amp; R_{21}T_{x}+R_{22}T_{y}+R_{23}T_{z} \\<br>    R_{31} &amp; R_{32} &amp; R_{33} &amp; R_{31}T_{x}+R_{32}T_{y}+R_{33}T_{z}    \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\\ &amp;=<br>\begin{bmatrix}<br>    R_{3\times 3} &amp; R_{3\times 3}T_{3\times 1} \\<br>    0_{1 \times 3} &amp; 1    \\<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
 
 <p>R<sub>3x3</sub>T<sub>3x1</sub>部分，实际上他就是旋转矩阵和位移向量的点乘，旋转矩阵可以看成是一个点投影到新的坐标系下</p>
 <p>先旋转再平移</p>
@@ -434,7 +435,7 @@
 </ul>
 </blockquote>
 <p>平移矩阵：</p>
-<div><br>$$<br>\begin{align}<br>T=<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp;  -eye.x  \\<br>    0 &amp; 1 &amp; 0 &amp; -eye.y \\<br>    0 &amp; 0 &amp; 1 &amp; -eye.z \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+<div><br>$$<br>\begin{align}<br>T=<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp;  -eye.x  \\<br>    0 &amp; 1 &amp; 0 &amp; -eye.y \\<br>    0 &amp; 0 &amp; 1 &amp; -eye.z \\ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
 
 <p>旋转矩阵：</p>
 <p>确定Z轴 eye-center为相机坐标系的+Z方向</p>
@@ -445,25 +446,25 @@
 <div><br>$$<br>v= w \times u<br>$$<br></div>
 
 <p>如此便构建了相机的坐标基，可以确定旋转矩阵即是</p>
-<div><br>$$<br>R=<br>\begin{bmatrix}<br>    u.x &amp; u.y &amp; u.z &amp; 0  \\<br>    v.x &amp; v.y &amp; v.z &amp; 0 \\<br>    w.x &amp; w.y &amp; w.z &amp; 0 \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>$$<br></div>
+<div><br>$$<br>R=<br>\begin{bmatrix}<br>    u.x &amp; u.y &amp; u.z &amp; 0  \\<br>    v.x &amp; v.y &amp; v.z &amp; 0 \\<br>    w.x &amp; w.y &amp; w.z &amp; 0 \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>$$<br></div>
 
 <p>那么glulookat矩阵即是：</p>
-<div><br>$$<br>M= RT<br>\begin{bmatrix}<br>    u.x &amp; u.y &amp; u.z &amp; 0  \\<br>    v.x &amp; v.y &amp; v.z &amp; 0 \\<br>    w.x &amp; w.y &amp; w.z &amp; 0 \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp;  -eye.x  \\<br>    0 &amp; 1 &amp; 0 &amp; -eye.y \\<br>    0 &amp; 0 &amp; 1 &amp; -eye.z \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>=<br>\begin{bmatrix}<br>    u.x &amp; u.y &amp; u.z &amp; -eye.x<em>u.x-eye.y</em>u.y-eye.z<em>u.z  \\<br>    v.x &amp; v.y &amp; v.z &amp; -eye.x</em>v.x-eye.y<em>v.y-eye.z</em>v.z \\<br>    w.x &amp; w.y &amp; w.z &amp; -eye.x<em>w.x-eye.y</em>w.y-eye.z*w.z \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>$$<br></div>
+<div><br>$$<br>\begin{align}<br>M=RT&amp;=<br>\begin{bmatrix}<br>    u.x &amp; u.y &amp; u.z &amp; 0  \\<br>    v.x &amp; v.y &amp; v.z &amp; 0 \\<br>    w.x &amp; w.y &amp; w.z &amp; 0 \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp;  -eye.x  \\<br>    0 &amp; 1 &amp; 0 &amp; -eye.y \\<br>    0 &amp; 0 &amp; 1 &amp; -eye.z \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\\ &amp;=<br>\begin{bmatrix}<br>    u.x &amp; u.y &amp; u.z &amp; u·T  \\<br>    v.x &amp; v.y &amp; v.z &amp; v·T \\<br>    w.x &amp; w.y &amp; w.z &amp; w·T \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
 
 <h3 id="正交投影"><a href="#正交投影" class="headerlink" title="正交投影"></a>正交投影</h3><p>给定情景：<br><img src="/2017/10/04/Matrix2/Orthgraphic.png" alt=""></p>
 <p>我们的目的是把不规则的cube，平移到相机的坐标空间，然后缩放成单位cube</p>
 <p>r l t b f n 分别是对应轴的offset<br>首先平移矩阵，中心对齐原点：</p>
-<div><br>$$<br>T=<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp;  -\frac{r+l}2  \\<br>    0 &amp; 1 &amp; 0 &amp; -\frac{t+b}2 \\<br>    0 &amp; 0 &amp; 1 &amp; -\frac{f+n}2 \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>$$<br></div>
+<div><br>$$<br>T=<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp;  -\frac{r+l}2  \\<br>    0 &amp; 1 &amp; 0 &amp; -\frac{t+b}2 \\<br>    0 &amp; 0 &amp; 1 &amp; -\frac{f+n}2 \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>$$<br></div>
 
 <p>接下来是缩放</p>
-<div><br>$$<br>S=<br>\begin{bmatrix}<br>    \frac{2}{r-l} &amp; 0 &amp; 0 &amp; 0  \\<br>    0 &amp; \frac{2}{t-b} &amp; 0 &amp; 0 \\<br>    0 &amp; 0 &amp; -\frac{2}{f-n} &amp; 0 \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>$$<br></div>
+<div><br>$$<br>S=<br>\begin{bmatrix}<br>    \frac{2}{r-l} &amp; 0 &amp; 0 &amp; 0  \\<br>    0 &amp; \frac{2}{t-b} &amp; 0 &amp; 0 \\<br>    0 &amp; 0 &amp; -\frac{2}{f-n} &amp; 0 \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>$$<br></div>
 
 <p>先平移后缩放</p>
-<div><br>$$<br>\begin{align}<br>M=ST &amp;=<br>\begin{bmatrix}<br>    \frac{2}{r-l} &amp; 0 &amp; 0 &amp; 0  \\<br>    0 &amp; \frac{2}{t-b} &amp; 0 &amp; 0 \\<br>    0 &amp; 0 &amp; \frac{2}{f-n} &amp; 0 \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp;  -\frac{r+l}2  \\<br>    0 &amp; 1 &amp; 0 &amp; -\frac{t+b}2 \\<br>    0 &amp; 0 &amp; 1 &amp; -\frac{f+n}2 \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\ &amp;=<br>\begin{bmatrix}<br>    \frac{2}{r-l} &amp; 0 &amp; 0 &amp;  -\frac{r+l}{r-l} \\<br>    0 &amp; \frac{2}{t-b} &amp; 0 &amp; -\frac{t+b}{t-b} \\<br>    0 &amp; 0 &amp; \frac{2}{f-n} &amp; -\frac{f+n}{f-n} \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
+<div><br>$$<br>\begin{align}<br>M=ST &amp;=<br>\begin{bmatrix}<br>    \frac{2}{r-l} &amp; 0 &amp; 0 &amp; 0  \\<br>    0 &amp; \frac{2}{t-b} &amp; 0 &amp; 0 \\<br>    0 &amp; 0 &amp; \frac{2}{f-n} &amp; 0 \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\begin{bmatrix}<br>    1 &amp; 0 &amp; 0 &amp;  -\frac{r+l}2  \\<br>    0 &amp; 1 &amp; 0 &amp; -\frac{t+b}2 \\<br>    0 &amp; 0 &amp; 1 &amp; -\frac{f+n}2 \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\ &amp;=<br>\begin{bmatrix}<br>    \frac{2}{r-l} &amp; 0 &amp; 0 &amp;  -\frac{r+l}{r-l} \\<br>    0 &amp; \frac{2}{t-b} &amp; 0 &amp; -\frac{t+b}{t-b} \\<br>    0 &amp; 0 &amp; \frac{2}{f-n} &amp; -\frac{f+n}{f-n} \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>\end{align}<br>$$<br></div>
 
 <p>观察方向是-Z方向，Z轴上的缩放系数为负，所以f,n,所以要加个负号</p>
 <p>所以最终矩阵形式为</p>
-<div><br>$$<br>\begin{bmatrix}<br>    \frac{2}{r-l} &amp; 0 &amp; 0 &amp;  -\frac{r+l}{r-l} \\<br>    0 &amp; \frac{2}{t-b} &amp; 0 &amp; -\frac{t+b}{t-b} \\<br>    0 &amp; 0 &amp; -\frac{2}{f-n} &amp; -\frac{f+n}{f-n} \ <br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>$$<br></div>
+<div><br>$$<br>\begin{bmatrix}<br>    \frac{2}{r-l} &amp; 0 &amp; 0 &amp;  -\frac{r+l}{r-l} \\<br>    0 &amp; \frac{2}{t-b} &amp; 0 &amp; -\frac{t+b}{t-b} \\<br>    0 &amp; 0 &amp; -\frac{2}{f-n} &amp; -\frac{f+n}{f-n} \\<br>    0 &amp; 0 &amp; 0 &amp; 1 \\<br>\end{bmatrix}<br>$$<br></div>
 
 <p>上式亦是OpenGL中见到的glOrtho函数</p>
 <h3 id="透视投影"><a href="#透视投影" class="headerlink" title="透视投影"></a>透视投影</h3><p><img src="/2017/10/04/Matrix2/Perspective2.png" alt=""></p>
@@ -486,7 +487,7 @@
 <p><img src="/2017/10/04/Matrix2/FOV2.png" alt=""></p>
 <div><br>$$<br>    \theta = \frac{fovy}2 \\<br>    d = cot\theta \\<br>$$<br></div>
 
-<p>像素横纵比缩放，再结合glulookat透视变换</p>
+<p>像素横纵比缩放，再结合透视投影变换</p>
 <div><br>\begin{bmatrix}<br>    \frac{1}{Aspect} &amp; 0 &amp; 0 &amp; 0 \\<br>    0 &amp; 1 &amp; 0 &amp; 0 \\<br>    0 &amp; 0 &amp; 1 &amp; 0 \\<br>    0 &amp; 0 &amp; -\frac{1}d &amp; 0 \\<br>\end{bmatrix}<br></div>
 
 <p>如何把他转换成以下的形式</p>
@@ -696,7 +697,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#点乘"><span class="nav-number">1.</span> <span class="nav-text">点乘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#叉乘"><span class="nav-number">2.</span> <span class="nav-text">叉乘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#旋转矩阵是正交的"><span class="nav-number">3.</span> <span class="nav-text">旋转矩阵是正交的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#齐次坐标的优点"><span class="nav-number">4.</span> <span class="nav-text">齐次坐标的优点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#平移"><span class="nav-number">4.1.</span> <span class="nav-text">平移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#矩阵变换顺序"><span class="nav-number">4.2.</span> <span class="nav-text">矩阵变换顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#法向变换"><span class="nav-number">4.3.</span> <span class="nav-text">法向变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#旋转和坐标系"><span class="nav-number">4.4.</span> <span class="nav-text">旋转和坐标系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gluLookAt"><span class="nav-number">4.5.</span> <span class="nav-text">gluLookAt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正交投影"><span class="nav-number">4.6.</span> <span class="nav-text">正交投影</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#透视投影"><span class="nav-number">4.7.</span> <span class="nav-text">透视投影</span></a></li></ol></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#引言"><span class="nav-number">1.</span> <span class="nav-text">引言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#点乘"><span class="nav-number">2.</span> <span class="nav-text">点乘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#叉乘"><span class="nav-number">3.</span> <span class="nav-text">叉乘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#旋转矩阵是正交的"><span class="nav-number">4.</span> <span class="nav-text">旋转矩阵是正交的</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#齐次坐标的优点"><span class="nav-number">5.</span> <span class="nav-text">齐次坐标的优点</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#平移"><span class="nav-number">5.1.</span> <span class="nav-text">平移</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#矩阵变换顺序"><span class="nav-number">5.2.</span> <span class="nav-text">矩阵变换顺序</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#法向变换"><span class="nav-number">5.3.</span> <span class="nav-text">法向变换</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#旋转和坐标系"><span class="nav-number">5.4.</span> <span class="nav-text">旋转和坐标系</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gluLookAt"><span class="nav-number">5.5.</span> <span class="nav-text">gluLookAt</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#正交投影"><span class="nav-number">5.6.</span> <span class="nav-text">正交投影</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#透视投影"><span class="nav-number">5.7.</span> <span class="nav-text">透视投影</span></a></li></ol></li></ol></div>
             
 
           </div>
