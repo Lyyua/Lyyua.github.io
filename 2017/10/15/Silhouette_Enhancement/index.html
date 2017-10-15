@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="C#," />
+  <meta name="keywords" content="Unity,Shader," />
 
 
 
@@ -93,17 +93,20 @@
 
 
 
-<meta name="description" content="譬如在炉石传说中，你有90秒的操作时间，时间这种敏感因子必须交由服务端来统一管理，每隔一段时间两端就需要校准一下时间（我猜的），75秒后通知烧绳子，90秒时如果还没有结束回合，强制结束等等。 在Unity中可以使用Invoke或者协程中WaitForSeconds快速达到计时目的。但是如果在其他线程中就要另辟蹊经了。">
-<meta name="keywords" content="C#">
+<meta name="description" content="前言最近发现UnityShader维基百科上的教程一级棒，不过是英文的，看完之后用我觉得最好理解的方式把他写下来。 透明物体的轮廓增强效果即如图所示，一个半透明物体的边缘的不透明度要比其他部分的不透明度高。  轮廓增强的物理模型  V是观察者的标准化方向，N是标准化的表面法线向量，|V · N|在[0,1]之间波动，如果点积V · N接近于0，我们可以假设该点接近轮廓，那么透明度的表达如下： $$">
+<meta name="keywords" content="Unity,Shader">
 <meta property="og:type" content="article">
-<meta property="og:title" content="线程处理中的计时器、传参、返回值">
-<meta property="og:url" content="http://lyyua.com/2017/07/01/Thread/index.html">
+<meta property="og:title" content="UnityShader-透明物体的轮廓增强">
+<meta property="og:url" content="http://lyyua.com/2017/10/15/Silhouette_Enhancement/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="譬如在炉石传说中，你有90秒的操作时间，时间这种敏感因子必须交由服务端来统一管理，每隔一段时间两端就需要校准一下时间（我猜的），75秒后通知烧绳子，90秒时如果还没有结束回合，强制结束等等。 在Unity中可以使用Invoke或者协程中WaitForSeconds快速达到计时目的。但是如果在其他线程中就要另辟蹊经了。">
-<meta property="og:updated_time" content="2017-07-02T04:14:26.702Z">
+<meta property="og:description" content="前言最近发现UnityShader维基百科上的教程一级棒，不过是英文的，看完之后用我觉得最好理解的方式把他写下来。 透明物体的轮廓增强效果即如图所示，一个半透明物体的边缘的不透明度要比其他部分的不透明度高。  轮廓增强的物理模型  V是观察者的标准化方向，N是标准化的表面法线向量，|V · N|在[0,1]之间波动，如果点积V · N接近于0，我们可以假设该点接近轮廓，那么透明度的表达如下： $$">
+<meta property="og:image" content="http://lyyua.com/2017/10/15/Silhouette_Enhancement/Jellyfish.jpg">
+<meta property="og:image" content="http://lyyua.com/2017/10/15/Silhouette_Enhancement/Surface_normal.png">
+<meta property="og:updated_time" content="2017-10-15T08:28:14.702Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="线程处理中的计时器、传参、返回值">
-<meta name="twitter:description" content="譬如在炉石传说中，你有90秒的操作时间，时间这种敏感因子必须交由服务端来统一管理，每隔一段时间两端就需要校准一下时间（我猜的），75秒后通知烧绳子，90秒时如果还没有结束回合，强制结束等等。 在Unity中可以使用Invoke或者协程中WaitForSeconds快速达到计时目的。但是如果在其他线程中就要另辟蹊经了。">
+<meta name="twitter:title" content="UnityShader-透明物体的轮廓增强">
+<meta name="twitter:description" content="前言最近发现UnityShader维基百科上的教程一级棒，不过是英文的，看完之后用我觉得最好理解的方式把他写下来。 透明物体的轮廓增强效果即如图所示，一个半透明物体的边缘的不透明度要比其他部分的不透明度高。  轮廓增强的物理模型  V是观察者的标准化方向，N是标准化的表面法线向量，|V · N|在[0,1]之间波动，如果点积V · N接近于0，我们可以假设该点接近轮廓，那么透明度的表达如下： $$">
+<meta name="twitter:image" content="http://lyyua.com/2017/10/15/Silhouette_Enhancement/Jellyfish.jpg">
 
 
 
@@ -131,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://lyyua.com/2017/07/01/Thread/"/>
+  <link rel="canonical" href="http://lyyua.com/2017/10/15/Silhouette_Enhancement/"/>
 
 
 
 
 
-  <title>线程处理中的计时器、传参、返回值 | Back</title>
+  <title>UnityShader-透明物体的轮廓增强 | Back</title>
   
 
 
@@ -266,7 +269,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/07/01/Thread/">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/15/Silhouette_Enhancement/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lyu">
@@ -283,7 +286,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">线程处理中的计时器、传参、返回值</h2>
+          <h2 class="post-title" itemprop="name headline">UnityShader-透明物体的轮廓增强</h2>
         
 
         <div class="post-meta">
@@ -295,8 +298,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-01T23:57:45+08:00">
-                2017-07-01
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-15T16:12:31+08:00">
+                2017-10-15
               </time>
             
 
@@ -313,7 +316,7 @@
 
           
           
-             <span id="/2017/07/01/Thread/" class="leancloud_visitors" data-flag-title="线程处理中的计时器、传参、返回值">
+             <span id="/2017/10/15/Silhouette_Enhancement/" class="leancloud_visitors" data-flag-title="UnityShader-透明物体的轮廓增强">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -341,17 +344,52 @@
       
 
       
-        <p>譬如在炉石传说中，你有90秒的操作时间，时间这种敏感因子必须交由服务端来统一管理，每隔一段时间两端就需要校准一下时间（我猜的），75秒后通知烧绳子，90秒时如果还没有结束回合，强制结束等等。</p>
-<p>在Unity中可以使用Invoke或者协程中WaitForSeconds快速达到计时目的。但是如果在其他线程中就要另辟蹊经了。<br><a id="more"></a></p>
-<h2 id="线程计时器"><a href="#线程计时器" class="headerlink" title="线程计时器"></a>线程计时器</h2><p>线程计时器相当于起了一个新的线程，需要手动释放，不然他会一直计时执行下去。<br>先定义一个计时器参数的结构体<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">public class TimerStruct</div><div class="line">&#123;</div><div class="line">    public Timer timerRef;</div><div class="line">    public bool timerRun;</div><div class="line">    public string msg;</div><div class="line">    public int timeCount = 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>在Awake中开始计时<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">private void Awake()</div><div class="line">&#123;</div><div class="line">    TimerStruct _timerStruct = new TimerStruct();</div><div class="line">    _timerStruct.timerRun = true;</div><div class="line">    _timerStruct.msg = &quot;时间到&quot;;</div><div class="line">//第一个参数是计时器调用的方法，第二个参数是向方法传的参数，第三个参数是多久后开始调用，第四个参数是调用间隔</div><div class="line">    Timer timerItem = new Timer(TimerMethod, _timerStruct, 2000, 2000);</div><div class="line">    _timerStruct.timerRef = timerItem; //保存计时器引用</div><div class="line">&#125;</div><div class="line">void TimerMethod(object obj)</div><div class="line">&#123;</div><div class="line">    TimerStruct _t = (TimerStruct)obj;</div><div class="line">    _t.timeCount++;</div><div class="line">    print(_t.msg);</div><div class="line">    if (_t.timeCount &gt;= 3)</div><div class="line">    &#123;</div><div class="line">        _t.timerRef.Dispose();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>以上例子就是实现了一个计时器，每隔两秒打印一次“时间到”，打印三次后停止计时。</p>
-<h2 id="线程传参"><a href="#线程传参" class="headerlink" title="线程传参"></a>线程传参</h2><p>为多线程方法调用提供参数的最好办法是将目标方法包装在类中，并为该类定义字段，这些字段将用作新线程的参数。 这种方法的优点是，任何时候想要启动新线程，都可以创建类的新实例，该实例带有自身的参数。其实上面的计时器就用到了这种方法。改一改就会更像了，或者说Timer本身就类似起一个线程。<br>封装的这个类可能会像这样。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">public class TimerThread</div><div class="line">&#123;</div><div class="line">    public bool timerRun;</div><div class="line">    public string msg;</div><div class="line">    public int timeCount = 0;</div><div class="line">    private Timer timerRef;</div><div class="line">    public void RunTimer()</div><div class="line">    &#123;</div><div class="line">        timerRef= new Timer(TimerMethod, null, 2000, 2000);</div><div class="line">    &#125;</div><div class="line">    void TimerMethod(object obj)</div><div class="line">    &#123;</div><div class="line">        timeCount++;</div><div class="line">        if (timeCount &gt;= 3)</div><div class="line">        &#123;</div><div class="line">            timerRef.Dispose();</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>在Awake中这样调用<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">private void Awake()</div><div class="line">&#123;</div><div class="line">   TimerThread ttarg = new TimerThread();</div><div class="line">   ttarg.timerRun = false;</div><div class="line">   ttarg.msg = &quot;时间到&quot;;</div><div class="line">   Thread th = new Thread(ttarg.RunTimer);</div><div class="line">   th.Start();</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<h2 id="返回值"><a href="#返回值" class="headerlink" title="返回值"></a>返回值</h2><p>线程的返回值，由于这些过程不能为函数也不能使用 ByRef 参数，因而从运行于不同线程的过程返回值是很复杂的。 返回值的最简单的方法是：使用 <xref:system.componentmodel.backgroundworker> 组件来管理线程，在任务完成时引发事件，然后用事件处理程序处理结果。<br>不再用Thread.Start()来启动线程。<br>定义一个计算fibonacci数的类型<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">public class CaculateFib</div><div class="line">&#123;</div><div class="line">    public int fib;</div><div class="line">    public int BeginCacula()</div><div class="line">    &#123;</div><div class="line">        return Cacula(fib);</div><div class="line">    &#125;</div><div class="line">    int Cacula(int value)</div><div class="line">    &#123;</div><div class="line">        if (value &lt;= 2)</div><div class="line">        &#123;</div><div class="line">            return 1;</div><div class="line">        &#125;</div><div class="line">        return Cacula(value - 1) + Cacula(value - 2);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></xref:system.componentmodel.backgroundworker></p>
-<p>启动线程的地方代码可能是这样的：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">private System.ComponentModel.BackgroundWorker BackgroundWorker1</div><div class="line">    = new System.ComponentModel.BackgroundWorker();</div><div class="line">private void Awake()</div><div class="line">&#123;</div><div class="line"> 	InitializeBackgroundWorker();</div><div class="line">    CaculateFib cf = new CaculateFib();    </div><div class="line">    cf.fib = 36;</div><div class="line">    BackgroundWorker1.RunWorkerAsync(cf);  </div><div class="line">&#125;</div><div class="line">private void InitializeBackgroundWorker() </div><div class="line">&#123;    </div><div class="line">    BackgroundWorker1.DoWork +=    </div><div class="line">        new System.ComponentModel.DoWorkEventHandler(BackgroundWorker1_DoWork);    </div><div class="line">    BackgroundWorker1.RunWorkerCompleted +=    </div><div class="line">        new System.ComponentModel.RunWorkerCompletedEventHandler(BackgroundWorker1_RunWorkerCompleted);    </div><div class="line">&#125;    </div><div class="line">private void BackgroundWorker1_DoWork(</div><div class="line">        object sender,</div><div class="line">        System.ComponentModel.DoWorkEventArgs e)   </div><div class="line">&#123;    </div><div class="line">    CaculateFib cc = (CaculateFib)e.Argument;   </div><div class="line">    e.Result = cc.BeginCacula();</div><div class="line">&#125;</div><div class="line">private void BackgroundWorker1_RunWorkerCompleted(</div><div class="line">        object sender,</div><div class="line">        System.ComponentModel.RunWorkerCompletedEventArgs e)</div><div class="line">&#123;    </div><div class="line">    int fib = (int)e.Result;   </div><div class="line">    print(fib);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
-<p>在线程完成之后调用注册事件。</p>
-<h2 id="System-Timers-Timer"><a href="#System-Timers-Timer" class="headerlink" title="System.Timers.Timer"></a>System.Timers.Timer</h2><p>不用手动释放<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">void TimeWait(int time, System.Timers.ElapsedEventHandler hanler)</div><div class="line">&#123;</div><div class="line">   System.Timers.Timer t = new System.Timers.Timer(time);//实例化Timer类，设置间隔时间为10000毫秒；</div><div class="line">   t.Elapsed += new System.Timers.ElapsedEventHandler(hanler);//到达时间的时候执行事件；</div><div class="line">   t.AutoReset = false;//设置是执行一次（false）还是一直执行(true)；</div><div class="line">   t.Enabled = true;//是否执行System.Timers.Timer.Elapsed事件；</div><div class="line">&#125;</div><div class="line">//注册事件需要两个参数</div><div class="line">void TimerMethod(object source, System.Timers.ElapsedEventArgs e)</div><div class="line">&#123;&#125;</div></pre></td></tr></table></figure></p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近发现UnityShader维基百科上的教程一级棒，不过是英文的，看完之后用我觉得最好理解的方式把他写下来。</p>
+<h2 id="透明物体的轮廓增强"><a href="#透明物体的轮廓增强" class="headerlink" title="透明物体的轮廓增强"></a>透明物体的轮廓增强</h2><p>效果即如图所示，一个半透明物体的边缘的不透明度要比其他部分的不透明度高。</p>
+<p><img src="/2017/10/15/Silhouette_Enhancement/Jellyfish.jpg" alt=""></p>
+<p>轮廓增强的物理模型</p>
+<p><img src="/2017/10/15/Silhouette_Enhancement/Surface_normal.png" alt=""></p>
+<p>V是观察者的标准化方向，N是标准化的表面法线向量，|V · N|在[0,1]之间波动，如果点积V · N接近于0，我们可以假设该点接近轮廓，那么透明度的表达如下：</p>
+<div><br>$$<br>\begin{align}<br>\alpha ‘ = min(1,\frac{\alpha}{|V\cdot N|})<br>\end{align}<br>$$<br></div>
+
+<p>按照上述公式，靠近轮廓，|V · N|趋于0，α会超过1，然后被min约束在1。（同时，会发现一个1/0的极限情况，GPU通常以优雅的方式处理零的情况，因此，我们不必担心它），远离轮廓，|V · N|趋于1，不透明度会比正常情况下的更高一些，同样当α会超过1时被min约束在1。</p>
+<h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>应该在顶点着色器还是在片段着色器中实现？</p>
+<blockquote>
+<ul>
+<li>在某些情况下，答案是清楚的，因为实现需要纹理映射，这通常仅在片段着色器中可用。然而，在许多情况下，没有一般的答案。顶点着色器中的实现往往更快（因为通常比片段更少的顶点），但是具有较低的图像质量（因为法向量和其他顶点属性可能会在顶点之间突然变化）。</li>
+</ul>
+</blockquote>
+<p>所以，如果你最关心性能，则顶点着色器中的实现可能是更好的选择。另一方面，如果您最关心图像质量，则片段着色器中的实现可能是更好的选择。</p>
+<p>应该在哪个坐标系中实现方程？</p>
+<blockquote>
+<ul>
+<li>没有一般的答案，因为不同坐标系下实现方程，需要不同的参数的转换，坐标系的选择取决于是否方便参数获得。在世界坐标中的实现通常是Unity中的一个很好的选择，因为在世界坐标中指定了许多统一变量。（在其他环境下，视图坐标中的实现非常常见。）</li>
+</ul>
+</blockquote>
+<p>我们从哪里得到方程的参数？</p>
+<blockquote>
+<ul>
+<li>常规的不透明度α由着色器属性指定（在RGBA颜色内）。法向量normal是一个标准的顶点输入参数。观察者的方向可以在顶点着色器中计算为从世界空间中的顶点位置到世界空间中的相机位置的向量_WorldSpaceCameraPos，由Unity提供。</li>
+</ul>
+</blockquote>
+<p>因此，在实现方程之前，我们只需要将顶点位置和法向量变换成世界空间。_Object2World是模型坐标系下转换至世界坐标系下的变换矩阵，如果对这一部分有疑问，可以看看我写的<a href="http://lyyua.com/2017/10/04/Matrix2/">矩阵在数学上的补充</a>中旋转和坐标系部分，_World2Object则与之相反，他们都是unity提供的，封装好的函数，只需要让_Object2World左乘坐标进行转换即可，例如:</p>
+<blockquote>
+<ul>
+<li>output.viewDir = normalize(_WorldSpaceCameraPos - mul(_Object2World, input.vertex).xyz);</li>
+</ul>
+</blockquote>
+<p>法向量是世界坐标下的，转换至模型坐标下</p>
+<blockquote>
+<ul>
+<li>output.normal = normalize(mul(float4(input.normal, 0.0), _World2Object).xyz);</li>
+</ul>
+</blockquote>
+<h2 id="完整代码"><a href="#完整代码" class="headerlink" title="完整代码"></a>完整代码</h2><p>如果对Blend有疑问可以看这篇<a href="http://lyyua.com/2017/10/13/ShaderBlend/">UnityShader-Blend</a></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div></pre></td><td class="code"><pre><div class="line">Shader &quot;Cg silhouette enhancement&quot; &#123;</div><div class="line">   Properties &#123;</div><div class="line">      _Color (&quot;Color&quot;, Color) = (1, 1, 1, 0.5) </div><div class="line">         // user-specified RGBA color including opacity</div><div class="line">   &#125;</div><div class="line">   SubShader &#123;</div><div class="line">      Tags &#123; &quot;Queue&quot; = &quot;Transparent&quot; &#125; </div><div class="line">         // draw after all opaque geometry has been drawn</div><div class="line">      Pass &#123; </div><div class="line">         ZWrite Off // don&apos;t occlude other objects</div><div class="line">         Blend SrcAlpha OneMinusSrcAlpha // 传统透明度混合</div><div class="line">         CGPROGRAM </div><div class="line">         #pragma vertex vert  </div><div class="line">         #pragma fragment frag </div><div class="line">         #include &quot;UnityCG.cginc&quot;</div><div class="line">         uniform float4 _Color; // 接收unity编辑器外部设置的参数</div><div class="line">         struct vertexInput &#123;</div><div class="line">            float4 vertex : POSITION;</div><div class="line">            float3 normal : NORMAL; //法线</div><div class="line">         &#125;;</div><div class="line">         struct vertexOutput &#123;</div><div class="line">            float4 pos : SV_POSITION;</div><div class="line">            float3 normal : TEXCOORD;</div><div class="line">            float3 viewDir : TEXCOORD1;</div><div class="line">         &#125;;</div><div class="line">         vertexOutput vert(vertexInput input) </div><div class="line">         &#123;</div><div class="line">            vertexOutput output;</div><div class="line">            float4x4 modelMatrix = _Object2World;</div><div class="line">            float4x4 modelMatrixInverse = _World2Object; </div><div class="line">            output.normal = normalize(</div><div class="line">               mul(float4(input.normal, 0.0), modelMatrixInverse).xyz);</div><div class="line">            output.viewDir = normalize(_WorldSpaceCameraPos </div><div class="line">               - mul(modelMatrix, input.vertex).xyz);</div><div class="line">            output.pos = mul(UNITY_MATRIX_MVP, input.vertex); //UNITY_MATRIX_MVP 模型到视图的投影矩阵</div><div class="line">            return output;</div><div class="line">         &#125;</div><div class="line">         float4 frag(vertexOutput input) : COLOR</div><div class="line">         &#123;</div><div class="line">            float3 normalDirection = normalize(input.normal);</div><div class="line">            float3 viewDirection = normalize(input.viewDir);</div><div class="line">            float newOpacity = min(1.0, _Color.a </div><div class="line">               / abs(dot(viewDirection, normalDirection)));</div><div class="line">            return float4(_Color.rgb, newOpacity);</div><div class="line">         &#125;</div><div class="line">         ENDCG</div><div class="line">      &#125;</div><div class="line">   &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>需要注意的是，我们将顶点输出参数output.normal和output.viewDir顶点着色器归一化，因为我们要在方向之间进行插值，而不会对其中的任何一个赋予更多或更少的权重。然而，在许多情况下，output.normal，output.viewDir的标准化在大多数情况下是不必要的。</p>
+<p>如果想要在现有效果上做一些修正，只需在|V·N|加上一些权重即可。</p>
+<p>注意，这个Shader是针对透明物体的轮廓增强，不透明物体的轮廓增强是另一套理论模型。</p>
+<p>参考资料：<a href="https://en.wikibooks.org/wiki/Cg_Programming/Unity/Silhouette_Enhancement" target="_blank" rel="external">https://en.wikibooks.org/wiki/Cg_Programming/Unity/Silhouette_Enhancement</a></p>
 
       
     </div>
@@ -381,7 +419,9 @@
       
         <div class="post-tags">
           
-            <a href="/tags/C/" rel="tag"># C#</a>
+            <a href="/tags/Unity/" rel="tag"># Unity</a>
+          
+            <a href="/tags/Shader/" rel="tag"># Shader</a>
           
         </div>
       
@@ -394,8 +434,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/06/22/Rain1/" rel="next" title="Rain AI，先从行为树的角度谈谈">
-                <i class="fa fa-chevron-left"></i> Rain AI，先从行为树的角度谈谈
+              <a href="/2017/10/13/ShaderBlend/" rel="next" title="UnityShader-Blend">
+                <i class="fa fa-chevron-left"></i> UnityShader-Blend
               </a>
             
           </div>
@@ -403,10 +443,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2017/07/02/Rain2/" rel="prev" title="Rain AI，从实现一个内部小队通信的角度谈谈（一）">
-                Rain AI，从实现一个内部小队通信的角度谈谈（一） <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -529,7 +565,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#线程计时器"><span class="nav-number">1.</span> <span class="nav-text">线程计时器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程传参"><span class="nav-number">2.</span> <span class="nav-text">线程传参</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#返回值"><span class="nav-number">3.</span> <span class="nav-text">返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#System-Timers-Timer"><span class="nav-number">4.</span> <span class="nav-text">System.Timers.Timer</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#透明物体的轮廓增强"><span class="nav-number">2.</span> <span class="nav-text">透明物体的轮廓增强</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">3.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#完整代码"><span class="nav-number">4.</span> <span class="nav-text">完整代码</span></a></li></ol></div>
             
 
           </div>
