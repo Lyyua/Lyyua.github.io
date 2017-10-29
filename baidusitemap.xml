@@ -4,6 +4,23 @@
 
     
   <url>
+    <loc>http://lyyua.com/2017/06/11/GPP2/</loc>
+    <lastmod>2017-10-29T07:37:47.237Z</lastmod>
+    <data>
+        <display>
+        <title>《游戏编程模式》设计模式之命令模式(二)</title>
+        <pubTime>2017-06-11T10:14:29.000Z</pubTime>
+        
+        <tag>设计模式</tag>
+         
+         
+           
+        </display>
+    </data>
+    </url>
+
+    
+  <url>
     <loc>http://lyyua.com/2017/10/04/Matrix2/</loc>
     <lastmod>2017-10-15T08:58:12.688Z</lastmod>
     <data>
@@ -264,23 +281,6 @@
         <pubTime>2017-06-14T15:45:59.000Z</pubTime>
         
         <tag>编辑器</tag>
-         
-         
-           
-        </display>
-    </data>
-    </url>
-
-    
-  <url>
-    <loc>http://lyyua.com/2017/06/11/GPP2/</loc>
-    <lastmod>2017-06-12T13:08:30.701Z</lastmod>
-    <data>
-        <display>
-        <title>《游戏编程模式》设计模式之命令模式(二)</title>
-        <pubTime>2017-06-11T10:14:29.000Z</pubTime>
-        
-        <tag>设计模式</tag>
          
          
            
