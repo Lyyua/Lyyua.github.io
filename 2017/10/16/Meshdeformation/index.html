@@ -1,0 +1,924 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Mesh," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="准备工作构建一个Mesh变形类，他需要MeshFilter组件支持后续的计算 1、首先需要获取到Mesh数据，只要有了Mesh数据就可以提取到原始的顶点位置，顶点空间信息是模型坐标系下的 2、发生变形后，还需要在变形的过程中实时更新各个顶点的变形速度（这是一个矢量） 12345678910111213141516[RequireComponent(typeof(MeshFilter))]publi">
+<meta name="keywords" content="Mesh">
+<meta property="og:type" content="article">
+<meta property="og:title" content="给Mesh施力变形">
+<meta property="og:url" content="http://lyyua.com/2017/10/16/Meshdeformation/index.html">
+<meta property="og:site_name" content="Back">
+<meta property="og:description" content="准备工作构建一个Mesh变形类，他需要MeshFilter组件支持后续的计算 1、首先需要获取到Mesh数据，只要有了Mesh数据就可以提取到原始的顶点位置，顶点空间信息是模型坐标系下的 2、发生变形后，还需要在变形的过程中实时更新各个顶点的变形速度（这是一个矢量） 12345678910111213141516[RequireComponent(typeof(MeshFilter))]publi">
+<meta property="og:image" content="http://lyyua.com/2017/10/16/Meshdeformation/force-offset.png">
+<meta property="og:image" content="http://lyyua.com/2017/10/16/Meshdeformation/attenuation.png">
+<meta property="og:image" content="http://lyyua.com/2017/10/16/Meshdeformation/pulling-back.png">
+<meta property="og:updated_time" content="2018-01-14T14:19:48.086Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="给Mesh施力变形">
+<meta name="twitter:description" content="准备工作构建一个Mesh变形类，他需要MeshFilter组件支持后续的计算 1、首先需要获取到Mesh数据，只要有了Mesh数据就可以提取到原始的顶点位置，顶点空间信息是模型坐标系下的 2、发生变形后，还需要在变形的过程中实时更新各个顶点的变形速度（这是一个矢量） 12345678910111213141516[RequireComponent(typeof(MeshFilter))]publi">
+<meta name="twitter:image" content="http://lyyua.com/2017/10/16/Meshdeformation/force-offset.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lyyua.com/2017/10/16/Meshdeformation/"/>
+
+
+
+
+
+  <title>给Mesh施力变形 | Back</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d4860eb791209892b971cbc05d6eb81a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Back</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/16/Meshdeformation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">给Mesh施力变形</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-16T20:16:06+08:00">
+                2017-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/10/16/Meshdeformation/" class="leancloud_visitors" data-flag-title="给Mesh施力变形">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>构建一个Mesh变形类，他需要MeshFilter组件支持后续的计算</p>
+<p>1、首先需要获取到Mesh数据，只要有了Mesh数据就可以提取到原始的顶点位置，顶点空间信息是模型坐标系下的</p>
+<p>2、发生变形后，还需要在变形的过程中实时更新各个顶点的变形速度（这是一个矢量）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[RequireComponent(typeof(MeshFilter))]</div><div class="line">public class MeshDeformer : MonoBehaviour &#123;</div><div class="line">	Mesh deformingMesh;</div><div class="line">    Vector3[] originalVertices; //原始网格数据</div><div class="line">    Vector3[] displacedVertices; //当前的顶点数据</div><div class="line">	Vector3[] vertexVelocities;   //各顶点的受力方向</div><div class="line">	void Start () &#123;</div><div class="line">		deformingMesh = GetComponent&lt;MeshFilter&gt;().mesh;</div><div class="line">		originalVertices = deformingMesh.vertices;</div><div class="line">		displacedVertices = new Vector3[originalVertices.Length];</div><div class="line">		for (int i = 0; i &lt; originalVertices.Length; i++) &#123;</div><div class="line">			displacedVertices[i] = originalVertices[i];</div><div class="line">		&#125;</div><div class="line">		vertexVelocities = new Vector3[originalVertices.Length];</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>碰撞点的获取，当按下左键时，发出射线，获取碰撞目标组件，对碰撞点进行施加力发生变形</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">using UnityEngine;</div><div class="line">public class MeshDeformerInput : MonoBehaviour &#123;</div><div class="line">	public float force = 10f;</div><div class="line">	void Update () &#123;</div><div class="line">		if (Input.GetMouseButton(0)) &#123;</div><div class="line">			HandleInput();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	void HandleInput () &#123;</div><div class="line">		Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);</div><div class="line">		RaycastHit hit;</div><div class="line">		if (Physics.Raycast(inputRay, out hit)) &#123;</div><div class="line">			MeshDeformer deformer = hit.collider.GetComponent&lt;MeshDeformer&gt;();</div><div class="line">			if (deformer) &#123;</div><div class="line">				Vector3 point = hit.point;</div><div class="line">				point += hit.normal * forceOffset;</div><div class="line">				deformer.AddDeformingForce(point, force);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="添加变形力"><a href="#添加变形力" class="headerlink" title="添加变形力"></a>添加变形力</h2><p>当射线碰撞到一个物体时，可以获取到在这个物体上接触点的法线方向，根据法线方向计算施力方向。如果 当前接触面是一个平坦的表面，此时这个顶点周围的点不知道该如何来处理施力方向。如果是根据施力点和周围点连线来决定施力方向，这将导致平坦表面上的顶点被推开，而不是向内推。</p>
+<p>所以解决方案是，把接触点沿着接触点的法线方向向外偏移一定距离。如图所示：</p>
+<p><img src="/2017/10/16/Meshdeformation/force-offset.png" alt=""></p>
+<p>现在开始处理变形力，这一部分借鉴了反平方定律去模拟力的衰减。</p>
+<div><br>$$<br>F_v = \frac{F}{d^2}<br>$$<br></div>
+
+<p>很显然，我们发现，当d&lt;1或者说d=0时，这个公式不能正常工作，d&lt;1时，力不是在衰减，而是在剧烈增加，所以这时候把公式进行了修正为了满足需求</p>
+<div><br>$$<br>F_v = \frac{F}{1+d^2}<br>$$<br></div>
+
+<p>两个函数的图像对比,整体趋势上符合常识</p>
+<p><img src="/2017/10/16/Meshdeformation/attenuation.png" alt=""></p>
+<p>所以衰减力为<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">float attenuatedForce = force / (1f + pointToVertex.sqrMagnitude);</div></pre></td></tr></table></figure></p>
+<p>又根据加速度公式，得出加速度a和力的关系，因为这里的力输入是一个点输入，m视为单位1。</p>
+<div><br>$$<br>a = \frac{F}{m}<br>$$<br></div>
+
+<p>速度变化量和加速度的关系</p>
+<div><br>$$<br>\Delta v = a \Delta t<br>$$<br></div>
+
+<p>根据两式得出速度变化量，这是一个标量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">float velocity = attenuatedForce * Time.deltaTime;</div></pre></td></tr></table></figure>
+<p>已知速度变化量之后，只需要把他和标准化后的施力方向相乘，即可得到经过力衰减计算的速度增量。</p>
+<p>当前阶段的完整代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div></pre></td><td class="code"><pre><div class="line">using UnityEngine;</div><div class="line">[RequireComponent(typeof(MeshFilter))]</div><div class="line">public class MeshDeformer : MonoBehaviour &#123;</div><div class="line">	Mesh deformingMesh;</div><div class="line">    Vector3[] originalVertices; //原始网格数据</div><div class="line">    Vector3[] displacedVertices; //当前顶点数据</div><div class="line">	Vector3[] vertexVelocities;   //各顶点的施力矢量</div><div class="line">	float uniformScale = 1f;  //相同的物体如果被缩放，他的密度应该更高，对相同力的响应程度就应该更弱，一种经验模型上的修正</div><div class="line">	void Start () &#123;</div><div class="line">		deformingMesh = GetComponent&lt;MeshFilter&gt;().mesh;</div><div class="line">		originalVertices = deformingMesh.vertices;</div><div class="line">		displacedVertices = new Vector3[originalVertices.Length];</div><div class="line">		for (int i = 0; i &lt; originalVertices.Length; i++) &#123;</div><div class="line">			displacedVertices[i] = originalVertices[i];</div><div class="line">		&#125;</div><div class="line">		vertexVelocities = new Vector3[originalVertices.Length];</div><div class="line">	&#125;</div><div class="line">	void Update () &#123;</div><div class="line">        uniformScale = transform.localScale.x;</div><div class="line">        for (int i = 0; i &lt; displacedVertices.Length; i++)</div><div class="line">        &#123;</div><div class="line">            UpdateVertex(i);</div><div class="line">        &#125;</div><div class="line">        deformingMesh.vertices = displacedVertices;</div><div class="line">        deformingMesh.RecalculateNormals();</div><div class="line">    &#125;</div><div class="line">	void UpdateVertex (int i) &#123;</div><div class="line">        Vector3 velocity = vertexVelocities[i];</div><div class="line">        displacedVertices[i] += velocity * (Time.deltaTime / uniformScale);</div><div class="line">    &#125;</div><div class="line">	public void AddDeformingForce (Vector3 point, float force) &#123;</div><div class="line">        //Mesh网格的空间位置使用的模型坐标系，所以射线点需要转换至模型空间下</div><div class="line">        point = transform.InverseTransformPoint(point);</div><div class="line">        for (int i = 0; i &lt; displacedVertices.Length; i++) &#123;</div><div class="line">			AddForceToVertex(i, point, force);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	void AddForceToVertex (int i, Vector3 point, float force) &#123;</div><div class="line">		Vector3 pointToVertex = displacedVertices[i] - point;</div><div class="line">		pointToVertex *= uniformScale; //物体缩放系数</div><div class="line">        float attenuatedForce = force / (1f + pointToVertex.sqrMagnitude); //计算力的衰减</div><div class="line">		float velocity = attenuatedForce * Time.deltaTime;</div><div class="line">		vertexVelocities[i] += pointToVertex.normalized * velocity;  //受力方向</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当完成这个部分时，Mesh的施力模型已经构建完成，我们只需要在Update中不断得根据速度变化量去修改顶点位置，即可以得到一个Mesh变形的效果，但同时有一个问题，什么时候Mesh变形结束呢？</p>
+<h2 id="添加弹力"><a href="#添加弹力" class="headerlink" title="添加弹力"></a>添加弹力</h2><p>按照经验模型可知，当你去挤压一个皮球时，皮球同时还有一个反方向的弹力，他存在一个恢复原状的趋势，所以接下来需要构建弹力模型。</p>
+<p><img src="/2017/10/16/Meshdeformation/pulling-back.png" alt=""></p>
+<p>根据当前顶点数据和原数据可知速度方向</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">Vector3 displacement = displacedVertices[i] - originalVertices[i];  //偏移方向</div></pre></td></tr></table></figure>
+<p>并没有对偏移方向进行标准化，因为他的模可以反映偏移量的大小，并且他是趋于原顶点的，顶点可以在原顶点的内侧或者外侧，相应的他的弹力方向也发生改变。</p>
+<p>就像推导施力模型时的速度变化量velocity一样</p>
+<div><br>$$<br>a = \frac{F}{m}    \\<br>\Delta v = a \Delta t \\<br>$$<br></div>
+
+<p>现在只需要让施力模型推导出的速度矢量减去弹力模型的速度矢量即可：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">vertexVelocities[i] -= displacement.normalized * springForce * Time.deltaTime</div></pre></td></tr></table></figure>
+<p>当前阶段完整代码如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div></pre></td><td class="code"><pre><div class="line">using UnityEngine;</div><div class="line">[RequireComponent(typeof(MeshFilter))]</div><div class="line">public class MeshDeformer : MonoBehaviour &#123;</div><div class="line">	public float springForce = 20f;</div><div class="line">	Mesh deformingMesh;</div><div class="line">    Vector3[] originalVertices; //原始网格数据</div><div class="line">    Vector3[] displacedVertices; //当前顶点数据</div><div class="line">	Vector3[] vertexVelocities;   //各顶点的受力方向</div><div class="line">	float uniformScale = 1f;  //相同的物体如果被缩放，他的密度应该更高，对相同力的响应程度就应该更弱，一种经验模型上的修正</div><div class="line">	void Start () &#123;</div><div class="line">		deformingMesh = GetComponent&lt;MeshFilter&gt;().mesh;</div><div class="line">		originalVertices = deformingMesh.vertices;</div><div class="line">		displacedVertices = new Vector3[originalVertices.Length];</div><div class="line">		for (int i = 0; i &lt; originalVertices.Length; i++) &#123;</div><div class="line">			displacedVertices[i] = originalVertices[i];</div><div class="line">		&#125;</div><div class="line">		vertexVelocities = new Vector3[originalVertices.Length];</div><div class="line">	&#125;</div><div class="line">	void Update () &#123;</div><div class="line">        uniformScale = transform.localScale.x;</div><div class="line">        for (int i = 0; i &lt; displacedVertices.Length; i++)</div><div class="line">        &#123;</div><div class="line">            UpdateVertex(i);</div><div class="line">        &#125;</div><div class="line">        deformingMesh.vertices = displacedVertices;</div><div class="line">        deformingMesh.RecalculateNormals();</div><div class="line">    &#125;</div><div class="line">	void UpdateVertex (int i) &#123;</div><div class="line">        Vector3 velocity = vertexVelocities[i];</div><div class="line">        Vector3 displacement = displacedVertices[i] - originalVertices[i];  //偏移方向 并没有对他进行标准化，因为他的模可以反映偏移量的大小,他是趋于原点的</div><div class="line">        displacement *= uniformScale;  //物体缩放系数</div><div class="line">        velocity -= displacement * springForce * Time.deltaTime; // 弹力矢量</div><div class="line">        vertexVelocities[i] = velocity; //如果此时没有施力的速度矢量输入，那么就意味着，这个参数只是弹力矢量</div><div class="line">        displacedVertices[i] += velocity * (Time.deltaTime / uniformScale);</div><div class="line">    &#125;</div><div class="line">	public void AddDeformingForce (Vector3 point, float force) &#123;</div><div class="line">        //Mesh网格的空间位置使用的模型坐标系，所以射线点需要转换至模型空间下</div><div class="line">        point = transform.InverseTransformPoint(point);</div><div class="line">        for (int i = 0; i &lt; displacedVertices.Length; i++) &#123;</div><div class="line">			AddForceToVertex(i, point, force);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	void AddForceToVertex (int i, Vector3 point, float force) &#123;</div><div class="line">		Vector3 pointToVertex = displacedVertices[i] - point;</div><div class="line">		pointToVertex *= uniformScale; //物体缩放系数</div><div class="line">        float attenuatedForce = force / (1f + pointToVertex.sqrMagnitude); //计算力的衰减</div><div class="line">		float velocity = attenuatedForce * Time.deltaTime;</div><div class="line">		vertexVelocities[i] += pointToVertex.normalized * velocity;  //受力方向</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="添加阻尼"><a href="#添加阻尼" class="headerlink" title="添加阻尼"></a>添加阻尼</h2><p>最终完整代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div></pre></td><td class="code"><pre><div class="line">using UnityEngine;</div><div class="line">[RequireComponent(typeof(MeshFilter))]</div><div class="line">public class MeshDeformer : MonoBehaviour &#123;</div><div class="line">	public float springForce = 20f;</div><div class="line">	public float damping = 5f;</div><div class="line">	Mesh deformingMesh;</div><div class="line">    Vector3[] originalVertices; //原始网格数据</div><div class="line">    Vector3[] displacedVertices; //当前顶点数据</div><div class="line">	Vector3[] vertexVelocities;   //各顶点的受力方向</div><div class="line">	float uniformScale = 1f;  //相同的物体如果被缩放，他的密度应该更高，对相同力的响应程度就应该更弱，一种经验模型上的修正</div><div class="line">	void Start () &#123;</div><div class="line">		deformingMesh = GetComponent&lt;MeshFilter&gt;().mesh;</div><div class="line">		originalVertices = deformingMesh.vertices;</div><div class="line">		displacedVertices = new Vector3[originalVertices.Length];</div><div class="line">		for (int i = 0; i &lt; originalVertices.Length; i++) &#123;</div><div class="line">			displacedVertices[i] = originalVertices[i];</div><div class="line">		&#125;</div><div class="line">		vertexVelocities = new Vector3[originalVertices.Length];</div><div class="line">	&#125;</div><div class="line">	void Update () &#123;</div><div class="line">        uniformScale = transform.localScale.x;</div><div class="line">        for (int i = 0; i &lt; displacedVertices.Length; i++)</div><div class="line">        &#123;</div><div class="line">            UpdateVertex(i);</div><div class="line">        &#125;</div><div class="line">        deformingMesh.vertices = displacedVertices;</div><div class="line">        deformingMesh.RecalculateNormals();</div><div class="line">    &#125;</div><div class="line">	void UpdateVertex (int i) &#123;</div><div class="line">        Vector3 velocity = vertexVelocities[i];</div><div class="line">        Vector3 displacement = displacedVertices[i] - originalVertices[i];  //偏移方向</div><div class="line">        displacement *= uniformScale;  //物体缩放系数</div><div class="line">        velocity -= displacement * springForce * Time.deltaTime; // 弹力矢量</div><div class="line">        velocity *= 1f - damping * Time.deltaTime;  //阻尼系数</div><div class="line">        vertexVelocities[i] = velocity;</div><div class="line">        displacedVertices[i] += velocity * (Time.deltaTime / uniformScale);</div><div class="line">    &#125;</div><div class="line">	public void AddDeformingForce (Vector3 point, float force) &#123;</div><div class="line">        //Mesh网格的空间位置使用的模型坐标系，所以射线点需要转换至模型空间下</div><div class="line">        point = transform.InverseTransformPoint(point);</div><div class="line">        for (int i = 0; i &lt; displacedVertices.Length; i++) &#123;</div><div class="line">			AddForceToVertex(i, point, force);</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	void AddForceToVertex (int i, Vector3 point, float force) &#123;</div><div class="line">		Vector3 pointToVertex = displacedVertices[i] - point;</div><div class="line">		pointToVertex *= uniformScale; //物体缩放系数</div><div class="line">        float attenuatedForce = force / (1f + pointToVertex.sqrMagnitude); //计算力的衰减</div><div class="line">		float velocity = attenuatedForce * Time.deltaTime;</div><div class="line">		vertexVelocities[i] += pointToVertex.normalized * velocity;  //受力方向</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Mesh/" rel="tag"># Mesh</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/15/Silhouette_Enhancement/" rel="next" title="UnityShader-透明物体的轮廓增强">
+                <i class="fa fa-chevron-left"></i> UnityShader-透明物体的轮廓增强
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/13/线程/" rel="prev" title="C#线程原理">
+                C#线程原理 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTgyMy82Mzg5"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Lyu" />
+          <p class="site-author-name" itemprop="name">Lyu</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#准备工作"><span class="nav-number">1.</span> <span class="nav-text">准备工作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加变形力"><span class="nav-number">2.</span> <span class="nav-text">添加变形力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加弹力"><span class="nav-number">3.</span> <span class="nav-text">添加弹力</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#添加阻尼"><span class="nav-number">4.</span> <span class="nav-text">添加阻尼</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lyu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9nfwurrfWspn4Ca1tpt8c4Bb-gzGzoHsz", "SmeoWp4XeDOxoGNiSegxpw2g");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>

@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="线程," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="前言原先的操作系统没有线程的概念，整个系统只运行一个执行线程，但是只要当前应用程序出现故障卡死，无法退出，就只能按重启键，这对用户体验非常不好。 在设计OS之初，引出了进程，进程代表着一个应用程序实例的所有资源集合，同时，还确保了一个进程中的代码和数据无法由另一个进程访问，另外进程无法访问OS的内核代码，这还确保了安全性。 为了防止某个应用程序上出现死循环而我们却无可奈何，所以在每个应用程序上提供">
+<meta name="keywords" content="线程">
+<meta property="og:type" content="article">
+<meta property="og:title" content="C#线程原理">
+<meta property="og:url" content="http://lyyua.com/2017/12/13/线程/index.html">
+<meta property="og:site_name" content="Back">
+<meta property="og:description" content="前言原先的操作系统没有线程的概念，整个系统只运行一个执行线程，但是只要当前应用程序出现故障卡死，无法退出，就只能按重启键，这对用户体验非常不好。 在设计OS之初，引出了进程，进程代表着一个应用程序实例的所有资源集合，同时，还确保了一个进程中的代码和数据无法由另一个进程访问，另外进程无法访问OS的内核代码，这还确保了安全性。 为了防止某个应用程序上出现死循环而我们却无可奈何，所以在每个应用程序上提供">
+<meta property="og:updated_time" content="2018-01-14T14:24:37.834Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="C#线程原理">
+<meta name="twitter:description" content="前言原先的操作系统没有线程的概念，整个系统只运行一个执行线程，但是只要当前应用程序出现故障卡死，无法退出，就只能按重启键，这对用户体验非常不好。 在设计OS之初，引出了进程，进程代表着一个应用程序实例的所有资源集合，同时，还确保了一个进程中的代码和数据无法由另一个进程访问，另外进程无法访问OS的内核代码，这还确保了安全性。 为了防止某个应用程序上出现死循环而我们却无可奈何，所以在每个应用程序上提供">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lyyua.com/2017/12/13/线程/"/>
+
+
+
+
+
+  <title>C#线程原理 | Back</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d4860eb791209892b971cbc05d6eb81a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Back</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/12/13/线程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">C#线程原理</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-13T09:51:44+08:00">
+                2017-12-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/13/线程/" class="leancloud_visitors" data-flag-title="C#线程原理">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>原先的操作系统没有线程的概念，整个系统只运行一个执行线程，但是只要当前应用程序出现故障卡死，无法退出，就只能按重启键，这对用户体验非常不好。</p>
+<p>在设计OS之初，引出了进程，进程代表着一个应用程序实例的所有资源集合，同时，还确保了一个进程中的代码和数据无法由另一个进程访问，另外进程无法访问OS的内核代码，这还确保了安全性。</p>
+<p>为了防止某个应用程序上出现死循环而我们却无可奈何，所以在每个应用程序上提供了该程序专用的线程，借用上下文结构来实现多个线程跳转，来进行干涉。</p>
+<p>比如某个应用卡死，你会需要唤出任务管理器线程，对无法响应的线程强行关闭，此时发生的事情就是，I/O设备监测线程检测到你的输入，上下文切换到任务管理器线程，选定了某个应用程序后，再切换到该应用程序下的专用线程进行强制关闭。</p>
+<h2 id="线程组成"><a href="#线程组成" class="headerlink" title="线程组成"></a>线程组成</h2><p>为了实现这些功能，通常线程需要这几个要素组成。</p>
+<p>线程内核对象</p>
+<blockquote>
+<ul>
+<li>线程属性描述模块</li>
+<li>线程上下文</li>
+</ul>
+</blockquote>
+<p>线程环境块</p>
+<blockquote>
+<ul>
+<li>异常处理链首</li>
+<li>线程本地存储数据</li>
+<li>图形输出接口</li>
+</ul>
+</blockquote>
+<p>用户模式栈</p>
+<blockquote>
+<ul>
+<li>存储线程中传给方法的局部变量和实参。</li>
+<li>返回地址（方法返回时，线程应该从什么地方继续执行）</li>
+<li>默认分配1MB内存</li>
+</ul>
+</blockquote>
+<p>内核模式栈</p>
+<blockquote>
+<ul>
+<li>应用程序代码向操作系统中的内核模式函数传递实参时。</li>
+<li>针对传递的实参，OS把他们从线程用户模式栈复制到线程内核模式栈。（出于安全）</li>
+</ul>
+</blockquote>
+<h2 id="创建线程"><a href="#创建线程" class="headerlink" title="创建线程"></a>创建线程</h2><p>当在一个进程中创建一个线程时，他会调用进程中加载的所有非托管DLL的Dllmain方法，并向该方法传递DLL_THREAD_ATTAHCH标志，相应的，线程终止时，会调用进程中的所有非托管DLL的DllMain方法，向方法传递DLL_THREAD_DETACH标志。有的DLL需要获取这些通知，才能正确的为创建的线程执行初始化，或资源清理操作。</p>
+<p>这意味着，创建线程和终止线程的开销是巨大的。</p>
+<h2 id="上下文切换"><a href="#上下文切换" class="headerlink" title="上下文切换"></a>上下文切换</h2><p>上下文切换的一大好处是，当你杀死某个死循环的应用程序时，其他进程的数据不会丢失，更不需要重启计算机。</p>
+<p>单CPU计算机同时只能做一件事情。OS在任何时刻只将一个线程分配给一个CPU，当线程运行一定时间片后，OS上下文切换到另外一个线程。</p>
+<p>上下文切换时，涉及的操作</p>
+<blockquote>
+<ul>
+<li>CPU寄存器的值保存（更新？）到当前正在运行的线程内核对象内部的一个上下文结构中。</li>
+<li>从现有线程集合中选出一个线程供调度。</li>
+<li>将所选上下文结构中的值加载到CPU的寄存器中。</li>
+</ul>
+</blockquote>
+<p>Windows大约每30ms执行一次上下文切换，上下文切换的过程是净开销，不会带来任何内存或性能上的收益，他只是向用户提供一个响应灵敏的操作系统。</p>
+<p>当上下文切换到另一个线程时，需要执行的代码和数据很可能不在CPU的高速缓存中，此时需要访问RAM来填充缓存，以恢复高速执行状态，但是极有可能在一个短暂的时间片后，又开始了一个上下文切换。</p>
+<p>此外，在垃圾回收时,CLR必须挂起所有线程。</p>
+<p>调试器遇到断点时，windows也要挂起调试的应用程序中的所有线程</p>
+<h2 id="线程优先级"><a href="#线程优先级" class="headerlink" title="线程优先级"></a>线程优先级</h2><p>首先要声明的是，windows永远不会调度进程，它只调度线程，进程只是帮助理解不同应用程序之间关系，提出的一个抽象概念。</p>
+<p>windows可以被称为抢占式多线程操作系统，因为，线程可以在任何时间停止（被抢占）并调度另外一个线程。开发者在这里有控制权，但是不多。</p>
+<p>每个线程分配了0到31的优先级。系统首先检查优先级31的线程，接下来以轮流方式调度。</p>
+<p>当一个线程的时间片结束，系统检查是否有另一个优先级为31的线程可以运行，如果有，就运行将那个线程分配给CPU。只要存在可调度的优先级31的线程，系统就永远不会将优先级0-30的任何线程分配给CPU。</p>
+<p>系统启动时，会创建一个特殊的0线程，没有其他线程工作时，0线程将系统RAM所有空闲页清空。</p>
+<p>而开发者通常不好确定具体的优先级数，是15，还是20，所以windows抽象了优先级。</p>
+<h3 id="应用程序之间的优先级"><a href="#应用程序之间的优先级" class="headerlink" title="应用程序之间的优先级"></a>应用程序之间的优先级</h3><p>windows支持6个进程优先级：Idle,Below Normal,Normal,Above Normal,High,RealTime</p>
+<p>通常默认是Normal，比较好理解的一个例子就是：普通应用程序和屏幕保护程序。</p>
+<p>高的优先级，比如RealTime可能会使你的I/O输入响应延迟，让用户感觉“死机”。</p>
+<h3 id="进程优先和线程优先的映射"><a href="#进程优先和线程优先的映射" class="headerlink" title="进程优先和线程优先的映射"></a>进程优先和线程优先的映射</h3><p>说明的问题是，优先级Normal的进程内优先级Normal的线程，和优先级High的进程内优先级Normal的线程之间的关系。</p>
+<h3 id="前后线程，后台线程"><a href="#前后线程，后台线程" class="headerlink" title="前后线程，后台线程"></a>前后线程，后台线程</h3><p>CLR将每个线程要么视为前台线程，要么视为后台线程，一个进程的所有前台线程停止运行时，CLR强制终止仍在运行的任何后台线程，这些后台线程被直接终止，不抛出异常。</p>
+<p>换句话说，只要有一个前台线程在运行，进程就不会退出。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/线程/" rel="tag"># 线程</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/16/Meshdeformation/" rel="next" title="给Mesh施力变形">
+                <i class="fa fa-chevron-left"></i> 给Mesh施力变形
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/15/lua/" rel="prev" title="Lua简单学习">
+                Lua简单学习 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTgyMy82Mzg5"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Lyu" />
+          <p class="site-author-name" itemprop="name">Lyu</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">21</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">10</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程组成"><span class="nav-number">2.</span> <span class="nav-text">线程组成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建线程"><span class="nav-number">3.</span> <span class="nav-text">创建线程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#上下文切换"><span class="nav-number">4.</span> <span class="nav-text">上下文切换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#线程优先级"><span class="nav-number">5.</span> <span class="nav-text">线程优先级</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#应用程序之间的优先级"><span class="nav-number">5.1.</span> <span class="nav-text">应用程序之间的优先级</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#进程优先和线程优先的映射"><span class="nav-number">5.2.</span> <span class="nav-text">进程优先和线程优先的映射</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#前后线程，后台线程"><span class="nav-number">5.3.</span> <span class="nav-text">前后线程，后台线程</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lyu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9nfwurrfWspn4Ca1tpt8c4Bb-gzGzoHsz", "SmeoWp4XeDOxoGNiSegxpw2g");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
