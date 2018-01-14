@@ -93,20 +93,20 @@
 
 
 
-<meta name="description" content="准备工作构建一个Mesh变形类，他需要MeshFilter组件支持后续的计算 1、首先需要获取到Mesh数据，只要有了Mesh数据就可以提取到原始的顶点位置，顶点空间信息是模型坐标系下的 2、发生变形后，还需要在变形的过程中实时更新各个顶点的变形速度（这是一个矢量） 12345678910111213141516[RequireComponent(typeof(MeshFilter))]publi">
+<meta name="description" content="准备工作构建一个Mesh变形类，他需要MeshFilter组件支持后续的计算 1、首先需要获取到Mesh数据，只要有了Mesh数据就可以提取到原始的顶点位置，顶点空间信息是模型坐标系下的 2、发生变形后，还需要在变形的过程中实时更新各个顶点的变形速度（这是一个矢量）">
 <meta name="keywords" content="Mesh">
 <meta property="og:type" content="article">
 <meta property="og:title" content="给Mesh施力变形">
 <meta property="og:url" content="http://lyyua.com/2017/10/16/Meshdeformation/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="准备工作构建一个Mesh变形类，他需要MeshFilter组件支持后续的计算 1、首先需要获取到Mesh数据，只要有了Mesh数据就可以提取到原始的顶点位置，顶点空间信息是模型坐标系下的 2、发生变形后，还需要在变形的过程中实时更新各个顶点的变形速度（这是一个矢量） 12345678910111213141516[RequireComponent(typeof(MeshFilter))]publi">
+<meta property="og:description" content="准备工作构建一个Mesh变形类，他需要MeshFilter组件支持后续的计算 1、首先需要获取到Mesh数据，只要有了Mesh数据就可以提取到原始的顶点位置，顶点空间信息是模型坐标系下的 2、发生变形后，还需要在变形的过程中实时更新各个顶点的变形速度（这是一个矢量）">
 <meta property="og:image" content="http://lyyua.com/2017/10/16/Meshdeformation/force-offset.png">
 <meta property="og:image" content="http://lyyua.com/2017/10/16/Meshdeformation/attenuation.png">
 <meta property="og:image" content="http://lyyua.com/2017/10/16/Meshdeformation/pulling-back.png">
-<meta property="og:updated_time" content="2018-01-14T14:19:48.086Z">
+<meta property="og:updated_time" content="2018-01-14T14:30:19.725Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="给Mesh施力变形">
-<meta name="twitter:description" content="准备工作构建一个Mesh变形类，他需要MeshFilter组件支持后续的计算 1、首先需要获取到Mesh数据，只要有了Mesh数据就可以提取到原始的顶点位置，顶点空间信息是模型坐标系下的 2、发生变形后，还需要在变形的过程中实时更新各个顶点的变形速度（这是一个矢量） 12345678910111213141516[RequireComponent(typeof(MeshFilter))]publi">
+<meta name="twitter:description" content="准备工作构建一个Mesh变形类，他需要MeshFilter组件支持后续的计算 1、首先需要获取到Mesh数据，只要有了Mesh数据就可以提取到原始的顶点位置，顶点空间信息是模型坐标系下的 2、发生变形后，还需要在变形的过程中实时更新各个顶点的变形速度（这是一个矢量）">
 <meta name="twitter:image" content="http://lyyua.com/2017/10/16/Meshdeformation/force-offset.png">
 
 
@@ -347,7 +347,7 @@
       
         <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>构建一个Mesh变形类，他需要MeshFilter组件支持后续的计算</p>
 <p>1、首先需要获取到Mesh数据，只要有了Mesh数据就可以提取到原始的顶点位置，顶点空间信息是模型坐标系下的</p>
-<p>2、发生变形后，还需要在变形的过程中实时更新各个顶点的变形速度（这是一个矢量）</p>
+<p>2、发生变形后，还需要在变形的过程中实时更新各个顶点的变形速度（这是一个矢量）<a id="more"></a></p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">[RequireComponent(typeof(MeshFilter))]</div><div class="line">public class MeshDeformer : MonoBehaviour &#123;</div><div class="line">	Mesh deformingMesh;</div><div class="line">    Vector3[] originalVertices; //原始网格数据</div><div class="line">    Vector3[] displacedVertices; //当前的顶点数据</div><div class="line">	Vector3[] vertexVelocities;   //各顶点的受力方向</div><div class="line">	void Start () &#123;</div><div class="line">		deformingMesh = GetComponent&lt;MeshFilter&gt;().mesh;</div><div class="line">		originalVertices = deformingMesh.vertices;</div><div class="line">		displacedVertices = new Vector3[originalVertices.Length];</div><div class="line">		for (int i = 0; i &lt; originalVertices.Length; i++) &#123;</div><div class="line">			displacedVertices[i] = originalVertices[i];</div><div class="line">		&#125;</div><div class="line">		vertexVelocities = new Vector3[originalVertices.Length];</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>碰撞点的获取，当按下左键时，发出射线，获取碰撞目标组件，对碰撞点进行施加力发生变形</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">using UnityEngine;</div><div class="line">public class MeshDeformerInput : MonoBehaviour &#123;</div><div class="line">	public float force = 10f;</div><div class="line">	void Update () &#123;</div><div class="line">		if (Input.GetMouseButton(0)) &#123;</div><div class="line">			HandleInput();</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">	void HandleInput () &#123;</div><div class="line">		Ray inputRay = Camera.main.ScreenPointToRay(Input.mousePosition);</div><div class="line">		RaycastHit hit;</div><div class="line">		if (Physics.Raycast(inputRay, out hit)) &#123;</div><div class="line">			MeshDeformer deformer = hit.collider.GetComponent&lt;MeshDeformer&gt;();</div><div class="line">			if (deformer) &#123;</div><div class="line">				Vector3 point = hit.point;</div><div class="line">				point += hit.normal * forceOffset;</div><div class="line">				deformer.AddDeformingForce(point, force);</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
