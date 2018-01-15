@@ -93,18 +93,18 @@
 
 
 
-<meta name="description" content="Jar包制作环境确认：   jdk安装和环境变量配置是否完成 Android Studio 开发工具是否翻墙安装完整   使用AndroidStudio制作Jar包 方法1新建一个Moudle，这里取名字叫APP，把需要导出jar包的java文件，然后添加好代码的依赖关系。按照下面的配置参照修改当前build.Gradle文件123456789101112131415161718192021222">
+<meta name="description" content="前言从jar包制作到Unity-Android间的通信。">
 <meta name="keywords" content="android">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Unity&amp;Android">
 <meta property="og:url" content="http://lyyua.com/2017/11/15/Unity&Android/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="Jar包制作环境确认：   jdk安装和环境变量配置是否完成 Android Studio 开发工具是否翻墙安装完整   使用AndroidStudio制作Jar包 方法1新建一个Moudle，这里取名字叫APP，把需要导出jar包的java文件，然后添加好代码的依赖关系。按照下面的配置参照修改当前build.Gradle文件123456789101112131415161718192021222">
+<meta property="og:description" content="前言从jar包制作到Unity-Android间的通信。">
 <meta property="og:image" content="http://lyyua.com/2017/11/15/Unity&Android/UnityPluginsLevel.png">
-<meta property="og:updated_time" content="2018-01-15T02:44:57.797Z">
+<meta property="og:updated_time" content="2018-01-15T10:51:59.436Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Unity&amp;Android">
-<meta name="twitter:description" content="Jar包制作环境确认：   jdk安装和环境变量配置是否完成 Android Studio 开发工具是否翻墙安装完整   使用AndroidStudio制作Jar包 方法1新建一个Moudle，这里取名字叫APP，把需要导出jar包的java文件，然后添加好代码的依赖关系。按照下面的配置参照修改当前build.Gradle文件123456789101112131415161718192021222">
+<meta name="twitter:description" content="前言从jar包制作到Unity-Android间的通信。">
 <meta name="twitter:image" content="http://lyyua.com/2017/11/15/Unity&Android/UnityPluginsLevel.png">
 
 
@@ -343,7 +343,8 @@
       
 
       
-        <h2 id="Jar包制作"><a href="#Jar包制作" class="headerlink" title="Jar包制作"></a>Jar包制作</h2><p>环境确认：</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>从jar包制作到Unity-Android间的通信。<a id="more"></a></p>
+<h2 id="Jar包制作"><a href="#Jar包制作" class="headerlink" title="Jar包制作"></a>Jar包制作</h2><p>环境确认：</p>
 <blockquote>
 <ul>
 <li>jdk安装和环境变量配置是否完成</li>
@@ -579,7 +580,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Jar包制作"><span class="nav-number">1.</span> <span class="nav-text">Jar包制作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法1"><span class="nav-number">1.1.</span> <span class="nav-text">方法1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法2"><span class="nav-number">1.2.</span> <span class="nav-text">方法2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法3"><span class="nav-number">1.3.</span> <span class="nav-text">方法3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入Unity"><span class="nav-number">2.</span> <span class="nav-text">导入Unity</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Plugins-Android-bin"><span class="nav-number">2.1.</span> <span class="nav-text">Plugins/Android/bin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Plugins-Android-libs"><span class="nav-number">2.2.</span> <span class="nav-text">Plugins/Android/libs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Plugins-Android-res"><span class="nav-number">2.3.</span> <span class="nav-text">Plugins/Android/res</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#和Android通信"><span class="nav-number">3.</span> <span class="nav-text">和Android通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#调用静态方法"><span class="nav-number">3.1.</span> <span class="nav-text">调用静态方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用方法"><span class="nav-number">3.2.</span> <span class="nav-text">调用方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决发布问题"><span class="nav-number">4.</span> <span class="nav-text">解决发布问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安卓发布后的调试"><span class="nav-number">5.</span> <span class="nav-text">安卓发布后的调试</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jar包制作"><span class="nav-number">2.</span> <span class="nav-text">Jar包制作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法1"><span class="nav-number">2.1.</span> <span class="nav-text">方法1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法2"><span class="nav-number">2.2.</span> <span class="nav-text">方法2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法3"><span class="nav-number">2.3.</span> <span class="nav-text">方法3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入Unity"><span class="nav-number">3.</span> <span class="nav-text">导入Unity</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Plugins-Android-bin"><span class="nav-number">3.1.</span> <span class="nav-text">Plugins/Android/bin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Plugins-Android-libs"><span class="nav-number">3.2.</span> <span class="nav-text">Plugins/Android/libs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Plugins-Android-res"><span class="nav-number">3.3.</span> <span class="nav-text">Plugins/Android/res</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#和Android通信"><span class="nav-number">4.</span> <span class="nav-text">和Android通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#调用静态方法"><span class="nav-number">4.1.</span> <span class="nav-text">调用静态方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用方法"><span class="nav-number">4.2.</span> <span class="nav-text">调用方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决发布问题"><span class="nav-number">5.</span> <span class="nav-text">解决发布问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安卓发布后的调试"><span class="nav-number">6.</span> <span class="nav-text">安卓发布后的调试</span></a></li></ol></div>
             
 
           </div>
