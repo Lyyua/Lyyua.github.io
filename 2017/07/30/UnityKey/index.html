@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lyyua.com/2017/07/30/UnityKey/index.html">
 <meta property="og:site_name" content="Back">
 <meta property="og:description" content="随便写点轻松的话题，大概是去年到现在陆陆续续记得一些小玩意，不仅限与此，2333">
-<meta property="og:updated_time" content="2017-08-15T13:35:04.650Z">
+<meta property="og:updated_time" content="2018-01-22T03:04:41.168Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="UnityKey">
 <meta name="twitter:description" content="随便写点轻松的话题，大概是去年到现在陆陆续续记得一些小玩意，不仅限与此，2333">
@@ -353,19 +353,31 @@
 <p>在构造函数或字段初始化方法中调用Unity API函数是不科学的使用方法</p>
 <p>当Tag和Layer过多时，一个字符串管理类会使调用很方便也很准确。</p>
 <p>使用Vector3.Scale计算物体正前方向量在(1,0,1)，也就是XZ平面个上的分量Camera.main.transform.position += Vector3.Scale(Camera.main.transform.forward, new Vector3(1, 0, 1)).normalized * Time.deltaTime; 其实换言之就是把一个前向向量的高度给变成0。比如某一个前向向量是(1,1,1),这个方向呢，就是前向左转45°，再仰头这么多角度$$arctan(1/\sqrt{2})$$,如果按照这个前向向量来移动的话，肯定是朝斜向上的角度移动，但是我不希望如此，于是我把它变成(1,0,1)，也就是他只旋转，不仰头。</p>
+<p>应对旋转到特定朝向，通过四元数乘法计算rotation，类似矩阵乘法。<br>Vector3 dir = (target.position - self.position).normalized;<br>Quaternion q = Quaternion.FromToRotation(self.forward, dir);<br>self.rotation *= q;<br>或者直接用函数Quaternion.LookRotation，免去输入Quaternion.FromToRotation(self.forward, dir)中的forward<br>Quaternion rot = self.rotation;<br>Quaternion toTarget = Quaternion.LookRotation(dir);<br>self.rotation = toTarget;<br>如果要插值的话<br>self.rotation = Quaternion.Slerp(self.rotation, toTarget, 0.1f);</p>
 <p>http协议永远都是客户端发起请求，服务端回送响应，服务器不会主动发送消息给客户端。</p>
-<h2 id="利用委托进行异步线程与Unity主线程的通信："><a href="#利用委托进行异步线程与Unity主线程的通信：" class="headerlink" title="利用委托进行异步线程与Unity主线程的通信："></a>利用委托进行异步线程与Unity主线程的通信：</h2><p>在专用于处理通信的工具类中，规范委托，建立事件，Update中检测事件是否有注册方法，如果有注册方法在进行处理，</p>
-<p>1、记得要在事件注册的地方加锁，在事件处理的地方也加锁。不然在没有注销的时候，出现再一次调用和注册，相当于把相同的方法多处理了几次。</p>
-<p>2、但是委托的多播只能传一次参。使用起来会不方便，若是不传参倒也无所谓。</p>
+<h2 id="异步线程与Unity主线程的通信："><a href="#异步线程与Unity主线程的通信：" class="headerlink" title="异步线程与Unity主线程的通信："></a>异步线程与Unity主线程的通信：</h2><p>在专用于处理通信的工具类中，规范委托，建立事件，Update中检测事件是否有注册方法，如果有注册方法在进行处理，</p>
+<p>1、记得要在事件注册的地方加锁，在事件处理的地方也加锁。不然在没有注销的时候，出现再一次调用和注册，相当于把相同的方法多处理了几次。但是委托的多播只能传一次参。使用起来会不方便，若是不传参倒也无所谓。</p>
 <p>这种思路产生的原因在，在写代码时我希望接收到msg之后解析，然后直接调用某个方法，但是没考虑到msg的执行顺序对程序运行的影响。<br>其实最简洁明了的方法是，在当前脚本下起一个协程去定时监测某个变量，如果其他的异步线程需要调用到主线程的方法时，就把变量翻过来，然后协程的下文就是执行内容。这样的弊端是可能会有很多标记。</p>
-<p>建立一个委托方法队列delegateMethodQueue，在Update中检测是否列表不为空，循环列表长度次，每次pop一个方法</p>
-<p>但是队列会使整个流程变得很清晰，以上的方法都是少不更事时想出来的歪点子。</p>
-<p>Async异步编程中的 await作用相当于Unity中的协程，在WaitForSeconds（）后才能执行后面的语句。</p>
+<p>2、建立一个委托方法队列AsyncParamQue，enqueue()或pop()的地方加锁，在Update中检测队列是否不为空，每次pop一个方法，如果即时性要求高的全部pop出，同时可以多分几个队列，不过需要注意的是，队列之间存储的功能必须是完全解耦的。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">public class AsyncParam</div><div class="line">&#123;</div><div class="line">    public Action&lt;object&gt; action;</div><div class="line">    public object state;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>Async异步编程中的 await效果上看起来相当于Unity中的协程，在WaitForSeconds（）后才能执行后面的语句。</p>
 <p>开启异步线程进行复杂计算，防止帧卡顿，比如说深拷贝的过程，我不希望卡住我Unity的主线程</p>
 <p>委托注册记得注销，在Unity中，组件销毁的同时，需要把当前组件下的委托注销，比如文件IO,网络IO，WWW类，都需要手动释放资源</p>
-<h2 id="AssetBundle打包数据："><a href="#AssetBundle打包数据：" class="headerlink" title="AssetBundle打包数据："></a>AssetBundle打包数据：</h2><p>把对象打包成.asset文件，只能打简单的基本类型，可以打包Vector3，Vector3[]不能打包，再把.aseet打包至AssetBundle，资源动态加载,支持热更新。<br>最后使用json把结构体转成string，再把string打包成AssetBundle<br>保存的结构体继承ScriptableObject，</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">public class NodesSaveInfoStruct : ScriptableObject</div></pre></td></tr></table></figure>
+<h2 id="AssetBundle打包数据："><a href="#AssetBundle打包数据：" class="headerlink" title="AssetBundle打包数据："></a>AssetBundle打包数据：</h2><h3 id="新版AssetBundle功能"><a href="#新版AssetBundle功能" class="headerlink" title="新版AssetBundle功能"></a>新版AssetBundle功能</h3><p>自动处理依赖关系，只需要给相应的资源加上标签，再打包下来，依赖关系是会记录下来的，这样有效的避免了重复资源的打包。就像这样：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">AssetBundleManifest:</div><div class="line">  AssetBundleInfos:</div><div class="line">    Info_0:</div><div class="line">      Name: hitbloodtexture  //贴图</div><div class="line">      Dependencies: &#123;&#125; 		//无依赖项</div><div class="line">    Info_1:</div><div class="line">      Name: hitbloodmat  //材质</div><div class="line">      Dependencies:  //依赖项</div><div class="line">        Dependency_0: hitbloodtexture	//依赖贴图</div><div class="line">        Dependency_1: shader		//依赖shader</div><div class="line">    Info_2:</div><div class="line">      Name: hitprefab		//预制体</div><div class="line">      Dependencies:</div><div class="line">        Dependency_0: hitbloodmat   //依赖材质球</div><div class="line">    Info_3:</div><div class="line">      Name: shader		//shader</div><div class="line">      Dependencies: &#123;&#125;	//无依赖项</div></pre></td></tr></table></figure>
+<blockquote>
+<ul>
+<li>不过需要我们对资源进行合理的管理，比如在加载hitPrefab预制体时，需要先加载他的材质球，而他的材质球依赖贴图和Shader</li>
+<li>加载顺序： shader–&gt;贴图–&gt;材质–&gt;预制体</li>
+</ul>
+</blockquote>
+<p>把对象打包成.asset文件，只能打简单的基本类型，可以打包Vector3，Vector3[]不能打包，再把.aseet打包至AssetBundle，资源动态加载,支持热更新。<br>最后使用json把结构体转成string，再把string打包成AssetBundle<br>保存的结构体继承ScriptableObject，</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[CreateAssetMenu]  //加上这个特性标签，允许在Project中快捷的右键创建</div><div class="line">public class NodesSaveInfoStruct : ScriptableObject</div></pre></td></tr></table></figure>
 <p>ScriptableObject像是享元模式的应用，表现形式就像mesh，假设一个动画有120帧，模型有80个节点，构建了80个数组，每个数组存储对应一个节点的euler和localposition，假设存储动画的结构体大小大概是200kb，如果实例化十次该预制体，不使用享元模式，也不使用ScriptableObject打包的.aseet文件，需要耗费2MB左右的空间，如果使用ScriptableObject，只需要200KB，而不是2MB。</p>
+<blockquote>
+<ul>
+<li>修正看法：强行拉到享元模式来解释不是很好，加载一个ScritptableObject相当于一个lua的全局table，或者表示为一个全局静态字段。</li>
+</ul>
+</blockquote>
 <p>同时你也可以选择将结构体转成string，写入txt，xml之类的文件，再给他们标记为打包状态，然后你把这些txt，xml文件打包，读取的时候解包，再按照约定解析你在txt，xml保存的数据。</p>
 <p>编辑器下手动导出.asset文件</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">[MenuItem(&quot;Assets/Export&quot;)]</div><div class="line">public static void Execute()</div><div class="line">&#123;</div><div class="line">    Debug.Log(all.Count);</div><div class="line">    NodesSaveInfoStruct ns = ScriptableObject.CreateInstance&lt;NodesSaveInfoStruct&gt;();</div><div class="line">    string json = JsonMapper.ToJson(all);</div><div class="line">    ns.SetNodesInfo(json);</div><div class="line">    AssetDatabase.CreateAsset(ns, string.Format(&quot;Assets/&#123;0&#125;.asset&quot;, _saveAssetName));</div><div class="line">&#125;</div></pre></td></tr></table></figure>
@@ -382,7 +394,7 @@
 <p>如果你实现自己的基础MonoBehaviour，你可以向其中添加自己的“Invoke”。<br>另一种较安全的“SendMessage”方法更难以实施。通常使用GetComponent获取当前游戏对象或子对象的组件，并直接执行调用。</p>
 <h2 id="null处理"><a href="#null处理" class="headerlink" title="null处理"></a>null处理</h2><p>明确是否要将空值（null）作为一个合法值，并尽量避免这么做<br>空值可辅助检测错误代码。但是，如果你使“if”默默地通过空值成为一种习惯，错误代码将很快运行，同时你只能在很久之后才会注意到错误。尝试避免将空值整体作为一个合法值。</p>
 <p>优先采用的常用语不是进行任何空检查，倘若它是一个问题，让代码失败。有时，在“可重用”方法中，我将检查出一个值为空的变量，并抛出一个异常，而不是将它传递至其它可能失败的方法。<br>在某些情形下，值可以合法为空，并且需要采取不同的方式处理。在此类情况下，添加注释来解释什么时候某些内容可能为空，并说明为什么可能为空。曾经因为草率的使用空值，使得找了一下午才定位到问题所在。</p>
-<p>使用另一种防御性GetComponent方法。有时通过RequiredComponent强制组件关系可能难以操作，但是这总是可能和可取的，特别是当你调用其它类上的GetComponent。作为一种替代方法，但需要某个组件打印找到的错误信息时，可以使用下述GameObject扩展。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line">public static class UtilTool</div><div class="line">&#123;</div><div class="line">    /// &lt;summary&gt;</div><div class="line">    /// 获取组件上的自定义脚本</div><div class="line">    /// &lt;/summary&gt;</div><div class="line">    /// &lt;typeparam name=&quot;T&quot;&gt;&lt;/typeparam&gt;</div><div class="line">    /// &lt;param name=&quot;obj&quot;&gt;&lt;/param&gt;</div><div class="line">    /// &lt;returns&gt;&lt;/returns&gt;</div><div class="line">    public static T GetRequiredComponent&lt;T&gt;(GameObject obj) where T : MonoBehaviour</div><div class="line">    &#123;</div><div class="line">        T component = obj.GetComponent&lt;T&gt;();</div><div class="line">        if (component == null)</div><div class="line">        &#123;</div><div class="line">            Debug.LogError(&quot;Expected to find component of type &quot;</div><div class="line">               + typeof(T) + &quot; but found none&quot;, obj);</div><div class="line">        &#125;</div><div class="line">        return component;</div><div class="line">    &#125;</div><div class="line">	//没有就添加</div><div class="line">    public static T GetRequiredComponentAppend&lt;T&gt;(GameObject obj) where T : MonoBehaviour</div><div class="line">    &#123;</div><div class="line">        T component = obj.GetComponent&lt;T&gt;();</div><div class="line">        if (component == null)</div><div class="line">        &#123;</div><div class="line">            Debug.LogError(&quot;Expected to find component of type &quot;</div><div class="line">               + typeof(T) + &quot; but found none&quot;, obj);</div><div class="line">            component = obj.AddComponent&lt;T&gt;();</div><div class="line">        &#125;</div><div class="line">        return component;</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>使用另一种防御性GetComponent方法。有时通过RequiredComponent强制组件关系可能难以操作，但是这总是可能和可取的，特别是当你调用其它类上的GetComponent。作为一种替代方法，但需要某个组件打印找到的错误信息时，可以使用下述GameObject扩展。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">public static T GetRequiredComponent(this GameObject obj) where T : MonoBehaviour </div><div class="line">&#123; </div><div class="line">   T component = obj.GetComponent();  </div><div class="line">   if(component == null) </div><div class="line">   &#123; </div><div class="line">      Debug.LogError(&quot;Expected to find component of type &quot; </div><div class="line">         + typeof(T) + &quot; but found none&quot;, obj); </div><div class="line">   &#125;   </div><div class="line">   return component; </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="变量控制"><a href="#变量控制" class="headerlink" title="变量控制"></a>变量控制</h2><p>分离配置，状态和簿记。<br>配置变量是指一类被inspector调整从而通过其属性定义对象的变量。如maxHealth。<br>状态变量是指一类可完全确定对象当前状态的变量，以及如果你的游戏支持保存操作，你需要保存的一类变量。如currentHealth。<br>簿记变量是指用于速度、方便或过度状态。它们总是完全可以通过状态变量确定。如previousHealth。</p>
 <p>通过分离这些变量类型，你可以更容易知道哪些是可以更改的，哪些是需要保存的，哪些是需要通过网络发送/检索的，并允许你在某种程度上强制执行此类操作。下面给出了一个关于此设置的简单示例。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">public class Player </div><div class="line">&#123; </div><div class="line">   [Serializable] </div><div class="line">   public class PlayerConfigurationData </div><div class="line">   &#123; </div><div class="line">      public float maxHealth; </div><div class="line">   &#125; </div><div class="line">   [Serializable] </div><div class="line">   public class PlayerStateData </div><div class="line">   &#123; </div><div class="line">      public float health; </div><div class="line">   &#125;</div><div class="line">   //配置变量  </div><div class="line">   public PlayerConfigurationData configuration; </div><div class="line">   //状态变量   </div><div class="line">   private PlayerState stateData; </div><div class="line">   //簿记变量 </div><div class="line">   private float previousHealth;  </div><div class="line">   public float Health </div><div class="line">   &#123; </div><div class="line">      public get &#123; return stateData.health; &#125; </div><div class="line">      private set &#123; stateData.health = value; &#125; </div><div class="line">   &#125; </div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
 <h2 id="类风格编程"><a href="#类风格编程" class="headerlink" title="类风格编程"></a>类风格编程</h2><p>避免使用public索引耦合数组。例如，不要定义任何武器数组，任何子弹数组，以及任何粒子数组，从而使你的代码类似于：</p>
@@ -394,6 +406,40 @@
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">public void FireAttack() </div><div class="line">&#123; </div><div class="line">   /// behaviour </div><div class="line">   Fire(bullets[0]); </div><div class="line">&#125; </div><div class="line">public void IceAttack() </div><div class="line">&#123; </div><div class="line">   /// behaviour </div><div class="line">   Fire(bullets[1]); </div><div class="line">&#125; </div><div class="line">public void WindAttack() </div><div class="line">&#123; </div><div class="line">   /// behaviour </div><div class="line">   Fire(bullets[2]); </div><div class="line">&#125; </div><div class="line">Enums can make things look better in code… </div><div class="line">public void WindAttack() </div><div class="line">&#123; </div><div class="line">   /// behaviour </div><div class="line">   Fire(bullets[WeaponType.Wind]); </div><div class="line">&#125;</div></pre></td></tr></table></figure>
 <p>最好使用分离变量以便于名称辅助显示将放入的内容。使用一类使其整洁。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">[Serializable] </div><div class="line">public class Bullets </div><div class="line">&#123; </div><div class="line">   public Bullet fireBullet; </div><div class="line">   public Bullet iceBullet; </div><div class="line">   public Bullet windBullet; </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="Unity的资源数据加载"><a href="#Unity的资源数据加载" class="headerlink" title="Unity的资源数据加载"></a>Unity的资源数据加载</h2><p>Resources</p>
+<blockquote>
+<ul>
+<li>打包集成到.asset文件里面</li>
+<li>只能在Unity主线程加载</li>
+<li>做不到动态更新资源</li>
+</ul>
+</blockquote>
+<p>AssetBundle</p>
+<blockquote>
+<ul>
+<li>unity定义的二进制文件类型</li>
+<li>使用WWW类加载读取</li>
+</ul>
+</blockquote>
+<p>StreamingAssets</p>
+<blockquote>
+<ul>
+<li>可读不可写</li>
+<li>只能用WWW类加载</li>
+<li>在内的文件，发布后1：1存在</li>
+<li>Android: “jar: file:///data/app/xxx.xxx.xxx.apk/!/assets”</li>
+<li>IOS:Application/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/xxx.app/Data/Raw</li>
+</ul>
+</blockquote>
+<p>PersistentDataPath(安装后才有这个目录)</p>
+<blockquote>
+<ul>
+<li>可读可写</li>
+<li>清除手机缓存文件会一并清理这里的东西，可作为本地目录让WWW加载载、也可以自己用FileInfo乱整</li>
+<li>IOS: Application/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/Documents</li>
+<li>Android: /data/data/xxx.xxx.xxx/files</li>
+</ul>
+</blockquote>
 
       
     </div>
@@ -525,7 +571,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">22</span>
+                <span class="site-state-item-count">23</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -573,7 +619,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#小Tips"><span class="nav-number">1.</span> <span class="nav-text">小Tips</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#利用委托进行异步线程与Unity主线程的通信："><span class="nav-number">2.</span> <span class="nav-text">利用委托进行异步线程与Unity主线程的通信：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AssetBundle打包数据："><span class="nav-number">3.</span> <span class="nav-text">AssetBundle打包数据：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#屏幕录制："><span class="nav-number">4.</span> <span class="nav-text">屏幕录制：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法调用和传递"><span class="nav-number">5.</span> <span class="nav-text">方法调用和传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#null处理"><span class="nav-number">6.</span> <span class="nav-text">null处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量控制"><span class="nav-number">7.</span> <span class="nav-text">变量控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类风格编程"><span class="nav-number">8.</span> <span class="nav-text">类风格编程</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#小Tips"><span class="nav-number">1.</span> <span class="nav-text">小Tips</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#异步线程与Unity主线程的通信："><span class="nav-number">2.</span> <span class="nav-text">异步线程与Unity主线程的通信：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AssetBundle打包数据："><span class="nav-number">3.</span> <span class="nav-text">AssetBundle打包数据：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#新版AssetBundle功能"><span class="nav-number">3.1.</span> <span class="nav-text">新版AssetBundle功能</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#屏幕录制："><span class="nav-number">4.</span> <span class="nav-text">屏幕录制：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#方法调用和传递"><span class="nav-number">5.</span> <span class="nav-text">方法调用和传递</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#null处理"><span class="nav-number">6.</span> <span class="nav-text">null处理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#变量控制"><span class="nav-number">7.</span> <span class="nav-text">变量控制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#类风格编程"><span class="nav-number">8.</span> <span class="nav-text">类风格编程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Unity的资源数据加载"><span class="nav-number">9.</span> <span class="nav-text">Unity的资源数据加载</span></a></li></ol></div>
             
 
           </div>
