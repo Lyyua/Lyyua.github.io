@@ -2,6 +2,13 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://lyyua.com/2018/01/22/ECS/</loc>
+    
+    <lastmod>2018-01-23T01:54:41.400Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://lyyua.com/2017/11/03/BinTree/</loc>
     
     <lastmod>2018-01-23T01:48:31.651Z</lastmod>
@@ -12,13 +19,6 @@
     <loc>http://lyyua.com/2017/11/04/BST/</loc>
     
     <lastmod>2018-01-23T01:48:00.628Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://lyyua.com/2018/01/22/ECS/</loc>
-    
-    <lastmod>2018-01-23T01:46:29.661Z</lastmod>
     
   </url>
   
