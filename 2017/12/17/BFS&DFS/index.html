@@ -93,19 +93,19 @@
 
 
 
-<meta name="description" content="广度优先搜索 BFS偏向暴力的遍历算法。 通常借助队列结构来实现遍历，当所有的邻接节点遍历完成之后才会深入。 附图一张:  A*算法实质上也是图搜索算法中的广度搜索算法，不过他是加权的BFS，如果使用DFS来进行寻路，搜索时长不稳定，这是由于DFS是递归式的深入，一次递归何时触底返回无法把控。 在理解A 原理的基础上， A算法的过程可以总结成下面的伪代码： 12345678910111213141">
+<meta name="description" content="广度优先搜索 BFS偏向暴力的遍历算法。 通常借助队列结构来实现遍历，当所有的邻接节点遍历完成之后才会深入。 附图一张:  A*算法实质上也是图搜索算法中的广度搜索算法，不过他是加权的BFS，如果使用DFS来进行寻路，搜索时长不稳定，这是由于DFS是递归式的深入，一次递归何时触底返回无法把控。 在理解A 原理的基础上， A算法的过程可以总结成下面的伪代码： 1234567891011121314">
 <meta name="keywords" content="算法">
 <meta property="og:type" content="article">
 <meta property="og:title" content="BFS和DFS">
 <meta property="og:url" content="http://lyyua.com/2017/12/17/BFS&DFS/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="广度优先搜索 BFS偏向暴力的遍历算法。 通常借助队列结构来实现遍历，当所有的邻接节点遍历完成之后才会深入。 附图一张:  A*算法实质上也是图搜索算法中的广度搜索算法，不过他是加权的BFS，如果使用DFS来进行寻路，搜索时长不稳定，这是由于DFS是递归式的深入，一次递归何时触底返回无法把控。 在理解A 原理的基础上， A算法的过程可以总结成下面的伪代码： 12345678910111213141">
+<meta property="og:description" content="广度优先搜索 BFS偏向暴力的遍历算法。 通常借助队列结构来实现遍历，当所有的邻接节点遍历完成之后才会深入。 附图一张:  A*算法实质上也是图搜索算法中的广度搜索算法，不过他是加权的BFS，如果使用DFS来进行寻路，搜索时长不稳定，这是由于DFS是递归式的深入，一次递归何时触底返回无法把控。 在理解A 原理的基础上， A算法的过程可以总结成下面的伪代码： 1234567891011121314">
 <meta property="og:image" content="http://lyyua.com/2017/12/17/BFS&DFS/Spanning_Tree.png">
 <meta property="og:image" content="http://lyyua.com/2017/12/17/BFS&DFS/DFS.png">
-<meta property="og:updated_time" content="2018-01-23T05:45:36.645Z">
+<meta property="og:updated_time" content="2018-01-23T06:51:19.170Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BFS和DFS">
-<meta name="twitter:description" content="广度优先搜索 BFS偏向暴力的遍历算法。 通常借助队列结构来实现遍历，当所有的邻接节点遍历完成之后才会深入。 附图一张:  A*算法实质上也是图搜索算法中的广度搜索算法，不过他是加权的BFS，如果使用DFS来进行寻路，搜索时长不稳定，这是由于DFS是递归式的深入，一次递归何时触底返回无法把控。 在理解A 原理的基础上， A算法的过程可以总结成下面的伪代码： 12345678910111213141">
+<meta name="twitter:description" content="广度优先搜索 BFS偏向暴力的遍历算法。 通常借助队列结构来实现遍历，当所有的邻接节点遍历完成之后才会深入。 附图一张:  A*算法实质上也是图搜索算法中的广度搜索算法，不过他是加权的BFS，如果使用DFS来进行寻路，搜索时长不稳定，这是由于DFS是递归式的深入，一次递归何时触底返回无法把控。 在理解A 原理的基础上， A算法的过程可以总结成下面的伪代码： 1234567891011121314">
 <meta name="twitter:image" content="http://lyyua.com/2017/12/17/BFS&DFS/Spanning_Tree.png">
 
 
@@ -344,7 +344,8 @@
       
 
       
-        <h2 id="广度优先搜索-BFS"><a href="#广度优先搜索-BFS" class="headerlink" title="广度优先搜索 BFS"></a>广度优先搜索 BFS</h2><p>偏向暴力的遍历算法。</p>
+        <a id="more"></a>
+<h2 id="广度优先搜索-BFS"><a href="#广度优先搜索-BFS" class="headerlink" title="广度优先搜索 BFS"></a>广度优先搜索 BFS</h2><p>偏向暴力的遍历算法。</p>
 <p>通常借助队列结构来实现遍历，当所有的邻接节点遍历完成之后才会深入。</p>
 <p>附图一张:</p>
 <p><img src="/2017/12/17/BFS&DFS/Spanning_Tree.png" alt=""></p>

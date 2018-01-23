@@ -1,0 +1,1005 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="Lua," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="前言之前看过一段时间的xLua，使用xLua和Unity交互，但是对lua本身不怎么了解，于是初步学习下lua。">
+<meta name="keywords" content="Lua">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Lua简单学习">
+<meta property="og:url" content="http://lyyua.com/2017/12/30/lua/index.html">
+<meta property="og:site_name" content="Back">
+<meta property="og:description" content="前言之前看过一段时间的xLua，使用xLua和Unity交互，但是对lua本身不怎么了解，于是初步学习下lua。">
+<meta property="og:updated_time" content="2018-01-23T05:47:16.576Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Lua简单学习">
+<meta name="twitter:description" content="前言之前看过一段时间的xLua，使用xLua和Unity交互，但是对lua本身不怎么了解，于是初步学习下lua。">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lyyua.com/2017/12/30/lua/"/>
+
+
+
+
+
+  <title>Lua简单学习 | Back</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d4860eb791209892b971cbc05d6eb81a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Back</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/12/30/lua/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Lua简单学习</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-30T21:19:06+08:00">
+                2017-12-30
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/30/lua/" class="leancloud_visitors" data-flag-title="Lua简单学习">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>之前看过一段时间的xLua，使用xLua和Unity交互，但是对lua本身不怎么了解，于是初步学习下lua。 <a id="more"></a></p>
+<h2 id="lua"><a href="#lua" class="headerlink" title="lua"></a>lua</h2><p>local 局部变量 不声明默认全局变量</p>
+<h2 id="函数："><a href="#函数：" class="headerlink" title="函数："></a>函数：</h2><p>可以作为参数传来传去，类似C#的委托。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">myprint = function(param)</div><div class="line">   print(&quot;这是打印函数 -   ##&quot;,param,&quot;##&quot;)</div><div class="line">end</div><div class="line">function add(num1,num2,functionPrint)</div><div class="line">   result = num1 + num2</div><div class="line">   -- 调用传递的函数参数</div><div class="line">   functionPrint(result)</div><div class="line">end</div><div class="line">myprint(10)</div><div class="line">-- myprint 函数作为参数传递</div><div class="line">add(2,5,myprint)</div></pre></td></tr></table></figure>
+<h2 id="递归函数"><a href="#递归函数" class="headerlink" title="递归函数"></a>递归函数</h2><blockquote>
+<ul>
+<li>local f, g   需要标记为局部变量<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">function g ()</div><div class="line">… f() …</div><div class="line">end</div><div class="line">function f ()</div><div class="line">… g() …</div><div class="line">end</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<h2 id="多返回值"><a href="#多返回值" class="headerlink" title="多返回值"></a>多返回值</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">--string.find  返回匹配串&quot;runoob&quot; 在&quot;www.runoob.com&quot;中的&quot;开始和结束的下标&quot; lua中的索引从1开始</div><div class="line">s, e = string.find(&quot;www.runoob.com&quot;, &quot;runoob&quot;) </div><div class="line">print(s, e)</div><div class="line">5    10</div></pre></td></tr></table></figure>
+<h2 id="传参"><a href="#传参" class="headerlink" title="传参"></a>传参</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">--参数不存在什么类型，直接把列表传入</div><div class="line">function maximum (a)</div><div class="line">    local mi = 1             -- 最大值索引</div><div class="line">    local m = a[mi]          -- 最大值</div><div class="line">    for i,val in ipairs(a) do</div><div class="line">       if val &gt; m then</div><div class="line">           mi = i</div><div class="line">           m = val</div><div class="line">       end</div><div class="line">    end</div><div class="line">    return m, mi</div><div class="line">end</div><div class="line">print(maximum(&#123;8,10,23,12,5&#125;))</div></pre></td></tr></table></figure>
+<p>…表示可变参数，传一个两个三个随你，相当于C#的params关键字</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">function average(...)</div><div class="line">   result = 0</div><div class="line">   local arg=&#123;...&#125;</div><div class="line">   for i,v in ipairs(arg) do</div><div class="line">      result = result + v</div><div class="line">   end</div><div class="line">   print(&quot;总共传入 &quot; .. #arg .. &quot; 个数&quot;)</div><div class="line">   return result/#arg</div><div class="line">end</div><div class="line">print(&quot;平均值为&quot;,average(10,5,3,4,5,6))</div></pre></td></tr></table></figure>
+<h2 id="迭代器"><a href="#迭代器" class="headerlink" title="迭代器"></a>迭代器</h2><p>无状态迭代器</p>
+<blockquote>
+<ul>
+<li>迭代过程中直接在迭代器中计算，返回结果</li>
+<li><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">--迭代器</div><div class="line">function square(iteratorMaxCount,currentNumber)</div><div class="line">   if currentNumber&lt;iteratorMaxCount</div><div class="line">   then</div><div class="line">      currentNumber = currentNumber+1</div><div class="line">   return currentNumber, currentNumber*currentNumber</div><div class="line">   end</div><div class="line">end</div><div class="line">--开始迭代</div><div class="line">for i,n in square,3,0</div><div class="line">do</div><div class="line">   print(i,n)</div><div class="line">end</div></pre></td></tr></table></figure>
+</li>
+<li><p>多状态迭代器</p>
+</li>
+<li>利用闭包，把迭代状态作为一个闭包函数传递出来，简洁干净，（或者直接利用table把所有可能用到的信息存储起来。）<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">array = &#123;&quot;Lua&quot;, &quot;Tutorial&quot;&#125;</div><div class="line">--迭代器</div><div class="line">function elementIterator (collection)</div><div class="line">   local index = 0</div><div class="line">   local count = #collection</div><div class="line">   -- 闭包函数</div><div class="line">   return function ()</div><div class="line">      index = index + 1</div><div class="line">      if index &lt;= count</div><div class="line">      then</div><div class="line">         --  返回迭代器的当前元素</div><div class="line">         return collection[index]</div><div class="line">      end</div><div class="line">   end</div><div class="line">end</div><div class="line">--使用返回的函数进行迭代</div><div class="line">for element in elementIterator(array)</div><div class="line">do</div><div class="line">   print(element)</div><div class="line">end</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<h2 id="常规数据结构"><a href="#常规数据结构" class="headerlink" title="常规数据结构"></a>常规数据结构</h2><h3 id="一维数组"><a href="#一维数组" class="headerlink" title="一维数组"></a>一维数组</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">--一维数组</div><div class="line">a = &#123;&#125;</div><div class="line">for i = 1,100 do</div><div class="line">	a[i] = 0</div><div class="line">end</div><div class="line">print(&quot;The length of array &apos;a&apos; is &quot; .. #a)</div><div class="line"></div><div class="line">squares = &#123;1, 4, 9, 16, 25&#125;</div><div class="line">print(&quot;The length of array &apos;a&apos; is &quot; .. #squares)</div></pre></td></tr></table></figure>
+<h3 id="二维数组"><a href="#二维数组" class="headerlink" title="二维数组"></a>二维数组</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">--二维数组</div><div class="line">local N = 3</div><div class="line">local M = 3</div><div class="line">mt = &#123;&#125;  		--表结构实现</div><div class="line">for i = 1,N do</div><div class="line">	mt[i] = &#123;&#125;	--mt[i] 对应一个新表，表中嵌表</div><div class="line">	for j = 1,M do</div><div class="line">		mt[i][j] = i * j</div><div class="line">	end</div><div class="line">end</div><div class="line">--这类实现已经不能称之为常规的二维数组了，二维索引值经过一个函数转化成最终的key</div><div class="line">mt = &#123;&#125;</div><div class="line">for i = 1, N do</div><div class="line">	for j = 1, M do</div><div class="line">		mt[(i - 1) * M + j] = i * j</div><div class="line">	end</div><div class="line">end</div></pre></td></tr></table></figure>
+<h3 id="链表"><a href="#链表" class="headerlink" title="链表"></a>链表</h3><p>简单实现单向链表</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">-- 链表</div><div class="line">list = nil</div><div class="line">for i = 1, 3 do</div><div class="line">	list = 			</div><div class="line">		&#123; </div><div class="line">			next = list ,  --把先前的整条链塞到next，第一个节点自然是没有next的</div><div class="line">			value = i</div><div class="line">		&#125;</div><div class="line">end</div><div class="line">local l = list</div><div class="line">--在内存中的存储形式是这样的list= &#123; next= &#123; next= &#123; value=1&#125; ,value=2&#125; ,value=3&#125;</div><div class="line">while l do </div><div class="line">	print(l.value)</div><div class="line">	l = l.next</div><div class="line">end</div></pre></td></tr></table></figure>
+<p>双向链表，增删改查封装下即可</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div></pre></td><td class="code"><pre><div class="line">--定义list</div><div class="line">list = &#123;</div><div class="line">	first =nil,</div><div class="line">	last = nil,</div><div class="line">&#125;</div><div class="line">--构造节点</div><div class="line">function list:new()</div><div class="line">	local t = &#123;pre =nil,suc = nil,value = 0&#125;</div><div class="line">	return t</div><div class="line">end</div><div class="line">--添加节点</div><div class="line">for i = 1, 3 do</div><div class="line">	local node =list:new()</div><div class="line">	node.value = i</div><div class="line">	if list.first == nil </div><div class="line">	then</div><div class="line">		list.first = node</div><div class="line">	elseif list.last == nil </div><div class="line">	then</div><div class="line">		list.last = node</div><div class="line">		list.first.suc = list.last</div><div class="line">		list.last.pre = list.first</div><div class="line">	else</div><div class="line">		list.last.suc = node</div><div class="line">		node.pre = list.last</div><div class="line">		list.last = node</div><div class="line">	end</div><div class="line">end</div><div class="line">--循环遍历链表</div><div class="line">local temp = list.curnode</div><div class="line">while temp do</div><div class="line">	print(temp.value)</div><div class="line">	temp = temp.pre</div><div class="line">end</div></pre></td></tr></table></figure>
+<h3 id="词典"><a href="#词典" class="headerlink" title="词典"></a>词典</h3><p>table本身就是散列表结构</p>
+<h3 id="队列和栈"><a href="#队列和栈" class="headerlink" title="队列和栈"></a>队列和栈</h3><p>在数组的基础上稍作修饰即可</p>
+<h2 id="元表："><a href="#元表：" class="headerlink" title="元表："></a>元表：</h2><blockquote>
+<ul>
+<li>Lua中的每一个表都有其Metatable。Lua默认创建一个不带metatable的新表</li>
+<li>oop中的类，可以通过元表模拟出来，class和function</li>
+<li>继承可以用__index模拟出来</li>
+<li>可以使用setmetatable函数设置或者改变一个表的metatable<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">mytable = &#123;&#125;                          -- 普通表 </div><div class="line">mymetatable = &#123;&#125;                      -- 元表</div><div class="line">mymetatable2 = &#123;&#125; </div><div class="line">setmetatable(mytable,mymetatable)     -- 把 mymetatable 设为 mytable 的元表 </div><div class="line">setmetatable(mytable,mymetatable2)     -- 把 mymetatable2 修改为 mytable 的元表</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<p>获取元表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">getmetatable(mytable)                 -- 返回mymetatable</div></pre></td></tr></table></figure></p>
+<h3 id="index-元方法"><a href="#index-元方法" class="headerlink" title="__index 元方法"></a>__index 元方法</h3><blockquote>
+<ul>
+<li><p>首先这是一个键，他是元表的键，不是table的键，__index对应的是table，即一个表的元表。</p>
+</li>
+<li><p>一个table只能对应一个元表。当使用这个键来<strong>赋值</strong>table时，如果这个键已经被赋值，此时如果再进行赋值，就会覆盖之前的值。</p>
+</li>
+<li><p>当使用这个键来<strong>访问</strong>table时，如果table中不存在对应的key，则会在元表中试图递归的查找。</p>
+</li>
+<li><p>如果不是通过<strong>index键来设置的表，表内的值则无法通过</strong>index来访问到，这点值得注意。</p>
+</li>
+<li><p>给表添加字段，字段是加在表中，而不是加在元表中</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">oneTable = &#123;name = &quot;lyu&quot;&#125;</div><div class="line">otherTable = &#123;name1 = &quot;lyuan&quot;&#125;</div><div class="line">otherTable2 = &#123;name2 = &quot;lyua&quot;&#125;</div><div class="line">otherTable3 = &#123;name3 = &quot;lyuan&quot;&#125;</div><div class="line">t=setmetatable(oneTable,&#123;__index = otherTable&#125;)</div><div class="line">t.newkey = &quot;add key&quot;</div><div class="line">print(t.newkey..&quot;|&quot;, oneTable.newkey..&quot;|&quot;, otherTable.newkey) -- 新的字段加在表上 add key|	add key|	nil</div><div class="line">t=setmetatable(oneTable,&#123;__index = otherTable2&#125;) --重新设置oneTable的元表</div><div class="line">print(&quot;log:&quot;,t.name1,t.name2)  -- log:	nil	lyua</div><div class="line">setmetatable(otherTable2,&#123;__index = otherTable&#125;) --设置otherTable2的元表 </div><div class="line">print(&quot;log:&quot;,t.name1,t.name2)  -- log:	lyuan	lyua	nil</div><div class="line">t = setmetatable(oneTable,otherTable3) --一个table只能设置相应的一个元表</div><div class="line">print(&quot;log:&quot;,t.name1,t.name2,t.name3)  -- log:	nil	nil	nil  如果不是通过__index键来设置的表，表内的值则无法访问到</div></pre></td></tr></table></figure>
+</li>
+</ul>
+</blockquote>
+<p>如果<strong>index对应的是一个函数，当试图通过</strong>index访问某个元表数据时,lua就会调用这个函数，table和键作为参数传递个这个函数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">mytable = setmetatable(&#123;key1 = &quot;value1&quot;&#125;, &#123;</div><div class="line">  __index = function(mytable, key)</div><div class="line">    if key == &quot;key2&quot; then</div><div class="line">      return &quot;metatablevalue&quot;</div><div class="line">    else</div><div class="line">      return nil</div><div class="line">    end</div><div class="line">  end</div><div class="line">&#125;)</div><div class="line">print(mytable.key1,mytable.key2)</div><div class="line">值为value1    metatablevalue</div></pre></td></tr></table></figure>
+<p>元表是对普通表的扩充</p>
+<p>总结：</p>
+<blockquote>
+<ul>
+<li>1.在表中查找，如果找到，返回该元素，找不到则进入下一步。</li>
+<li>2.判断该表是否有元表，如果没有元表，返回nil，有元表则进入下一步。</li>
+<li>3.判断元表有没有<strong>index方法，如果</strong>index方法为nil，则返回nil；如果<strong>index方法是一个表，则重复1、2、3；如果</strong>index方法是一个函数，则返回该函数的返回值。</li>
+</ul>
+</blockquote>
+<h3 id="newindex-元方法"><a href="#newindex-元方法" class="headerlink" title="__newindex 元方法"></a>__newindex 元方法</h3><p><strong>index则用来对表访问,相应的</strong>newindex 元方法用来对表更新。</p>
+<p>__newindex 只能访问到已存在的key-value，新增的无法访问到。</p>
+<p>通过__newindex设置的空表，新的字段是加在空表上，也就是元表上，如果元表不是空表，字段就是加在表上</p>
+<p>由于不是__index访问器，所以空表的元表是不能访问到的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">blanktable = &#123;&#125;</div><div class="line">t=setmetatable(&#123;key1 = &quot;key1value&quot;&#125;,&#123;__newindex  = blanktable&#125;)</div><div class="line">t.newkey = &quot;//newvalue&quot;</div><div class="line">print(&quot;log:&quot;,t.newkey,blanktable.newkey)  -- log:	nil	//newvalue</div><div class="line">t.key1 = &quot;//key1 value update&quot;</div><div class="line">print(&quot;log:&quot;,t.key1,blanktable.key1)  -- log:	//key1 value update	nil</div><div class="line">t.key2 = &quot;//add a key2&quot;</div><div class="line">t.key3 = &quot;//add a key3&quot;</div><div class="line">print(&quot;log:&quot;,t.key2,blanktable.key2)  -- log:	nil	//add a key</div><div class="line">print(&quot;log:&quot;,t.key2,t.key3,blanktable.key2,blanktable.key3)  -- log:	nil	nil	//add a key2	//add a key3</div></pre></td></tr></table></figure>
+<p>相应的操作非空表时，新的字段在origintable中增加，而不是在元表中增加。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">blanktable = &#123;key2 = &quot;key2value&quot;&#125;</div><div class="line">origintable = &#123;key1 = &quot;key1value&quot;&#125;</div><div class="line">t=setmetatable(origintable, blanktable)</div><div class="line">t.key2 = &quot;newvalue&quot;</div><div class="line">print(&quot;log:&quot;,t.key2,blanktable.key2)  -- log:	newvalue	key2value</div><div class="line">t.key3 = &quot;key1 value update&quot;</div><div class="line">print(&quot;log:&quot;,t.key3,origintable.key3,blanktable.key3)  -- log:	key1 value update	key1 value update	nil</div></pre></td></tr></table></figure></p>
+<p>如果<strong>newindex对应的是一个函数，和</strong>index类似<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">mytable = setmetatable(&#123;key1 = &quot;value1&quot;&#125;, &#123;</div><div class="line">  __newindex = function(mytable, key, value)</div><div class="line">        rawset(mytable, key, &quot;\&quot;&quot;..value..&quot;\&quot;&quot;)</div><div class="line">  end</div><div class="line">&#125;)</div><div class="line">mytable.key1 = &quot;new value&quot;</div><div class="line">mytable.key2 = 4</div><div class="line">mytable.key3 = 5</div><div class="line">print(mytable.key1,mytable.key2,mytable.key3) -- new value	&quot;4&quot;	&quot;5&quot;</div></pre></td></tr></table></figure></p>
+<h3 id="为表添加操作符"><a href="#为表添加操作符" class="headerlink" title="为表添加操作符"></a>为表添加操作符</h3><p>__add 对应的就是”+”，这里的”+”的运算规则交由我们自己来定义，相当于重写了运算符。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">function table_maxn(t)</div><div class="line">    local mn = 0</div><div class="line">    for k, v in pairs(t) do</div><div class="line">        if mn &lt; k then</div><div class="line">            mn = k</div><div class="line">        end</div><div class="line">    end</div><div class="line">    return mn</div><div class="line">end</div><div class="line">-- 两表相加操作</div><div class="line">mytable = setmetatable(&#123; 1, 2, 3 &#125;, &#123;</div><div class="line">  __add = function(mytable, newtable)</div><div class="line">    for i = 1, table_maxn(newtable) do</div><div class="line">      table.insert(mytable, table_maxn(mytable)+1,newtable[i])</div><div class="line">    end</div><div class="line">    return mytable</div><div class="line">  end</div><div class="line">&#125;)</div><div class="line">-- 第二个表</div><div class="line">secondtable = &#123;4,5,6&#125;</div><div class="line">-- 相加</div><div class="line">mytable = mytable + secondtable</div><div class="line">    for k,v in ipairs(mytable) do</div><div class="line">print(k,v)</div><div class="line">end</div><div class="line">----------------------输出</div><div class="line">[LUA-print]: 1	1</div><div class="line">[LUA-print]: 2	2</div><div class="line">[LUA-print]: 3	3</div><div class="line">[LUA-print]: 4	4</div><div class="line">[LUA-print]: 5	5</div><div class="line">[LUA-print]: 6	6</div></pre></td></tr></table></figure></p>
+<table>
+<thead>
+<tr>
+<th>__add</th>
+<th>对应的运算符 ‘+’. </th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>__sub</td>
+<td>对应的运算符 ‘-‘.</td>
+</tr>
+<tr>
+<td>__mul</td>
+<td>对应的运算符 ‘*’.</td>
+</tr>
+<tr>
+<td>__div</td>
+<td>对应的运算符 ‘/‘.</td>
+</tr>
+<tr>
+<td>__mod</td>
+<td>对应的运算符 ‘%’.</td>
+</tr>
+<tr>
+<td>__unm</td>
+<td>对应的运算符 ‘-‘，取反符号</td>
+</tr>
+<tr>
+<td>__concat</td>
+<td>对应的运算符 ‘..’.连接符</td>
+</tr>
+<tr>
+<td>__eq</td>
+<td>对应的运算符 ‘==’.</td>
+</tr>
+<tr>
+<td>__lt</td>
+<td>对应的运算符 ‘&lt;’.</td>
+</tr>
+<tr>
+<td>__le</td>
+<td>对应的运算符 ‘&lt;=’.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="call"><a href="#call" class="headerlink" title="__call"></a>__call</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">function table_maxn(t)</div><div class="line">    local mn = 0</div><div class="line">    for k, v in pairs(t) do</div><div class="line">        if mn &lt; k then</div><div class="line">            mn = k</div><div class="line">        end</div><div class="line">    end</div><div class="line">    return mn</div><div class="line">end</div><div class="line">-- 定义元方法__call</div><div class="line">mytable = setmetatable(&#123;10&#125;, &#123;</div><div class="line">  __call = function(mytable, newtable)</div><div class="line">    sum = 0</div><div class="line">    for i = 1, table_maxn(mytable) do</div><div class="line">        sum = sum + mytable[i]</div><div class="line">    end</div><div class="line">    for i = 1, table_maxn(newtable) do</div><div class="line">        sum = sum + newtable[i]</div><div class="line">    end</div><div class="line">    return sum</div><div class="line">  end</div><div class="line">&#125;)</div><div class="line">newtable = &#123;10,20,30&#125;</div><div class="line">print(mytable(newtable))</div></pre></td></tr></table></figure>
+<h3 id="tostring元方法"><a href="#tostring元方法" class="headerlink" title="__tostring元方法"></a>__tostring元方法</h3><p>就像oop语言中的重写ToString()方法。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">mytable = setmetatable(&#123; 10, 20, 30 &#125;, &#123;</div><div class="line">  __tostring = function(mytable)</div><div class="line">    sum = 0</div><div class="line">    for k, v in pairs(mytable) do</div><div class="line">        sum = sum + v</div><div class="line">    end</div><div class="line">    return &quot;表所有元素的和为 &quot; .. sum</div><div class="line">  end</div><div class="line">&#125;)</div><div class="line">print(mytable) --表所有元素的和为 60</div></pre></td></tr></table></figure></p>
+<h3 id="metatable"><a href="#metatable" class="headerlink" title="__metatable"></a>__metatable</h3><p>通过设置__metatable = “Private”，可以使元表不能被修改，以只读的形式存在</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p>在lua中可以把table看作一个类，元表中设置<strong>call方法，达到相当于类中定义方法，</strong>index中可以访问到继承的子类，<strong>newindex可以通过赋值空表来完成对一个元表的字段增加，</strong>tostring没什么可说，各类运算符通过重写可以快速的进行类之间的操作。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Lua/" rel="tag"># Lua</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/12/24/Unitykey2/" rel="next" title="UnityKey2">
+                <i class="fa fa-chevron-left"></i> UnityKey2
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/31/lua2/" rel="prev" title="Lua中的OOP">
+                Lua中的OOP <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTgyMy82Mzg5"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Lyu" />
+          <p class="site-author-name" itemprop="name">Lyu</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#lua"><span class="nav-number">2.</span> <span class="nav-text">lua</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#函数："><span class="nav-number">3.</span> <span class="nav-text">函数：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#递归函数"><span class="nav-number">4.</span> <span class="nav-text">递归函数</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#多返回值"><span class="nav-number">5.</span> <span class="nav-text">多返回值</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#传参"><span class="nav-number">6.</span> <span class="nav-text">传参</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#迭代器"><span class="nav-number">7.</span> <span class="nav-text">迭代器</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#常规数据结构"><span class="nav-number">8.</span> <span class="nav-text">常规数据结构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#一维数组"><span class="nav-number">8.1.</span> <span class="nav-text">一维数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#二维数组"><span class="nav-number">8.2.</span> <span class="nav-text">二维数组</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#链表"><span class="nav-number">8.3.</span> <span class="nav-text">链表</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#词典"><span class="nav-number">8.4.</span> <span class="nav-text">词典</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#队列和栈"><span class="nav-number">8.5.</span> <span class="nav-text">队列和栈</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#元表："><span class="nav-number">9.</span> <span class="nav-text">元表：</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#index-元方法"><span class="nav-number">9.1.</span> <span class="nav-text">__index 元方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#newindex-元方法"><span class="nav-number">9.2.</span> <span class="nav-text">__newindex 元方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#为表添加操作符"><span class="nav-number">9.3.</span> <span class="nav-text">为表添加操作符</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#call"><span class="nav-number">9.4.</span> <span class="nav-text">__call</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#tostring元方法"><span class="nav-number">9.5.</span> <span class="nav-text">__tostring元方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#metatable"><span class="nav-number">9.6.</span> <span class="nav-text">__metatable</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">9.7.</span> <span class="nav-text">总结</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lyu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9nfwurrfWspn4Ca1tpt8c4Bb-gzGzoHsz", "SmeoWp4XeDOxoGNiSegxpw2g");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
