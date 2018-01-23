@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="算法," />
+  <meta name="keywords" content="Lua," />
 
 
 
@@ -93,20 +93,17 @@
 
 
 
-<meta name="description" content="广度优先搜索 BFS偏向暴力的遍历算法。 通常借助队列结构来实现遍历，当所有的邻接节点遍历完成之后才会深入。 附图一张:  A*算法实质上也是图搜索算法中的广度搜索算法，不过他是加权的BFS，如果使用DFS来进行寻路，搜索时长不稳定，这是由于DFS是递归式的深入，一次递归何时触底返回无法把控。 在理解A 原理的基础上， A算法的过程可以总结成下面的伪代码： 12345678910111213141">
-<meta name="keywords" content="算法">
+<meta name="description" content="前言lua的oop和table密切相关，整个OOP都是通过table来模拟的，继承和重写用到了元表。">
+<meta name="keywords" content="Lua">
 <meta property="og:type" content="article">
-<meta property="og:title" content="BFS和DFS">
-<meta property="og:url" content="http://lyyua.com/2017/12/14/BFS&DFS/index.html">
+<meta property="og:title" content="Lua中的OOP">
+<meta property="og:url" content="http://lyyua.com/2018/01/14/lua2/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="广度优先搜索 BFS偏向暴力的遍历算法。 通常借助队列结构来实现遍历，当所有的邻接节点遍历完成之后才会深入。 附图一张:  A*算法实质上也是图搜索算法中的广度搜索算法，不过他是加权的BFS，如果使用DFS来进行寻路，搜索时长不稳定，这是由于DFS是递归式的深入，一次递归何时触底返回无法把控。 在理解A 原理的基础上， A算法的过程可以总结成下面的伪代码： 12345678910111213141">
-<meta property="og:image" content="http://lyyua.com/2017/12/14/BFS&DFS/Spanning_Tree.png">
-<meta property="og:image" content="http://lyyua.com/2017/12/14/BFS&DFS/DFS.png">
-<meta property="og:updated_time" content="2018-01-22T05:48:30.964Z">
+<meta property="og:description" content="前言lua的oop和table密切相关，整个OOP都是通过table来模拟的，继承和重写用到了元表。">
+<meta property="og:updated_time" content="2018-01-23T03:52:56.445Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="BFS和DFS">
-<meta name="twitter:description" content="广度优先搜索 BFS偏向暴力的遍历算法。 通常借助队列结构来实现遍历，当所有的邻接节点遍历完成之后才会深入。 附图一张:  A*算法实质上也是图搜索算法中的广度搜索算法，不过他是加权的BFS，如果使用DFS来进行寻路，搜索时长不稳定，这是由于DFS是递归式的深入，一次递归何时触底返回无法把控。 在理解A 原理的基础上， A算法的过程可以总结成下面的伪代码： 12345678910111213141">
-<meta name="twitter:image" content="http://lyyua.com/2017/12/14/BFS&DFS/Spanning_Tree.png">
+<meta name="twitter:title" content="Lua中的OOP">
+<meta name="twitter:description" content="前言lua的oop和table密切相关，整个OOP都是通过table来模拟的，继承和重写用到了元表。">
 
 
 
@@ -134,13 +131,13 @@
 
 
 
-  <link rel="canonical" href="http://lyyua.com/2017/12/14/BFS&DFS/"/>
+  <link rel="canonical" href="http://lyyua.com/2018/01/14/lua2/"/>
 
 
 
 
 
-  <title>BFS和DFS | Back</title>
+  <title>Lua中的OOP | Back</title>
   
 
 
@@ -269,7 +266,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/12/14/BFS&DFS/">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2018/01/14/lua2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lyu">
@@ -286,7 +283,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">BFS和DFS</h2>
+          <h2 class="post-title" itemprop="name headline">Lua中的OOP</h2>
         
 
         <div class="post-meta">
@@ -298,8 +295,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-14T22:35:32+08:00">
-                2017-12-14
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-14T17:29:06+08:00">
+                2018-01-14
               </time>
             
 
@@ -316,7 +313,7 @@
 
           
           
-             <span id="/2017/12/14/BFS&DFS/" class="leancloud_visitors" data-flag-title="BFS和DFS">
+             <span id="/2018/01/14/lua2/" class="leancloud_visitors" data-flag-title="Lua中的OOP">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -344,20 +341,22 @@
       
 
       
-        <h2 id="广度优先搜索-BFS"><a href="#广度优先搜索-BFS" class="headerlink" title="广度优先搜索 BFS"></a>广度优先搜索 BFS</h2><p>偏向暴力的遍历算法。</p>
-<p>通常借助队列结构来实现遍历，当所有的邻接节点遍历完成之后才会深入。</p>
-<p>附图一张:</p>
-<p><img src="/2017/12/14/BFS&DFS/Spanning_Tree.png" alt=""></p>
-<p>A*算法实质上也是图搜索算法中的广度搜索算法，不过他是加权的BFS，如果使用DFS来进行寻路，搜索时长不稳定，这是由于DFS是递归式的深入，一次递归何时触底返回无法把控。</p>
-<p>在理解A<em> 原理的基础上， A</em>算法的过程可以总结成下面的伪代码：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">define open list //need heap sort</div><div class="line"></div><div class="line">open list sort heap</div><div class="line"></div><div class="line">originNode = start</div><div class="line"></div><div class="line">find node is end</div><div class="line"></div><div class="line">while(start == end)&#123;</div><div class="line">	foreach start node neigbours </div><div class="line">	&#123;</div><div class="line"> 		neibour add to open list</div><div class="line">	&#125;</div><div class="line">	start = pop open list</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>所以，对于A*算法的优化主要就集中在Open List如何快速的查找附近最近的节点，所以使用堆排序是最好不过了。</p>
-<h2 id="深度优先搜索-DFS"><a href="#深度优先搜索-DFS" class="headerlink" title="深度优先搜索 DFS"></a>深度优先搜索 DFS</h2><p>一种递归，不断深入的算法，深入一个节点，赋值dtime为当前步数，当不能深入时，原路返回，并且检查是否存在分支，如果没有分支，赋值ftime当前步数，并且继续原路返回；如果存在分支则继续深入，按照此前的设定进行。</p>
-<p>附图一张：<br><img src="/2017/12/14/BFS&DFS/DFS.png" alt=""></p>
-<p>只需要经过一次扫描，就可以根据dTime，fTime 可以在O(1)的时间内判断两个节点是否连通的关系。</p>
-<p>比如判断a节点是否可以抵达e，a的ftime为10，d的dtime为11，ftime<dtime，说明从a出发不能抵达e。d的ftime为14，e的dtime为12，ftime>dtime，说明从d出发可以抵达e。</dtime，说明从a出发不能抵达e。d的ftime为14，e的dtime为12，ftime></p>
-<p>典型的例子，脏字过滤，“大傻比”这三个字，按照DFS，首先可以确定“大”和“傻”之间有潜在脏字可能,他们是连通的，如果可以证明“傻”和“比”两个连通，则可以判断这是一个脏字。</p>
-
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>lua的oop和table密切相关，整个OOP都是通过table来模拟的，继承和重写用到了元表。 <a id="more"></a></p>
+<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>先按照常规的table结构定义一个武器类，武器名称，威力，子弹数量</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Weapon = &#123;</div><div class="line">	id = &quot;&quot;,</div><div class="line">	damage=0,</div><div class="line">	bulletCount=0,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>定义构造方法，这样可以new出各种类型的武器，这里的New对应的是一个函数而不是某个字段，用来模拟构造函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Weapon = &#123;</div><div class="line">	id = &quot;&quot;,</div><div class="line">	damage=0,</div><div class="line">	bulletCount=0,</div><div class="line">	New = function(id,damage,bulletCount)</div><div class="line">		local w =&#123;&#125;  --构造一个新表</div><div class="line">		w.damage = damage or 0</div><div class="line">		w.bulletCount = bulletCount or 0</div><div class="line">		w.id = id or &quot;&quot;</div><div class="line">		return w</div><div class="line">	end,	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>再加上一个可以显示武器信息的方法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">Weapon = &#123;</div><div class="line">	id = &quot;&quot;,</div><div class="line">	damage=0,</div><div class="line">	bulletCount=0,</div><div class="line">	New = function(id,damage,bulletCount)</div><div class="line">		local w =&#123;&#125; </div><div class="line">		w.damage = damage or 0</div><div class="line">		w.bulletCount = bulletCount or 0</div><div class="line">		w.id = id or &quot;&quot;</div><div class="line">		w.ShowInfo = Weapon.ShowInfo --新的表内依然要定义方法</div><div class="line">		return w</div><div class="line">	end,	</div><div class="line">	ShowInfo = function(self)</div><div class="line">		print(&quot;名字：&quot;,self.id..&quot;\t&quot;,&quot;伤害：&quot;,self.damage..&quot;\t&quot;,&quot;弹药数：&quot;,self.bulletCount)</div><div class="line">	end</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>这里模拟出来的Weapon就是一个工厂，通过不断的调用New方法可以产生新的实例</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">p = Weapon.New(&quot;98k&quot;,80,12)</div><div class="line">p2 = Weapon.New(&quot;m4&quot;,20,30)</div><div class="line">p:ShowInfo()    --名字：	98k		伤害：	80		弹药数：	12</div><div class="line">p2:ShowInfo()	--名字：	m4		伤害：	20		弹药数：	30</div></pre></td></tr></table></figure>
+<p>还可以结合元表来做一些运算符操作，其他部分代码一样，只是添加了元表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">Weapon = &#123;</div><div class="line">	id = &quot;&quot;,</div><div class="line">	damage=0,</div><div class="line">	bulletCount=0,</div><div class="line">	mt = &#123;&#125; ,--元表 </div><div class="line">	New = function(id,damage,bulletCount)</div><div class="line">		local w =&#123;&#125;</div><div class="line">		setmetatable(w,Weapon.mt)	--设置元表</div><div class="line">		w.damage = damage or 0</div><div class="line">		w.bulletCount = bulletCount or 0</div><div class="line">		w.id = id or &quot;&quot;</div><div class="line">		w.ShowInfo = Weapon.ShowInfo</div><div class="line">		w.mt = Weapon.mt 			--链接元表方法</div><div class="line">		return w</div><div class="line">	end,	</div><div class="line">	ShowInfo = function(self)</div><div class="line">		print(&quot;名字：&quot;,self.id..&quot;\t&quot;,&quot;伤害：&quot;,self.damage..&quot;\t&quot;,&quot;弹药数：&quot;,self.bulletCount)</div><div class="line">	end</div><div class="line">&#125;</div><div class="line">p = Weapon.New(&quot;98k&quot;,80,12)</div><div class="line">p2 = Weapon.New(&quot;m4&quot;,20,30)</div><div class="line">p:ShowInfo()    --名字：	98k		伤害：	80		弹药数：	12</div><div class="line">p2:ShowInfo()	--名字：	m4		伤害：	20		弹药数：	30</div><div class="line">--比较是否为同一种武器</div><div class="line">Weapon.mt.__eq = function(w1,w2)</div><div class="line">	return w1.id == w2.id and w1.damage == w2.damage	</div><div class="line">end</div><div class="line">print(p==p2) --false 比较结果</div></pre></td></tr></table></figure></p>
+<p>同理，如果乐意的话，可以加上<strong>add,</strong>sub….之类的，也可以重写__tostring</p>
+<p>既然使用了元表来模拟oop，不如再进一步充分利用，通过设置元方法，可以省去很多操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">Weapon = &#123;</div><div class="line">	id = &quot;&quot;,</div><div class="line">	damage=0,</div><div class="line">	bulletCount=0,</div><div class="line">	mt = &#123;&#125; ,--元表 </div><div class="line">	New = function(id,damage,bulletCount)</div><div class="line">		local w =&#123;&#125;</div><div class="line">		setmetatable(w,Weapon.mt)	--设置元表</div><div class="line">		w.damage = damage or 0</div><div class="line">		w.bulletCount = bulletCount or 0</div><div class="line">		w.id = id or &quot;&quot;</div><div class="line">		--通过__index 设置，免去手动链接</div><div class="line">		--w.ShowInfo = Weapon.ShowInfo</div><div class="line">		--w.mt = Weapon.mt 			--链接元表方法</div><div class="line">		return w</div><div class="line">	end,	</div><div class="line">	ShowInfo = function(self)</div><div class="line">		print(&quot;名字：&quot;,self.id..&quot;\t&quot;,&quot;伤害：&quot;,self.damage..&quot;\t&quot;,&quot;弹药数：&quot;,self.bulletCount)</div><div class="line">	end</div><div class="line">&#125;</div><div class="line">--比较是否为同一种武器</div><div class="line">Weapon.mt.__eq = function(w1,w2)</div><div class="line">	return w1.id == w2.id and w1.damage == w2.damage	</div><div class="line">end</div><div class="line">Weapon.mt__index = Weapon  		--设置__index</div><div class="line">p = Weapon.New(&quot;98k&quot;,80,12)</div><div class="line">p2 = Weapon.New(&quot;m4&quot;,20,30)</div><div class="line">p:ShowInfo()    --名字：	98k		伤害：	80		弹药数：	12</div><div class="line">p2:ShowInfo()	--名字：	m4		伤害：	20		弹药数：	30</div><div class="line">print(p==p2) 	--false 比较结果</div></pre></td></tr></table></figure></p>
+<p>模拟继承和方法重写，在上面Weapon类的基础上，构造一个SuperWeapon继承于Weapon</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">SuperWeapon=&#123;</div><div class="line">	ExplosionRange = 200,  --新增字段，爆炸范围</div><div class="line">	mt = &#123;&#125;,				--依然是元表，用来提供和方法的链接</div><div class="line">	New = function(id,damage,bulletCount,range)</div><div class="line">		local s = &#123;&#125;</div><div class="line">		s = Weapon.New(id,damage,bulletCount)   --id之类的字段保留，模拟继承自父类Weapon</div><div class="line">		setmetatable(s,SuperWeapon.mt)			--定义元表</div><div class="line">		s.ExplosionRange = range</div><div class="line">		return s</div><div class="line">	end,</div><div class="line">	ShowInfo = function(self)</div><div class="line">		print(&quot;名字：&quot;,self.id..&quot;\t&quot;,&quot;伤害：&quot;,</div><div class="line">				self.damage..&quot;\t&quot;,&quot;弹药数：&quot;,self.bulletCount..&quot;\t&quot;,</div><div class="line">				&quot;爆炸范围：&quot;,self.ExplosionRange)</div><div class="line">	end,</div><div class="line">&#125;</div><div class="line">SuperWeapon.mt.__index = SuperWeapon			--链接元表</div><div class="line">sp = SuperWeapon.New(&quot;RPG&quot;,500,3，400)</div><div class="line">sp:ShowInfo()		--名字：	RPG		伤害：	500		弹药数：	3		爆炸范围：	400</div></pre></td></tr></table></figure>
+<p>在设置__index元方法处可以简化一下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">SuperWeapon=&#123;</div><div class="line">	ExplosionRange = 200,  --新增字段，爆炸范围</div><div class="line">	New = function(id,damage,bulletCount,range)</div><div class="line">		local s = &#123;&#125;</div><div class="line">		s = Weapon.New(id,damage,bulletCount)   --id之类的字段保留，模拟继承自父类Weapon</div><div class="line">		setmetatable(s,&#123;__index = SuperWeapon&#125;)			--定义元表</div><div class="line">		s.ExplosionRange = range</div><div class="line">		return s</div><div class="line">	end,</div><div class="line">	ShowInfo = function(self)</div><div class="line">		print(&quot;名字：&quot;,self.id..&quot;\t&quot;,&quot;伤害：&quot;,</div><div class="line">				self.damage..&quot;\t&quot;,&quot;弹药数：&quot;,self.bulletCount..&quot;\t&quot;,</div><div class="line">				&quot;爆炸范围：&quot;,self.ExplosionRange)</div><div class="line">	end,</div><div class="line">&#125;</div><div class="line">sp = SuperWeapon.New(&quot;RPG&quot;,500,3，400)</div><div class="line">sp:ShowInfo()		--名字：	RPG		伤害：	500		弹药数：	3		爆炸范围：	400</div></pre></td></tr></table></figure>
       
     </div>
 
@@ -386,7 +385,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/算法/" rel="tag"># 算法</a>
+            <a href="/tags/Lua/" rel="tag"># Lua</a>
           
         </div>
       
@@ -399,8 +398,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/13/线程/" rel="next" title="线程原理">
-                <i class="fa fa-chevron-left"></i> 线程原理
+              <a href="/2017/12/21/Unitykey2/" rel="next" title="UnityKey2">
+                <i class="fa fa-chevron-left"></i> UnityKey2
               </a>
             
           </div>
@@ -409,8 +408,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/21/Unitykey2/" rel="prev" title="UnityKey2">
-                UnityKey2 <i class="fa fa-chevron-right"></i>
+              <a href="/2018/01/14/lua/" rel="prev" title="Lua简单学习">
+                Lua简单学习 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -534,7 +533,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#广度优先搜索-BFS"><span class="nav-number">1.</span> <span class="nav-text">广度优先搜索 BFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度优先搜索-DFS"><span class="nav-number">2.</span> <span class="nav-text">深度优先搜索 DFS</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a></li></ol></div>
             
 
           </div>

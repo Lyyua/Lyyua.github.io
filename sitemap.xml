@@ -2,6 +2,20 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   <url>
+    <loc>http://lyyua.com/2018/01/14/lua2/</loc>
+    
+    <lastmod>2018-01-23T03:52:56.445Z</lastmod>
+    
+  </url>
+  
+  <url>
+    <loc>http://lyyua.com/2018/01/14/lua/</loc>
+    
+    <lastmod>2018-01-23T03:52:45.991Z</lastmod>
+    
+  </url>
+  
+  <url>
     <loc>http://lyyua.com/2017/11/04/FFmpegCMD/</loc>
     
     <lastmod>2018-01-23T03:44:34.254Z</lastmod>
@@ -96,20 +110,6 @@
     <loc>http://lyyua.com/2017/11/15/Unity&Android/</loc>
     
     <lastmod>2018-01-15T10:51:59.436Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://lyyua.com/2017/12/18/lua2/</loc>
-    
-    <lastmod>2018-01-14T14:30:05.855Z</lastmod>
-    
-  </url>
-  
-  <url>
-    <loc>http://lyyua.com/2017/12/15/lua/</loc>
-    
-    <lastmod>2018-01-14T14:29:45.040Z</lastmod>
     
   </url>
   
