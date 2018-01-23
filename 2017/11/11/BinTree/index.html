@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="录屏," />
+  <meta name="keywords" content="算法," />
 
 
 
@@ -93,17 +93,29 @@
 
 
 
-<meta name="description" content="前言总结一下以前用FFmpeg对视频操作的命令。因为需要对音频也进行录制，使用dshow，需要先安装Setup Screen Capturer Recorder">
-<meta name="keywords" content="录屏">
+<meta name="description" content="前言二叉树的结构没什么好说的，见明起意。但是利用这种非线性结构可以高效的完成搜索，删除，添加。把以前学的时候记得笔记总结下，先从树的遍历说起">
+<meta name="keywords" content="算法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="使用FFMPEG命令行操作视频">
-<meta property="og:url" content="http://lyyua.com/2017/11/04/FFmpegCMD/index.html">
+<meta property="og:title" content="二叉树">
+<meta property="og:url" content="http://lyyua.com/2017/11/11/BinTree/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="前言总结一下以前用FFmpeg对视频操作的命令。因为需要对音频也进行录制，使用dshow，需要先安装Setup Screen Capturer Recorder">
-<meta property="og:updated_time" content="2018-01-23T03:44:34.254Z">
+<meta property="og:description" content="前言二叉树的结构没什么好说的，见明起意。但是利用这种非线性结构可以高效的完成搜索，删除，添加。把以前学的时候记得笔记总结下，先从树的遍历说起">
+<meta property="og:image" content="http://lyyua.com/2017/11/11/BinTree/traverse.png">
+<meta property="og:image" content="http://lyyua.com/2017/11/11/BinTree/travPre_I1.png">
+<meta property="og:image" content="http://lyyua.com/2017/11/11/BinTree/preorder.png">
+<meta property="og:image" content="http://lyyua.com/2017/11/11/BinTree/visitAlongLeftBranch.png">
+<meta property="og:image" content="http://lyyua.com/2017/11/11/BinTree/travPre_I2.png">
+<meta property="og:image" content="http://lyyua.com/2017/11/11/BinTree/inordertraversal.png">
+<meta property="og:image" content="http://lyyua.com/2017/11/11/BinTree/inordertraversal2.png">
+<meta property="og:image" content="http://lyyua.com/2017/11/11/BinTree/travLevel.png">
+<meta property="og:image" content="http://lyyua.com/2017/11/11/BinTree/inordertraversal.png">
+<meta property="og:image" content="http://lyyua.com/2017/11/11/BinTree/reshow.png">
+<meta property="og:image" content="http://lyyua.com/2017/11/11/BinTree/reshow2.png">
+<meta property="og:updated_time" content="2018-01-23T03:57:50.453Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="使用FFMPEG命令行操作视频">
-<meta name="twitter:description" content="前言总结一下以前用FFmpeg对视频操作的命令。因为需要对音频也进行录制，使用dshow，需要先安装Setup Screen Capturer Recorder">
+<meta name="twitter:title" content="二叉树">
+<meta name="twitter:description" content="前言二叉树的结构没什么好说的，见明起意。但是利用这种非线性结构可以高效的完成搜索，删除，添加。把以前学的时候记得笔记总结下，先从树的遍历说起">
+<meta name="twitter:image" content="http://lyyua.com/2017/11/11/BinTree/traverse.png">
 
 
 
@@ -131,13 +143,13 @@
 
 
 
-  <link rel="canonical" href="http://lyyua.com/2017/11/04/FFmpegCMD/"/>
+  <link rel="canonical" href="http://lyyua.com/2017/11/11/BinTree/"/>
 
 
 
 
 
-  <title>使用FFMPEG命令行操作视频 | Back</title>
+  <title>二叉树 | Back</title>
   
 
 
@@ -266,7 +278,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/11/04/FFmpegCMD/">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/11/11/BinTree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lyu">
@@ -283,7 +295,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">使用FFMPEG命令行操作视频</h2>
+          <h2 class="post-title" itemprop="name headline">二叉树</h2>
         
 
         <div class="post-meta">
@@ -295,8 +307,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-04T10:46:44+08:00">
-                2017-11-04
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-11T20:26:06+08:00">
+                2017-11-11
               </time>
             
 
@@ -313,7 +325,7 @@
 
           
           
-             <span id="/2017/11/04/FFmpegCMD/" class="leancloud_visitors" data-flag-title="使用FFMPEG命令行操作视频">
+             <span id="/2017/11/11/BinTree/" class="leancloud_visitors" data-flag-title="二叉树">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -341,21 +353,55 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>总结一下以前用FFmpeg对视频操作的命令。因为需要对音频也进行录制，使用dshow，需要先安装Setup Screen Capturer Recorder<a id="more"></a></p>
-<h2 id="录制视频"><a href="#录制视频" class="headerlink" title="录制视频"></a>录制视频</h2><p>x264编码，ultrafast档边录边压，CPU耗用小，文件较大</p>
-<p>s是分辨率 r是录制帧数，q是画面质量，越高画面越差。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -f dshow -i video=&quot;&quot;screen-capture-recorder&quot;&quot; -f dshow -i audio=&quot;&quot;virtual-audio-capturer&quot;&quot; -c:v libx264 -s 1920x1080 -r 25 -q 0 -preset ultrafast -f flv out.mp4 -y</div></pre></td></tr></table></figure>
-<p>开启多线程录制<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ffmpeg -threads 2 -f dshow -i video=&quot;screen-capture-recorder&quot; -f dshow -i audio=&quot;virtual-audio-capturer&quot; -c:v libx264 -preset ultrafast -f flv output.flv -y </div><div class="line">ffmpeg -threads 2 -f dshow -i video=&quot;screen-capture-recorder&quot; -f dshow -i audio=&quot;virtual-audio-capturer&quot; -c:v libx264 -preset veryfast -f flv output.flv -y</div></pre></td></tr></table></figure></p>
-<h2 id="生成GIF图"><a href="#生成GIF图" class="headerlink" title="生成GIF图"></a>生成GIF图</h2><p>利用滤波色彩直方图 两次计算 生成gif 画质效果很好<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ffmpeg -v warning -i tempout.mp4 -vf &quot;fps=1,scale=1920:-1:flags=lanczos,palettegen&quot; palette.png -y</div><div class="line">ffmpeg -v warning -i tempout.mp4 -i palette.png -lavfi &quot;fps=1,scale=1920:-1:flags=lanczos [x]; [x][1:v] paletteuse&quot; 1.gif -y</div></pre></td></tr></table></figure></p>
-<h2 id="截取视频"><a href="#截取视频" class="headerlink" title="截取视频"></a>截取视频</h2><p>裁剪存在残留,不能精确到秒，但是很快<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -ss 00:00:00 -i temp.mp4 -vcodec copy -acodec copy -t 00:01:02 cutout.mp4 -y</div></pre></td></tr></table></figure></p>
-<p>精确分段，起始时间最好大于十秒，持续时间最好大于20秒<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ffmpeg -ss 00:00:00 -i 1.mp4 -vcodec copy -acodec copy -t 00:02:00 cutout.mp4 -y</div><div class="line">ffmpeg -i cutout.mp4 -vcodec mjpeg -qscale 0 -acodec pcm_s16le pre.mov -y</div><div class="line">ffmpeg -i pre.mov -ss 00:00:00 -pix_fmt yuv420p -vcodec libx264 -t 00:02:00 out.mp4 -y</div></pre></td></tr></table></figure></p>
-<h2 id="拼接视频"><a href="#拼接视频" class="headerlink" title="拼接视频"></a>拼接视频</h2><p>mp4转ts，ts拼接转mp4<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ffmpeg -i BD.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts 1.ts</div><div class="line">ffmpeg -i low420p.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts low420p.ts</div><div class="line">ffmpeg -i &quot;concat:1.ts|low420p.ts&quot; -c copy -movflags +faststart combine.mp4 -y</div></pre></td></tr></table></figure></p>
-<h2 id="视频压缩"><a href="#视频压缩" class="headerlink" title="视频压缩"></a>视频压缩</h2><p>降低分辨率可以大幅度降低视频大小。<br>以yuv420p编码，可以在移动端播放，可以使用quicktime播放器，还能降低些许大小<br>veryfast档压出来最小，有些奇怪。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -threads 4 -i out.mp4 -c:v libx264 -pix_fmt yuv420p -s 640x384 -preset veryfast 2.mp4 -y</div></pre></td></tr></table></figure></p>
-<h2 id="定制大小的压缩"><a href="#定制大小的压缩" class="headerlink" title="定制大小的压缩"></a>定制大小的压缩</h2><p>策略是两遍压缩，以限定大小压缩，忽略帧与帧之间的过渡 ，如果你的目标是一个确定大小的文件而且帧与帧之间的视频质量并不重要，这个方法很适用。这通过一个例子可以得到很好地解释。你的视频有10分钟（600秒）的时长同时要求输出为50MB，因为比特率=文件大小/时长，50MB*8192（MB转kilobits)/600秒=683 kbps（全局比特率），683kbps-128kbps(音频比特率）=555kbps（视频比特率）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -y -i out.mp4 -c:v libx264 -preset medium -b:v 555k -pass 1 -an -f mp4 null &amp;&amp; ffmpeg -i out.mp4 -c:v libx264 -preset medium -b:v 555k -pass 2 output.mp4 -y</div></pre></td></tr></table></figure></p>
-<h2 id="裁剪视频"><a href="#裁剪视频" class="headerlink" title="裁剪视频"></a>裁剪视频</h2><p>裁剪输入视频的左三分之一，中间三分之一，右三分之一:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ffmpeg -i 640x384.mp4 -vf crop=iw/3:ih :0:0 output.mp4 </div><div class="line">ffmpeg -i input -vf crop=iw/3:ih :iw/3:0 output </div><div class="line">ffmpeg -i input -vf crop=iw/3:ih :iw/3*2:0 output</div></pre></td></tr></table></figure></p>
-<p>比较喜欢这种，坐标原点位于左上角 1900为宽，960为高，10与左缘的距离，60为与上缘的距离<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -i temp.mp4 -strict -2 -vf crop=1900:960:10:60 tempout.mp4</div></pre></td></tr></table></figure></p>
-<h2 id="音频转码"><a href="#音频转码" class="headerlink" title="音频转码"></a>音频转码</h2><p>FFMPEG在这方面的支持比较弱，比如转m4r就办不到，随便写个意思下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -i input.wma -ab 64 -ar 22050 output.mp3</div></pre></td></tr></table></figure></p>
-<h2 id="使用C-启动"><a href="#使用C-启动" class="headerlink" title="使用C#启动"></a>使用C#启动</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">void RunFFmpeg(string arg)</div><div class="line">   &#123;</div><div class="line">       Process p = new Process();//建立外部调用线程用于合成</div><div class="line">       p.StartInfo.FileName = _ffPath;  //ffmpeg.exe的绝对路径</div><div class="line">       p.StartInfo.Arguments = arg;  //ffmpeg的参数</div><div class="line">       p.StartInfo.UseShellExecute = false;           //是否使用操作系统shell启动</div><div class="line">       p.StartInfo.RedirectStandardError = true;      //重定向标准错误输出</div><div class="line">       p.StartInfo.CreateNoWindow = true;             //不显示程序窗口</div><div class="line">       p.ErrorDataReceived += new DataReceivedEventHandler(Output);</div><div class="line">       p.Start();</div><div class="line">       p.BeginErrorReadLine();//开始异步读取</div><div class="line">       p.WaitForExit();</div><div class="line">       p.Close();</div><div class="line">       p.Dispose();</div><div class="line">   &#125;</div><div class="line">   void Output(object sendProcess, DataReceivedEventArgs output)</div><div class="line">   &#123;</div><div class="line">       if (!String.IsNullOrEmpty(output.Data))</div><div class="line">       &#123;</div><div class="line">       	 print(output.Data);</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>二叉树的结构没什么好说的，见明起意。但是利用这种非线性结构可以高效的完成搜索，删除，添加。把以前学的时候记得笔记总结下，先从树的遍历说起<a id="more"></a></p>
+<h2 id="先序遍历"><a href="#先序遍历" class="headerlink" title="先序遍历"></a>先序遍历</h2><p>递归一个很明显的缺点就是，由于递归的实现机制，不能针对不同问题，量体裁衣，故而<strong>每一个递归实例</strong>都使用一个通用格式，所以在运行栈中，它的空间消耗不能做到足够的小。而对于不同的问题，我们完全可以通过一定的设计，去除一些不必要的操作。</p>
+<p>递归实现</p>
+<p><img src="/2017/11/11/BinTree/traverse.png" alt=""></p>
+<p>迭代实现1</p>
+<p><img src="/2017/11/11/BinTree/travPre_I1.png" alt=""></p>
+<p>迭代实现2-构思</p>
+<p><img src="/2017/11/11/BinTree/preorder.png" alt=""></p>
+<p>具体实现：</p>
+<p>深入左侧链，深入的同时访问左侧节点，右侧子节点入栈，直到不能深入，如此就把左侧节点对应的右侧节点全部入栈（并不是所有的右节点），准备下一次以右节点为根节点进行左侧深入。</p>
+<p><img src="/2017/11/11/BinTree/visitAlongLeftBranch.png" alt=""></p>
+<p>主算法</p>
+<p>当前根节点深入左侧链完毕后，弹出右侧子节点栈的栈顶元素，以他为根节点，进入下一次深入左侧链遍历，如此迭代，直到右侧子节点栈为空</p>
+<p><img src="/2017/11/11/BinTree/travPre_I2.png" alt=""></p>
+<p>可以发现，行为树的遍历就是先序遍历</p>
+<h2 id="中序遍历"><a href="#中序遍历" class="headerlink" title="中序遍历"></a>中序遍历</h2><p>思路</p>
+<p><img src="/2017/11/11/BinTree/inordertraversal.png" alt=""></p>
+<p>中序遍历的整体趋势，依然是不断深入左侧链。</p>
+<p>但是和先序遍历的区别在于，在深入左侧链的同时，他不会立即访问此节点，他需要在深入到不能继续深入左侧链时，才会被授予权限访问，在访问的同时，需要考量是否能把右节点作为根节点，进行深入左侧链的操作</p>
+<p>具体实现</p>
+<p><img src="/2017/11/11/BinTree/inordertraversal2.png" alt=""></p>
+<h2 id="层次遍历"><a href="#层次遍历" class="headerlink" title="层次遍历"></a>层次遍历</h2><p>需要一层一层的扫描过去，所以借助了队列结构，简单的说，从root节点出发，root的左右节点入队列，接下来，遍历此时的队列，每读取一个节点，把这个节点的左右节点加入队列（如果存在左右节点的话），终止条件是队列为空。根据队列先进先出的特性，刚好可以实现二叉树一层一层的扫描。具体实现如下：</p>
+<p><img src="/2017/11/11/BinTree/travLevel.png" alt=""></p>
+<h2 id="重构"><a href="#重构" class="headerlink" title="重构"></a>重构</h2><h3 id="（先序遍历-后序遍历）-中序遍历确定二叉树结构"><a href="#（先序遍历-后序遍历）-中序遍历确定二叉树结构" class="headerlink" title="（先序遍历/后序遍历） + 中序遍历确定二叉树结构"></a>（先序遍历/后序遍历） + 中序遍历确定二叉树结构</h3><p>首先，先序遍历或者后序遍历的结果可以确定基本的根节点位置，而中序遍历的结果，可以准确的划分出左子树和右子树，换言之，根据根节点的位置，可以不断的把问题的规模缩小一半。</p>
+<p>给定一颗二叉树</p>
+<p><img src="/2017/11/11/BinTree/inordertraversal.png" alt=""></p>
+<p><img src="/2017/11/11/BinTree/reshow.png" alt=""></p>
+<p>上一行是先序遍历的结果，下一行是中序遍历的结果。</p>
+<p>根据第一行数据给第二行做递归</p>
+<p>第一个元素为i，以i为根节点，在第二行中确定位置后，可以知道a-h为左子树，j-p为右子树。</p>
+<p>第二个元素为d，以d为根节点，同理可知，a-c为左子树，e-h为右子树</p>
+<p>第三个元素为c，以c为根节点，a-b为左子树，没有右子树</p>
+<p>第四个元素为a，以a为根节点，b为右子树，没有左子树。</p>
+<p>第五个元素为b，此时只有他一个元素。</p>
+<p>第六个元素为h….</p>
+<p>同时进一步观察可以发现，由于上一行是先序遍历的结果，下一行是中序遍历的结果,中序遍历的结果是，左右分明，先左再中再右;而先序遍历的结果是，一切从根节点开始，所以我们可以利用先序遍历的根节点，从中序遍历的结果中确认左右节点。</p>
+<p>这类问题使用递归可以很好的实现，类似这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Queue&lt;Node&gt; que;</div><div class="line">void Start()</div><div class="line">&#123;</div><div class="line">	travel(midNodesResult,que.dequeue());</div><div class="line">&#125;</div><div class="line">void travel(Node[] nodes，Node root)&#123;</div><div class="line">if(!nodes || nodes.length==1)return; //不存在子节点，或者只剩下自己</div><div class="line">Node n = que.dequeue();//当前结点</div><div class="line">Node[] left = divideLeft(root,nodes);//根据当前根节点划分两组</div><div class="line">Node[] right = divideRight(root,nodes);</div><div class="line">bool isLeft = WhereIsThisNode(left,right,n); //判断当前结点在哪一组</div><div class="line">if(isLeft)&#123;</div><div class="line">	root.left = n;</div><div class="line">&#125;else&#123;</div><div class="line">	root.right = n;</div><div class="line">&#125;</div><div class="line">travel(left,n);</div><div class="line">travel(right,n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="先序遍历-后序遍历结果确定真二叉树结构"><a href="#先序遍历-后序遍历结果确定真二叉树结构" class="headerlink" title="先序遍历 + 后序遍历结果确定真二叉树结构"></a>先序遍历 + 后序遍历结果确定真二叉树结构</h3><p>思路依然是（先序遍历/后序遍历） + 中序遍历结果确定二叉树结构的思路。</p>
+<p>给定一行先序遍历的结果，再给定一行后续遍历的结果，根据一行的数据来对另一行数据做减而治之的操作。</p>
+<p><img src="/2017/11/11/BinTree/reshow2.png" alt=""></p>
+<p>上一行是先序遍历的结果，下一行是后序遍历的结果。</p>
+<p>首先，不管先序还是后序，第一个元素是最初根节点，他们是相等的，在这里即是1。</p>
+<p>此时只看第二行</p>
+<p>第二个元素是3，所以，2是1的左节点，3是1的右节点，把第一行数据划分两组，4-11 为左子树，6-15为右子树。</p>
+<p>第三个元素为7，故而可以知道，6是3的左节点，7是3的右节点，所以可以把第一行数据划分为左子树12-13，右子树14-15。</p>
+<p>第四个元素为15，所以在14为7的左节点，15为7的右节点，此时14-15已经将问题减少至最小规模。</p>
+<p>…</p>
+
       
     </div>
 
@@ -384,7 +430,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/录屏/" rel="tag"># 录屏</a>
+            <a href="/tags/算法/" rel="tag"># 算法</a>
           
         </div>
       
@@ -397,8 +443,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/28/Meshdeformation/" rel="next" title="给Mesh施力变形">
-                <i class="fa fa-chevron-left"></i> 给Mesh施力变形
+              <a href="/2017/11/04/FFmpegCMD/" rel="next" title="使用FFMPEG命令行操作视频">
+                <i class="fa fa-chevron-left"></i> 使用FFMPEG命令行操作视频
               </a>
             
           </div>
@@ -407,8 +453,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/11/11/BinTree/" rel="prev" title="二叉树">
-                二叉树 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/11/12/BST/" rel="prev" title="高级搜索树">
+                高级搜索树 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -532,7 +578,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#录制视频"><span class="nav-number">2.</span> <span class="nav-text">录制视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成GIF图"><span class="nav-number">3.</span> <span class="nav-text">生成GIF图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#截取视频"><span class="nav-number">4.</span> <span class="nav-text">截取视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拼接视频"><span class="nav-number">5.</span> <span class="nav-text">拼接视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#视频压缩"><span class="nav-number">6.</span> <span class="nav-text">视频压缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定制大小的压缩"><span class="nav-number">7.</span> <span class="nav-text">定制大小的压缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#裁剪视频"><span class="nav-number">8.</span> <span class="nav-text">裁剪视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#音频转码"><span class="nav-number">9.</span> <span class="nav-text">音频转码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用C-启动"><span class="nav-number">10.</span> <span class="nav-text">使用C#启动</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#先序遍历"><span class="nav-number">2.</span> <span class="nav-text">先序遍历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中序遍历"><span class="nav-number">3.</span> <span class="nav-text">中序遍历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#层次遍历"><span class="nav-number">4.</span> <span class="nav-text">层次遍历</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#重构"><span class="nav-number">5.</span> <span class="nav-text">重构</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#（先序遍历-后序遍历）-中序遍历确定二叉树结构"><span class="nav-number">5.1.</span> <span class="nav-text">（先序遍历/后序遍历） + 中序遍历确定二叉树结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#先序遍历-后序遍历结果确定真二叉树结构"><span class="nav-number">5.2.</span> <span class="nav-text">先序遍历 + 后序遍历结果确定真二叉树结构</span></a></li></ol></li></ol></div>
             
 
           </div>
