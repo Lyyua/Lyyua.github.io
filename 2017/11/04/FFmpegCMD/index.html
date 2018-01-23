@@ -93,17 +93,17 @@
 
 
 
-<meta name="description" content="因为需要对音频也进行录制，使用dshow，需要先安装Setup Screen Capturer Recorder 录制视频x264编码，ultrafast档边录边压，CPU耗用小，文件较大 s是分辨率 r是录制帧数，q是画面质量，越高画面越差。 1ffmpeg -f dshow -i video=&amp;quot;&amp;quot;screen-capture-recorder&amp;quot;&amp;quot; -f">
+<meta name="description" content="前言总结一下以前用FFmpeg对视频操作的命令。因为需要对音频也进行录制，使用dshow，需要先安装Setup Screen Capturer Recorder">
 <meta name="keywords" content="录屏">
 <meta property="og:type" content="article">
 <meta property="og:title" content="使用FFMPEG命令行操作视频">
-<meta property="og:url" content="http://lyyua.com/2017/10/13/FFmpegCMD/index.html">
+<meta property="og:url" content="http://lyyua.com/2017/11/04/FFmpegCMD/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="因为需要对音频也进行录制，使用dshow，需要先安装Setup Screen Capturer Recorder 录制视频x264编码，ultrafast档边录边压，CPU耗用小，文件较大 s是分辨率 r是录制帧数，q是画面质量，越高画面越差。 1ffmpeg -f dshow -i video=&amp;quot;&amp;quot;screen-capture-recorder&amp;quot;&amp;quot; -f">
-<meta property="og:updated_time" content="2018-01-22T07:10:16.006Z">
+<meta property="og:description" content="前言总结一下以前用FFmpeg对视频操作的命令。因为需要对音频也进行录制，使用dshow，需要先安装Setup Screen Capturer Recorder">
+<meta property="og:updated_time" content="2018-01-23T03:44:34.254Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用FFMPEG命令行操作视频">
-<meta name="twitter:description" content="因为需要对音频也进行录制，使用dshow，需要先安装Setup Screen Capturer Recorder 录制视频x264编码，ultrafast档边录边压，CPU耗用小，文件较大 s是分辨率 r是录制帧数，q是画面质量，越高画面越差。 1ffmpeg -f dshow -i video=&amp;quot;&amp;quot;screen-capture-recorder&amp;quot;&amp;quot; -f">
+<meta name="twitter:description" content="前言总结一下以前用FFmpeg对视频操作的命令。因为需要对音频也进行录制，使用dshow，需要先安装Setup Screen Capturer Recorder">
 
 
 
@@ -131,7 +131,7 @@
 
 
 
-  <link rel="canonical" href="http://lyyua.com/2017/10/13/FFmpegCMD/"/>
+  <link rel="canonical" href="http://lyyua.com/2017/11/04/FFmpegCMD/"/>
 
 
 
@@ -266,7 +266,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/13/FFmpegCMD/">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/11/04/FFmpegCMD/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lyu">
@@ -295,8 +295,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-13T10:46:44+08:00">
-                2017-10-13
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-04T10:46:44+08:00">
+                2017-11-04
               </time>
             
 
@@ -313,7 +313,7 @@
 
           
           
-             <span id="/2017/10/13/FFmpegCMD/" class="leancloud_visitors" data-flag-title="使用FFMPEG命令行操作视频">
+             <span id="/2017/11/04/FFmpegCMD/" class="leancloud_visitors" data-flag-title="使用FFMPEG命令行操作视频">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -341,7 +341,7 @@
       
 
       
-        <p>因为需要对音频也进行录制，使用dshow，需要先安装Setup Screen Capturer Recorder</p>
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>总结一下以前用FFmpeg对视频操作的命令。因为需要对音频也进行录制，使用dshow，需要先安装Setup Screen Capturer Recorder<a id="more"></a></p>
 <h2 id="录制视频"><a href="#录制视频" class="headerlink" title="录制视频"></a>录制视频</h2><p>x264编码，ultrafast档边录边压，CPU耗用小，文件较大</p>
 <p>s是分辨率 r是录制帧数，q是画面质量，越高画面越差。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -f dshow -i video=&quot;&quot;screen-capture-recorder&quot;&quot; -f dshow -i audio=&quot;&quot;virtual-audio-capturer&quot;&quot; -c:v libx264 -s 1920x1080 -r 25 -q 0 -preset ultrafast -f flv out.mp4 -y</div></pre></td></tr></table></figure>
@@ -355,7 +355,7 @@
 <h2 id="裁剪视频"><a href="#裁剪视频" class="headerlink" title="裁剪视频"></a>裁剪视频</h2><p>裁剪输入视频的左三分之一，中间三分之一，右三分之一:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ffmpeg -i 640x384.mp4 -vf crop=iw/3:ih :0:0 output.mp4 </div><div class="line">ffmpeg -i input -vf crop=iw/3:ih :iw/3:0 output </div><div class="line">ffmpeg -i input -vf crop=iw/3:ih :iw/3*2:0 output</div></pre></td></tr></table></figure></p>
 <p>比较喜欢这种，坐标原点位于左上角 1900为宽，960为高，10与左缘的距离，60为与上缘的距离<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -i temp.mp4 -strict -2 -vf crop=1900:960:10:60 tempout.mp4</div></pre></td></tr></table></figure></p>
 <h2 id="音频转码"><a href="#音频转码" class="headerlink" title="音频转码"></a>音频转码</h2><p>FFMPEG在这方面的支持比较弱，比如转m4r就办不到，随便写个意思下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -i input.wma -ab 64 -ar 22050 output.mp3</div></pre></td></tr></table></figure></p>
-
+<h2 id="使用C-启动"><a href="#使用C-启动" class="headerlink" title="使用C#启动"></a>使用C#启动</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">void RunFFmpeg(string arg)</div><div class="line">   &#123;</div><div class="line">       Process p = new Process();//建立外部调用线程用于合成</div><div class="line">       p.StartInfo.FileName = _ffPath;  //ffmpeg.exe的绝对路径</div><div class="line">       p.StartInfo.Arguments = arg;  //ffmpeg的参数</div><div class="line">       p.StartInfo.UseShellExecute = false;           //是否使用操作系统shell启动</div><div class="line">       p.StartInfo.RedirectStandardError = true;      //重定向标准错误输出</div><div class="line">       p.StartInfo.CreateNoWindow = true;             //不显示程序窗口</div><div class="line">       p.ErrorDataReceived += new DataReceivedEventHandler(Output);</div><div class="line">       p.Start();</div><div class="line">       p.BeginErrorReadLine();//开始异步读取</div><div class="line">       p.WaitForExit();</div><div class="line">       p.Close();</div><div class="line">       p.Dispose();</div><div class="line">   &#125;</div><div class="line">   void Output(object sendProcess, DataReceivedEventArgs output)</div><div class="line">   &#123;</div><div class="line">       if (!String.IsNullOrEmpty(output.Data))</div><div class="line">       &#123;</div><div class="line">       	 print(output.Data);</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
       
     </div>
 
@@ -397,8 +397,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/10/04/Matrix2/" rel="next" title="矩阵在数学上的补充">
-                <i class="fa fa-chevron-left"></i> 矩阵在数学上的补充
+              <a href="/2017/11/03/BinTree/" rel="next" title="二叉树">
+                <i class="fa fa-chevron-left"></i> 二叉树
               </a>
             
           </div>
@@ -407,8 +407,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/10/13/ShaderBlend/" rel="prev" title="UnityShader-Blend">
-                UnityShader-Blend <i class="fa fa-chevron-right"></i>
+              <a href="/2017/11/04/BST/" rel="prev" title="高级搜索树">
+                高级搜索树 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -532,7 +532,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#录制视频"><span class="nav-number">1.</span> <span class="nav-text">录制视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成GIF图"><span class="nav-number">2.</span> <span class="nav-text">生成GIF图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#截取视频"><span class="nav-number">3.</span> <span class="nav-text">截取视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拼接视频"><span class="nav-number">4.</span> <span class="nav-text">拼接视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#视频压缩"><span class="nav-number">5.</span> <span class="nav-text">视频压缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定制大小的压缩"><span class="nav-number">6.</span> <span class="nav-text">定制大小的压缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#裁剪视频"><span class="nav-number">7.</span> <span class="nav-text">裁剪视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#音频转码"><span class="nav-number">8.</span> <span class="nav-text">音频转码</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#录制视频"><span class="nav-number">2.</span> <span class="nav-text">录制视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#生成GIF图"><span class="nav-number">3.</span> <span class="nav-text">生成GIF图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#截取视频"><span class="nav-number">4.</span> <span class="nav-text">截取视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#拼接视频"><span class="nav-number">5.</span> <span class="nav-text">拼接视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#视频压缩"><span class="nav-number">6.</span> <span class="nav-text">视频压缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#定制大小的压缩"><span class="nav-number">7.</span> <span class="nav-text">定制大小的压缩</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#裁剪视频"><span class="nav-number">8.</span> <span class="nav-text">裁剪视频</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#音频转码"><span class="nav-number">9.</span> <span class="nav-text">音频转码</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用C-启动"><span class="nav-number">10.</span> <span class="nav-text">使用C#启动</span></a></li></ol></div>
             
 
           </div>
