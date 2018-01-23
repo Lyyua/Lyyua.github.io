@@ -1,0 +1,939 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Lato:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="android," />
+
+
+
+
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico?v=5.1.1" />
+
+
+
+
+
+
+<meta name="description" content="前言从jar包制作到Unity-Android间的通信。">
+<meta name="keywords" content="android">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Unity&amp;Android">
+<meta property="og:url" content="http://lyyua.com/2017/11/25/Unity&Android/index.html">
+<meta property="og:site_name" content="Back">
+<meta property="og:description" content="前言从jar包制作到Unity-Android间的通信。">
+<meta property="og:image" content="http://lyyua.com/2017/11/25/Unity&Android/UnityPluginsLevel.png">
+<meta property="og:updated_time" content="2018-01-23T05:42:04.122Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Unity&amp;Android">
+<meta name="twitter:description" content="前言从jar包制作到Unity-Android间的通信。">
+<meta name="twitter:image" content="http://lyyua.com/2017/11/25/Unity&Android/UnityPluginsLevel.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    sidebar: {"position":"left","display":"post","offset":12,"offset_float":0,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://lyyua.com/2017/11/25/Unity&Android/"/>
+
+
+
+
+
+  <title>Unity&Android | Back</title>
+  
+
+
+
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?d4860eb791209892b971cbc05d6eb81a";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script><!-- hexo-inject:begin --><!-- hexo-inject:end -->
+
+
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Back</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <h1 class="site-subtitle" itemprop="description"></h1>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/11/25/Unity&Android/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">Unity&Android</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-25T11:51:31+08:00">
+                2017-11-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/11/25/Unity&Android/" class="leancloud_visitors" data-flag-title="Unity&Android">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>从jar包制作到Unity-Android间的通信。<a id="more"></a></p>
+<h2 id="Jar包制作"><a href="#Jar包制作" class="headerlink" title="Jar包制作"></a>Jar包制作</h2><p>环境确认：</p>
+<blockquote>
+<ul>
+<li>jdk安装和环境变量配置是否完成</li>
+<li>Android Studio 开发工具是否翻墙安装完整</li>
+</ul>
+</blockquote>
+<p>使用AndroidStudio制作Jar包</p>
+<h3 id="方法1"><a href="#方法1" class="headerlink" title="方法1"></a>方法1</h3><p>新建一个Moudle，这里取名字叫APP，把需要导出jar包的java文件，然后添加好代码的依赖关系。<br>按照下面的配置参照修改当前build.Gradle文件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div></pre></td><td class="code"><pre><div class="line">//////////////////////////////不是apply plugin: &apos;com.android.application&apos;</div><div class="line">apply plugin: &apos;com.android.library&apos;</div><div class="line">//////////////////////平台基本信息，导包用不上，不用管</div><div class="line">android &#123;</div><div class="line">    compileSdkVersion 26</div><div class="line">    defaultConfig &#123;</div><div class="line">        minSdkVersion 16</div><div class="line">        targetSdkVersion 26</div><div class="line">        versionCode 1</div><div class="line">        versionName &quot;1.0&quot;</div><div class="line">        testInstrumentationRunner &quot;android.support.test.runner.AndroidJUnitRunner&quot;</div><div class="line">    &#125;</div><div class="line">    buildTypes &#123;</div><div class="line">        release &#123;</div><div class="line">            minifyEnabled false</div><div class="line">            proguardFiles getDefaultProguardFile(&apos;proguard-android.txt&apos;), &apos;proguard-rules.pro&apos;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">//////////////////////////////这一项是依赖项，不用管，通常往Android Studio导jar包也不会手动在这里配置。</div><div class="line">dependencies &#123; </div><div class="line">    implementation fileTree(include: [&apos;*.jar&apos;], dir: &apos;libs&apos;)</div><div class="line">    implementation &apos;com.android.support:appcompat-v7:26.1.0&apos;</div><div class="line">    testImplementation &apos;junit:junit:4.12&apos;</div><div class="line">    androidTestImplementation &apos;com.android.support.test:runner:1.0.1&apos;</div><div class="line">    androidTestImplementation &apos;com.android.support.test.espresso:espresso-core:3.0.1&apos;</div><div class="line">    implementation files(&apos;libs/classes.jar&apos;)</div><div class="line">&#125;</div><div class="line">↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓终端编译执行的命令</div><div class="line">task makeJar(type: Copy) &#123;</div><div class="line">    delete &apos;build/libs/mysdk.jar&apos;                                  //下删除老的Jar包</div><div class="line">    from(&apos;build/intermediates/bundles/release/&apos;)                   //从该地址复制</div><div class="line">    into(&apos;build/libs/&apos;)                                            //复制到该地址</div><div class="line">    include(&apos;classes.jar&apos;)                                         //包含文件</div><div class="line">    rename (&apos;classes.jar&apos;, &apos;myjar.jar&apos;)                            //重命名</div><div class="line">&#125;</div><div class="line">makeJar.dependsOn(build)</div></pre></td></tr></table></figure></p>
+<p>在Terminal终端输入gradlew makeJar命令行，在上面的配置目录上就能找到导出的jar包。</p>
+<h3 id="方法2"><a href="#方法2" class="headerlink" title="方法2"></a>方法2</h3><p>在上述步骤的基础上，直接点击build-&gt;make moudle “APP”，最终在可以找到APP/build/intermediates/bundles/debug/classes.jar</p>
+<h3 id="方法3"><a href="#方法3" class="headerlink" title="方法3"></a>方法3</h3><p>直接修改你当前应用的build.Gradle内容，把第一行的apply plugin: ‘com.android.application’<br>改为apply plugin: ‘com.android.library’<br>接下来根据提示fix一些小问题，直接点击build-&gt;make moudle “APP”，最终在可以找到APP/build/intermediates/bundles/debug/classes.jar</p>
+<p>三个方法原理一样，比较喜欢第三种。</p>
+<h2 id="导入Unity"><a href="#导入Unity" class="headerlink" title="导入Unity"></a>导入Unity</h2><p>首先需要明确的是，工程目录层级一定要正确</p>
+<p><img src="/2017/11/25/Unity&Android/UnityPluginsLevel.png" alt=""></p>
+<h3 id="Plugins-Android-bin"><a href="#Plugins-Android-bin" class="headerlink" title="Plugins/Android/bin"></a>Plugins/Android/bin</h3><p>导出的jar包，通常是一些负责和Android交互的一些java文件，比如UnityPlayerActivity跳转至其他activity，或者一些静态方法。</p>
+<h3 id="Plugins-Android-libs"><a href="#Plugins-Android-libs" class="headerlink" title="Plugins/Android/libs"></a>Plugins/Android/libs</h3><blockquote>
+<ul>
+<li>接入的SDK可能会引用一些其他的库，这经常用到。</li>
+<li>对应CPU架构的.so文件，类似armeabi，armeabi-v7a，x86</li>
+</ul>
+</blockquote>
+<h3 id="Plugins-Android-res"><a href="#Plugins-Android-res" class="headerlink" title="Plugins/Android/res"></a>Plugins/Android/res</h3><blockquote>
+<ul>
+<li>安卓平台开发通常用到的一些配置xml和资源文件</li>
+</ul>
+</blockquote>
+<h2 id="和Android通信"><a href="#和Android通信" class="headerlink" title="和Android通信"></a>和Android通信</h2><h3 id="调用静态方法"><a href="#调用静态方法" class="headerlink" title="调用静态方法"></a>调用静态方法</h3><p>调用Android环境中的静态方法，直接定位到某个包内的静态方法。</p>
+<p>Unity环境中的代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">#if  UNITY_ANDROID</div><div class="line">//运行在Android环境的接口</div><div class="line">private static void ShowNativeTip_()</div><div class="line">&#123;</div><div class="line">    //注意,这边一定要把游戏的包名写正确，否则找不到类。</div><div class="line">    using (AndroidJavaClass jc = new AndroidJavaClass(&quot;com.lyu.ConnectUnityToiOSAndroid.ConnectUnityToAndroid&quot;))</div><div class="line">    &#123;</div><div class="line">        jc.CallStatic(&quot;ShowNativeTip_&quot;);</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">#endif</div></pre></td></tr></table></figure>
+<p>在Android环境中随便写一个对应的静态方法，当Unity环境下调用这个静态方法后，在Android环境下朝Unity环境发送消息</p>
+<blockquote>
+<ul>
+<li>UnityPlayer.UnitySendMessage(“GameObjectName”, “MethodName”, “arg”);</li>
+</ul>
+</blockquote>
+<p>安卓环境下是没有UnityPlayer的，需要导包，com.unity3d.player.UnityPlayer这个包在Unity的安装目录下，大致路径:</p>
+<blockquote>
+<ul>
+<li>UnityXXX\Editor\Data\PlaybackEngines\AndroidPlayer\Variations\mono(il2cpp)\Release\Classes</li>
+</ul>
+</blockquote>
+<p>如果编译apk的时候用的是mono虚拟机就用mono文件夹下的，如果用的是il2cpp虚拟机就用il2cpp文件目录下的。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div></pre></td><td class="code"><pre><div class="line">public class ConnectUnityToAndroid &#123;</div><div class="line">    public static void ShowNativeTip_()&#123;</div><div class="line">        UnityPlayer.currentActivity.runOnUiThread(new Runnable() &#123;</div><div class="line">            @Override</div><div class="line">            public void run() &#123;</div><div class="line">                AlertDialog.Builder builder = new AlertDialog.Builder(UnityPlayer.currentActivity)</div><div class="line">                        .setMessage(&quot;这是Android的原生弹窗&quot;)</div><div class="line">                        .setPositiveButton(&quot;确定&quot;, new DialogInterface.OnClickListener() &#123;</div><div class="line">                            @Override</div><div class="line">                            public void onClick(DialogInterface dialog, int which) &#123;</div><div class="line">                                UnityPlayer.UnitySendMessage(&quot;Camera&quot;, &quot;NativeTipClosed&quot;, &quot;&quot;);</div><div class="line">                            &#125;</div><div class="line">                        &#125;);</div><div class="line">                builder.show();</div><div class="line">            &#125;</div><div class="line">        &#125;);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h3 id="调用方法"><a href="#调用方法" class="headerlink" title="调用方法"></a>调用方法</h3><p>unity在Android环境下相当于运行了一个Activity，获取当前的UnityActivity，调用其中方法即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">#if  UNITY_ANDROID</div><div class="line">    //运行在Android环境的接口</div><div class="line">    public void Load()</div><div class="line">    &#123;</div><div class="line">        using (AndroidJavaClass jc = new AndroidJavaClass(&quot;com.unity3d.player.UnityPlayer&quot;))</div><div class="line">        &#123;</div><div class="line">            using (AndroidJavaObject jo = jc.GetStatic&lt;AndroidJavaObject&gt;(&quot;currentActivity&quot;))</div><div class="line">            &#123;</div><div class="line">                jo.Call(&quot;LoadMain&quot;);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">#endif</div></pre></td></tr></table></figure>
+<p>Android环境下，继承于UnityPlayerActivity实现一个Activity，把unity环境准备调用的方法LoadMain写上，当调用这个方法后跳转至一个新的Activity</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">public class LoadMainActivity extends UnityPlayerActivity &#123;</div><div class="line">    Context mcontext=null;</div><div class="line">    @Override</div><div class="line">    protected void onCreate(Bundle bundle) &#123;</div><div class="line">        super.onCreate(bundle);</div><div class="line">        mcontext=this;</div><div class="line">    &#125;</div><div class="line">    public void LoadMain( )</div><div class="line">    &#123;</div><div class="line">        Intent intent = new Intent(mcontext,BlankActivity.class);</div><div class="line">        this.startActivity(intent);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="解决发布问题"><a href="#解决发布问题" class="headerlink" title="解决发布问题"></a>解决发布问题</h2><p>0、在确认SDK本身配置正确的前提下。</p>
+<p>1、发布apk时，unity报错re_package之类的，查看具体错误，如果看到是因为xml的属性间接引用导致，目前我的解决方案是，不让他间接引用，直接写上值。</p>
+<p>2、处理器架构是否匹配</p>
+<p>3、检查AndroidManifest配置</p>
+<p>4、发布apk导致正常，手机无法安装，通常是发布版本不匹配</p>
+<p>5、可以进入Unity的主场景，但是涉及Android的一些Activity跳转会出现闪退，此时最好打开调试工具，观察一下是什么错误，可能是Android版本不支持一些API，比如Layout布局不支持。或者其他的兼容问题，主要看log</p>
+<p>6、曾经出现一直安装不了APK的情况，原因是：我用Android Studio发了一个官方Demo的APK安装在手机上，又把SDK导了个Jar包在Unity里面调用，发布的时候，虽然APK不一样，但是包名一样，导致无法安装。</p>
+<p>7、从Unity导出Android工程，在AndroidStudio中导出最终APK</p>
+<h2 id="安卓发布后的调试"><a href="#安卓发布后的调试" class="headerlink" title="安卓发布后的调试"></a>安卓发布后的调试</h2><p>先起模拟器或者usb连接真机</p>
+<p>再起Android Studio，在logcat栏可以看到连接的设备，因为log很多，通常会对log过滤下，比如搜索发布的包名com.xxx.xxx.xxx</p>
+<p>连接真机调试不能看到应用的具体运行过程，比如点击某某button，从某个activity跳转到了某个activity，而模拟器调试可以。</p>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/android/" rel="tag"># android</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/11/12/BST/" rel="next" title="高级搜索树">
+                <i class="fa fa-chevron-left"></i> 高级搜索树
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/12/02/系统运作和高速缓存/" rel="prev" title="系统运作和高速缓存">
+                系统运作和高速缓存 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTgyMy82Mzg5"></div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/avatar.png"
+               alt="Lyu" />
+          <p class="site-author-name" itemprop="name">Lyu</p>
+           
+              <p class="site-description motion-element" itemprop="description"></p>
+           
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+              <a href="/archives/">
+                <span class="site-state-item-count">32</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">14</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jar包制作"><span class="nav-number">2.</span> <span class="nav-text">Jar包制作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#方法1"><span class="nav-number">2.1.</span> <span class="nav-text">方法1</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法2"><span class="nav-number">2.2.</span> <span class="nav-text">方法2</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#方法3"><span class="nav-number">2.3.</span> <span class="nav-text">方法3</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导入Unity"><span class="nav-number">3.</span> <span class="nav-text">导入Unity</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Plugins-Android-bin"><span class="nav-number">3.1.</span> <span class="nav-text">Plugins/Android/bin</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Plugins-Android-libs"><span class="nav-number">3.2.</span> <span class="nav-text">Plugins/Android/libs</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Plugins-Android-res"><span class="nav-number">3.3.</span> <span class="nav-text">Plugins/Android/res</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#和Android通信"><span class="nav-number">4.</span> <span class="nav-text">和Android通信</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#调用静态方法"><span class="nav-number">4.1.</span> <span class="nav-text">调用静态方法</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#调用方法"><span class="nav-number">4.2.</span> <span class="nav-text">调用方法</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#解决发布问题"><span class="nav-number">5.</span> <span class="nav-text">解决发布问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#安卓发布后的调试"><span class="nav-number">6.</span> <span class="nav-text">安卓发布后的调试</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy; 
+  <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Lyu</span>
+</div>
+
+
+<div class="powered-by">
+  由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动
+</div>
+
+<div class="theme-info">
+  主题 -
+  <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">
+    NexT.Pisces
+  </a>
+</div>
+
+
+        
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.1"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.1"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.1"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.1"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+  <script src="https://cdn1.lncld.net/static/js/av-core-mini-0.6.4.js"></script>
+  <script>AV.initialize("9nfwurrfWspn4Ca1tpt8c4Bb-gzGzoHsz", "SmeoWp4XeDOxoGNiSegxpw2g");</script>
+  <script>
+    function showTime(Counter) {
+      var query = new AV.Query(Counter);
+      var entries = [];
+      var $visitors = $(".leancloud_visitors");
+
+      $visitors.each(function () {
+        entries.push( $(this).attr("id").trim() );
+      });
+
+      query.containedIn('url', entries);
+      query.find()
+        .done(function (results) {
+          var COUNT_CONTAINER_REF = '.leancloud-visitors-count';
+
+          if (results.length === 0) {
+            $visitors.find(COUNT_CONTAINER_REF).text(0);
+            return;
+          }
+
+          for (var i = 0; i < results.length; i++) {
+            var item = results[i];
+            var url = item.get('url');
+            var time = item.get('time');
+            var element = document.getElementById(url);
+
+            $(element).find(COUNT_CONTAINER_REF).text(time);
+          }
+          for(var i = 0; i < entries.length; i++) {
+            var url = entries[i];
+            var element = document.getElementById(url);
+            var countSpan = $(element).find(COUNT_CONTAINER_REF);
+            if( countSpan.text() == '') {
+              countSpan.text(0);
+            }
+          }
+        })
+        .fail(function (object, error) {
+          console.log("Error: " + error.code + " " + error.message);
+        });
+    }
+
+    function addCount(Counter) {
+      var $visitors = $(".leancloud_visitors");
+      var url = $visitors.attr('id').trim();
+      var title = $visitors.attr('data-flag-title').trim();
+      var query = new AV.Query(Counter);
+
+      query.equalTo("url", url);
+      query.find({
+        success: function(results) {
+          if (results.length > 0) {
+            var counter = results[0];
+            counter.fetchWhenSave(true);
+            counter.increment("time");
+            counter.save(null, {
+              success: function(counter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(counter.get('time'));
+              },
+              error: function(counter, error) {
+                console.log('Failed to save Visitor num, with error message: ' + error.message);
+              }
+            });
+          } else {
+            var newcounter = new Counter();
+            /* Set ACL */
+            var acl = new AV.ACL();
+            acl.setPublicReadAccess(true);
+            acl.setPublicWriteAccess(true);
+            newcounter.setACL(acl);
+            /* End Set ACL */
+            newcounter.set("title", title);
+            newcounter.set("url", url);
+            newcounter.set("time", 1);
+            newcounter.save(null, {
+              success: function(newcounter) {
+                var $element = $(document.getElementById(url));
+                $element.find('.leancloud-visitors-count').text(newcounter.get('time'));
+              },
+              error: function(newcounter, error) {
+                console.log('Failed to create');
+              }
+            });
+          }
+        },
+        error: function(error) {
+          console.log('Error:' + error.code + " " + error.message);
+        }
+      });
+    }
+
+    $(function() {
+      var Counter = AV.Object.extend("Counter");
+      if ($('.leancloud_visitors').length == 1) {
+        addCount(Counter);
+      } else if ($('.post-title-link').length > 1) {
+        showTime(Counter);
+      }
+    });
+  </script>
+
+
+
+  
+<script>
+(function(){
+    var bp = document.createElement('script');
+    var curProtocol = window.location.protocol.split(':')[0];
+    if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';        
+    }
+    else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+    }
+    var s = document.getElementsByTagName("script")[0];
+    s.parentNode.insertBefore(bp, s);
+})();
+</script>
+
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script><!-- hexo-inject:begin --><!-- Begin: Injected MathJax -->
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config("");
+</script>
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Queue(function() {
+    var all = MathJax.Hub.getAllJax(), i;
+    for(i=0; i < all.length; i += 1) {
+      all[i].SourceElement().parentNode.className += ' has-jax';
+    }
+  });
+</script>
+
+<script type="text/javascript" src="">
+</script>
+<!-- End: Injected MathJax -->
+<!-- hexo-inject:end -->
+  
+
+
+  
+
+  
+
+</body>
+</html>
