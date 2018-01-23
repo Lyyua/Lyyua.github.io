@@ -266,6 +266,959 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/16/Meshdeformation/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/16/Meshdeformation/" itemprop="url">给Mesh施力变形</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-16T20:16:06+08:00">
+                2017-10-16
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/10/16/Meshdeformation/" class="leancloud_visitors" data-flag-title="给Mesh施力变形">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>构建一个Mesh变形类，他需要MeshFilter组件支持后续的计算</p>
+<p>1、首先需要获取到Mesh数据，只要有了Mesh数据就可以提取到原始的顶点位置，顶点空间信息是模型坐标系下的</p>
+<p>2、发生变形后，还需要在变形的过程中实时更新各个顶点的变形速度（这是一个矢量）</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/16/Meshdeformation/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/15/Silhouette_Enhancement/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/15/Silhouette_Enhancement/" itemprop="url">UnityShader-透明物体的轮廓增强</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-15T16:12:31+08:00">
+                2017-10-15
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/10/15/Silhouette_Enhancement/" class="leancloud_visitors" data-flag-title="UnityShader-透明物体的轮廓增强">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近发现UnityShader维基百科上的教程一级棒，不过是英文的，看完之后用我觉得最好理解的方式把他写下来。</p>
+<h2 id="透明物体的轮廓增强"><a href="#透明物体的轮廓增强" class="headerlink" title="透明物体的轮廓增强"></a>透明物体的轮廓增强</h2><p>效果即如图所示，一个半透明物体的边缘的不透明度要比其他部分的不透明度高。</p>
+<p><img src="/2017/10/15/Silhouette_Enhancement/Jellyfish.jpg" alt=""><br></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/15/Silhouette_Enhancement/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/13/ShaderBlend/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/13/ShaderBlend/" itemprop="url">UnityShader-Blend</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-13T21:15:49+08:00">
+                2017-10-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/10/13/ShaderBlend/" class="leancloud_visitors" data-flag-title="UnityShader-Blend">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="Blend基本概念"><a href="#Blend基本概念" class="headerlink" title="Blend基本概念"></a>Blend基本概念</h2><p><img src="/2017/10/13/ShaderBlend/PipelineBlend.png" alt=""></p>
+<p>流水线：</p>
+<blockquote>
+<ul>
+<li>顶点着色器-&gt;深度测试-&gt;片元着色器-&gt;透明度测试-&gt;混合操作</li>
+</ul>
+</blockquote>
+<p><strong>所谓混合，即是Blending阶段之前（下一帧）的计算结果和当前屏幕显示内容（上一帧的结果）的混合，呈现出一定的颜色衰减。</strong></p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/13/ShaderBlend/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/13/FFmpegCMD/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/13/FFmpegCMD/" itemprop="url">使用FFMPEG命令行操作视频</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-13T10:46:44+08:00">
+                2017-10-13
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/10/13/FFmpegCMD/" class="leancloud_visitors" data-flag-title="使用FFMPEG命令行操作视频">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>因为需要对音频也进行录制，使用dshow，需要先安装Setup Screen Capturer Recorder</p>
+<h2 id="录制视频"><a href="#录制视频" class="headerlink" title="录制视频"></a>录制视频</h2><p>x264编码，ultrafast档边录边压，CPU耗用小，文件较大</p>
+<p>s是分辨率 r是录制帧数，q是画面质量，越高画面越差。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -f dshow -i video=&quot;&quot;screen-capture-recorder&quot;&quot; -f dshow -i audio=&quot;&quot;virtual-audio-capturer&quot;&quot; -c:v libx264 -s 1920x1080 -r 25 -q 0 -preset ultrafast -f flv out.mp4 -y</div></pre></td></tr></table></figure>
+<p>开启多线程录制<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ffmpeg -threads 2 -f dshow -i video=&quot;screen-capture-recorder&quot; -f dshow -i audio=&quot;virtual-audio-capturer&quot; -c:v libx264 -preset ultrafast -f flv output.flv -y </div><div class="line">ffmpeg -threads 2 -f dshow -i video=&quot;screen-capture-recorder&quot; -f dshow -i audio=&quot;virtual-audio-capturer&quot; -c:v libx264 -preset veryfast -f flv output.flv -y</div></pre></td></tr></table></figure></p>
+<h2 id="生成GIF图"><a href="#生成GIF图" class="headerlink" title="生成GIF图"></a>生成GIF图</h2><p>利用滤波色彩直方图 两次计算 生成gif 画质效果很好<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">ffmpeg -v warning -i tempout.mp4 -vf &quot;fps=1,scale=1920:-1:flags=lanczos,palettegen&quot; palette.png -y</div><div class="line">ffmpeg -v warning -i tempout.mp4 -i palette.png -lavfi &quot;fps=1,scale=1920:-1:flags=lanczos [x]; [x][1:v] paletteuse&quot; 1.gif -y</div></pre></td></tr></table></figure></p>
+<h2 id="截取视频"><a href="#截取视频" class="headerlink" title="截取视频"></a>截取视频</h2><p>裁剪存在残留,不能精确到秒，但是很快<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -ss 00:00:00 -i temp.mp4 -vcodec copy -acodec copy -t 00:01:02 cutout.mp4 -y</div></pre></td></tr></table></figure></p>
+<p>精确分段，起始时间最好大于十秒，持续时间最好大于20秒<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ffmpeg -ss 00:00:00 -i 1.mp4 -vcodec copy -acodec copy -t 00:02:00 cutout.mp4 -y</div><div class="line">ffmpeg -i cutout.mp4 -vcodec mjpeg -qscale 0 -acodec pcm_s16le pre.mov -y</div><div class="line">ffmpeg -i pre.mov -ss 00:00:00 -pix_fmt yuv420p -vcodec libx264 -t 00:02:00 out.mp4 -y</div></pre></td></tr></table></figure></p>
+<h2 id="拼接视频"><a href="#拼接视频" class="headerlink" title="拼接视频"></a>拼接视频</h2><p>mp4转ts，ts拼接转mp4<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ffmpeg -i BD.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts 1.ts</div><div class="line">ffmpeg -i low420p.mp4 -c copy -bsf:v h264_mp4toannexb -f mpegts low420p.ts</div><div class="line">ffmpeg -i &quot;concat:1.ts|low420p.ts&quot; -c copy -movflags +faststart combine.mp4 -y</div></pre></td></tr></table></figure></p>
+<h2 id="视频压缩"><a href="#视频压缩" class="headerlink" title="视频压缩"></a>视频压缩</h2><p>降低分辨率可以大幅度降低视频大小。<br>以yuv420p编码，可以在移动端播放，可以使用quicktime播放器，还能降低些许大小<br>veryfast档压出来最小，有些奇怪。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -threads 4 -i out.mp4 -c:v libx264 -pix_fmt yuv420p -s 640x384 -preset veryfast 2.mp4 -y</div></pre></td></tr></table></figure></p>
+<h2 id="定制大小的压缩"><a href="#定制大小的压缩" class="headerlink" title="定制大小的压缩"></a>定制大小的压缩</h2><p>策略是两遍压缩，以限定大小压缩，忽略帧与帧之间的过渡 ，如果你的目标是一个确定大小的文件而且帧与帧之间的视频质量并不重要，这个方法很适用。这通过一个例子可以得到很好地解释。你的视频有10分钟（600秒）的时长同时要求输出为50MB，因为比特率=文件大小/时长，50MB*8192（MB转kilobits)/600秒=683 kbps（全局比特率），683kbps-128kbps(音频比特率）=555kbps（视频比特率）。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -y -i out.mp4 -c:v libx264 -preset medium -b:v 555k -pass 1 -an -f mp4 null &amp;&amp; ffmpeg -i out.mp4 -c:v libx264 -preset medium -b:v 555k -pass 2 output.mp4 -y</div></pre></td></tr></table></figure></p>
+<h2 id="裁剪视频"><a href="#裁剪视频" class="headerlink" title="裁剪视频"></a>裁剪视频</h2><p>裁剪输入视频的左三分之一，中间三分之一，右三分之一:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">ffmpeg -i 640x384.mp4 -vf crop=iw/3:ih :0:0 output.mp4 </div><div class="line">ffmpeg -i input -vf crop=iw/3:ih :iw/3:0 output </div><div class="line">ffmpeg -i input -vf crop=iw/3:ih :iw/3*2:0 output</div></pre></td></tr></table></figure></p>
+<p>比较喜欢这种，坐标原点位于左上角 1900为宽，960为高，10与左缘的距离，60为与上缘的距离<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -i temp.mp4 -strict -2 -vf crop=1900:960:10:60 tempout.mp4</div></pre></td></tr></table></figure></p>
+<h2 id="音频转码"><a href="#音频转码" class="headerlink" title="音频转码"></a>音频转码</h2><p>FFMPEG在这方面的支持比较弱，比如转m4r就办不到，随便写个意思下<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">ffmpeg -i input.wma -ab 64 -ar 22050 output.mp3</div></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/09/状态模式/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/09/状态模式/" itemprop="url">《游戏编程模式》设计模式之状态模式</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-09T14:35:44+08:00">
+                2017-10-09
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/10/09/状态模式/" class="leancloud_visitors" data-flag-title="《游戏编程模式》设计模式之状态模式">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>因为一些原因导致不能使用Unity的动画系统，三十多个动画需要手动管理，参照Unity的动画系统，很自然的就想到了状态机。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/09/状态模式/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/04/词典/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/04/词典/" itemprop="url">散列表</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-04T20:36:36+08:00">
+                2017-10-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/10/04/词典/" class="leancloud_visitors" data-flag-title="散列表">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>主要涉及的是散列函数，散列规则。根据这种规则可以构造一个Hash容器，同时通过较小粒度的锁实现线程安全的容器。</p>
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2017/10/04/词典/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/04/栈和队列/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/10/04/栈和队列/" itemprop="url">栈和队列应用</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-04T20:36:36+08:00">
+                2017-10-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/10/04/栈和队列/" class="leancloud_visitors" data-flag-title="栈和队列应用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="栈应用："><a href="#栈应用：" class="headerlink" title="栈应用："></a>栈应用：</h2><blockquote>
+<ul>
+<li><p>1、进制转换，不断的除商，压入栈中，最后再一次pop出来就是转换的结果</p>
+</li>
+<li><p>2、括号匹配，左括号进栈，右括号匹配栈顶，发生匹配则弹出栈顶，只要出现：<br>①右括号和栈顶不匹配。<br>②右括号存在，但是栈为空。即可得出失配</p>
+</li>
+<li><p>3、栈混洗 ，用到三个栈，栈A为原始栈，栈S为中转栈，栈B为最终栈，每次从栈A中Pop出一个元素压入栈S，栈S决定Pop与否，最后得出栈B。 </p>
+<blockquote>
+<ul>
+<li>只要出现:栈A顺序i，j，k,结果混洗后…k,i,j… 的情况，必然可以判断不是栈混洗，因为要使K在i和j的前面，必然在k入栈S之前，栈S没有弹出元素，即是然遵循i,j,k的顺序入栈S，出栈不论怎么出他们的顺序也是k,j,i。</li>
+</ul>
+</blockquote>
+</li>
+<li><p>栈混洗验证，O(n)复杂度：</p>
+<blockquote>
+<ul>
+<li>三个栈，待验证栈混洗的栈A，顺序排序的栈B，中间栈S</li>
+<li>栈B pop()，再push()进中间栈S，检查此时栈S的栈顶数据和栈A栈顶数据，如果相等，栈S和栈A同时pop()；如果不相等，栈B继续pop(),并且push()进中间栈S。直到栈B为空。如果此时中间栈S为空，则说明是栈混洗，如果不为空，把栈S中数据依次pop()到一个新的栈C，栈C和剩余的栈A数据进行对比，栈C pop，栈A pop，检查是否相等，直到全部pop都相等说明是栈混洗，否则不是。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><p>括号匹配和栈混洗有联系，括号匹配的过程类似栈混洗，左括号入站，右括号出栈，也就是说，括号匹配的种数和栈混洗的种数是一样的。 (2n)!/((n+1)!(n)!)</p>
+</li>
+<li><p>4、中缀表达式，典型的例子就是计算器运算</p>
+<blockquote>
+<ul>
+<li>准备两个栈，栈A存放数字,栈B存放运算符,运算式子按规则筛选入对应的栈，当栈A的栈顶运算符大于当前准备入栈的运算符对比，则从栈A中进行两次pop（），进行{popA2}{popB}{popA1}计算，阶乘有些特殊，他只需要栈从A中pop（）出一个即可，即{popA1}{popB}。运算完毕后，运算结果重新入栈A，当前运算符入栈B，如此迭代。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<p>运算符优先级比较</p>
+<p><img src="/2017/10/04/栈和队列/OrderOp.png" alt=""></p>
+<blockquote>
+<ul>
+<li>5、逆波兰表达式，其实就是特殊处理的中缀表达式</li>
+</ul>
+</blockquote>
+<p><img src="/2017/10/04/栈和队列/postfix.png" alt=""></p>
+<blockquote>
+<blockquote>
+<ul>
+<li>RPN式子可以直接进行计算，而不需要考虑运算符优先级，他其实是特殊处理过的中缀表达式，准备两个栈，栈A是运算符临时栈，栈B是RPN式子栈，数字直接入栈B，运算符先入栈A，栈A的栈顶运算符和当前运算符进行对比，即栈顶运算符大于当前运算符时，栈A弹出栈顶运算符，压入栈B中（括号不入栈B），同时，当前运算符压入栈A，准备下一次迭代。最后得出的栈B就是完整的RPN式子。</li>
+</ul>
+</blockquote>
+</blockquote>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/04/Matrix2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -638,901 +1591,11 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/08/24/Flyweight2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lyu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Back">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/24/Flyweight2/" itemprop="url">《游戏编程模式》设计模式之享元模式（二）降低DrawCall</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-24T19:54:10+08:00">
-                2017-08-24
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/08/24/Flyweight2/" class="leancloud_visitors" data-flag-title="《游戏编程模式》设计模式之享元模式（二）降低DrawCall">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="降低DrawCall"><a href="#降低DrawCall" class="headerlink" title="降低DrawCall"></a>降低DrawCall</h2><p>既然知道了渲染管线的流程，了解到DrawCall对于游戏性能的影响，只从降低DrawCall的角度来谈，可以看出有些优化方案的核心即是享元。（由于是讲享元模式，所以不讨论关于顶点，片元，纹理带宽，光照，Log等方面的优化）</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/24/Flyweight2/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/08/19/Flyweight1/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lyu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Back">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/19/Flyweight1/" itemprop="url">《游戏编程模式》设计模式之享元模式（一）渲染管线</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-19T21:14:10+08:00">
-                2017-08-19
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/08/19/Flyweight1/" class="leancloud_visitors" data-flag-title="《游戏编程模式》设计模式之享元模式（一）渲染管线">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>一个游戏场景，通常包含了地形，树木，河流，和各种建筑等，另外配合适当的打光进行复杂的光照计算。</p>
-<p>其中引擎又是如何把这些给渲染出来，要从渲染流水线说起，之所以要谈起这些，是因为原书中所列出的渲染树的例子和Unity中减少DrawCall数目的策略太像了。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/19/Flyweight1/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/08/14/3DMath/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lyu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Back">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/14/3DMath/" itemprop="url">3DMath - 多坐标系</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-14T22:41:49+08:00">
-                2017-08-14
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/08/14/3DMath/" class="leancloud_visitors" data-flag-title="3DMath - 多坐标系">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>Unity开发中经常用到一些transform变换，坐标或欧拉角，之前只是知道本地坐标和世界坐标的区别，但是对他们的实际意义和转换不甚了解，亦或者说了解的不太清晰，这次借用惯性坐标系较好的解释清楚了转换过程。<br></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/14/3DMath/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/08/07/ScriptObject/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lyu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Back">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/08/07/ScriptObject/" itemprop="url">ScriptObject</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-08-07T20:33:45+08:00">
-                2017-08-07
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/08/07/ScriptObject/" class="leancloud_visitors" data-flag-title="ScriptObject">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>曾经因为需求原因，需要把每一个动画的动作数据全部保存下来，一个模型71个节点，一个动画大概四五十帧，然后把每一帧的每一个节点euler和position全部记录下来保存成txt文件，播放动画的时候读取文件，然后遍历每一帧的数据。后来觉得txt太多，就决定用AssetBundle打包一下。这个时候发现可以用ScriptObject记录成.asset文件再打包，可以省下读取txt再解析的过程，只需要LoadAsset<t>即可，当时以为是一个unity封装的序列化工具。后来看了下官方文档，发现不是这么回事，以下是具体内容。<br></t></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/08/07/ScriptObject/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/07/30/UnityKey/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lyu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Back">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/30/UnityKey/" itemprop="url">UnityKey</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-30T17:33:45+08:00">
-                2017-07-30
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/07/30/UnityKey/" class="leancloud_visitors" data-flag-title="UnityKey">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>随便写点轻松的话题，大概是去年到现在陆陆续续记得一些小玩意，不仅限与此，2333</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/07/30/UnityKey/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/07/09/Rain3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lyu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Back">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/09/Rain3/" itemprop="url">Rain AI，从实现一个内部小队通信的角度谈谈（二）</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-09T21:38:28+08:00">
-                2017-07-09
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/07/09/Rain3/" class="leancloud_visitors" data-flag-title="Rain AI，从实现一个内部小队通信的角度谈谈（二）">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>所有通信都是基于行为树下的，目的只在于熟悉Rain的工作流程，和通常的网络通信不是一回事。<br></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/07/09/Rain3/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/07/02/Rain2/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lyu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Back">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/07/02/Rain2/" itemprop="url">Rain AI，从实现一个内部小队通信的角度谈谈（一）</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-02T20:30:28+08:00">
-                2017-07-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/07/02/Rain2/" class="leancloud_visitors" data-flag-title="Rain AI，从实现一个内部小队通信的角度谈谈（一）">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <p>Unity开发过程中，通常会选择在Unity组件上挂脚本去实现具体功能，在RainAI 里的处理方法有些不同，但是根本来说是一样的，AI_Rig也有他的生命周期，在AI行为树的轮询逻辑下去处理我们写的脚本，比如说什么并行节点，选择节点，顺序节点，下一次轮询应该从何处开始云云。而且Rain提供了一套类似UnityComponent的解决方案。</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/07/02/Rain2/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
   </section>
 
   
   <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
+    <a class="extend prev" rel="prev" href="/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/">1</a><span class="page-number current">2</span><a class="page-number" href="/page/3/">3</a><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/3/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1578,7 +1641,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1591,7 +1654,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>

@@ -266,6 +266,197 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2018/01/22/ECS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/01/22/ECS/" itemprop="url">使用ECS框架设计游戏</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-01-22T20:36:44+08:00">
+                2018-01-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2018/01/22/ECS/" class="leancloud_visitors" data-flag-title="使用ECS框架设计游戏">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h3><p>虽然教程在Github上很多，但是多注重于如何用，比较少关于为什么这么用，也许作者默认使用者对框架的思想很熟悉，而且教程都是英文的。。。</p>
+<h3 id="框架介绍："><a href="#框架介绍：" class="headerlink" title="框架介绍："></a>框架介绍：</h3><p>Entitas和Unity提供的脚本控制GameObject的思路有一定的相似性</p>
+<p><img src="/2018/01/22/ECS/similar.png" alt=""></p>
+<p>最大的区别，也是根本性的区别是，挂载在GameObject上的MonoBehaviour，他是数据和行为的集合，也就是数据和逻辑写在同一处，并且每一个组件都有Awake，update…这种设计让我们可以很方便的和Unity引擎做交互。</p>
+<p><img src="/2018/01/22/ECS/similar2.png" alt=""></p>
+<p>ECS的理念是Data驱动逻辑，驱动引擎，所以为了达成这个理念，整个框架基本上就是基于事件流的形式运作，即C的变化以E为载体从而抵达合适的S，而游戏的过程也是从数据和规则出发进行的。</p>
+<p>夸张的说，所有的Entity都在一个池子里，可以轻松的按照特定的规则把你需要的Entity获取到，比如说带有PositionComponent和MoveableComponent的Entity。但是由于这种特性，在过滤的时候需要注意你的限定范围恰到好处。类似使用Entitas管理了所有的依赖项。</p>
+<p>C ===&gt; Componet，实体组件，<strong>只有数据，没有任何方法</strong></p>
+<p>E ===&gt; Enity，实体，用来装载各种组件。</p>
+<p>S ===&gt; 用于响应多种C组成的Entity，比如id+position完成对PositionSystem的响应，<strong>只有方法，没有数据</strong></p>
+<p>框架的运作过程可以简单描述成：定义不同的Enity，经过ReactiveSystem高解耦性的完成对特定事件的响应。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div></pre></td><td class="code"><pre><div class="line">+------------------+</div><div class="line">|     Context      |</div><div class="line">|------------------|</div><div class="line">|    e       e     |      +-----------+</div><div class="line">|        e     e---|----&gt; |  Entity   |</div><div class="line">|  e        e      |      |-----------|</div><div class="line">|     e  e       e |      | Component |</div><div class="line">| e            e   |      |           |      +-----------+</div><div class="line">|    e     e       |      | Component-|----&gt; | Component |</div><div class="line">|  e    e     e    |      |           |      |-----------|</div><div class="line">|    e      e    e |      | Component |      |   Data    |</div><div class="line">+------------------+      +-----------+      +-----------+</div><div class="line">  |</div><div class="line">  |</div><div class="line">  |     +-------------+  Groups:</div><div class="line">  |     |      e      |  Subsets of entities in the context</div><div class="line">  |     |   e     e   |  for blazing fast querying</div><div class="line">  +---&gt; |        +------------+</div><div class="line">        |     e  |    |       |</div><div class="line">        |  e     | e  |  e    |</div><div class="line">        +--------|----+    e  |</div><div class="line">                 |     e      |</div><div class="line">                 |  e     e   |</div><div class="line">                 +------------+</div></pre></td></tr></table></figure>
+<p>从代码来看，核心的就两大块：</p>
+<p>1、Entitas.Systems： 框架的核心，组织整个框架功能运行，各种S的注册，调用，分发，注销，关闭….长这样：</p>
+<blockquote>
+<ul>
+<li>public class Systems : IInitializeSystem, IExecuteSystem, ICleanupSystem, ITearDownSystem</li>
+</ul>
+</blockquote>
+<p>2、Contexts： 以前的版本叫 pool，方便Systems运作的容器，可以认为是Entity池。</p>
+<p><img src="/2018/01/22/ECS/Contexts.png" alt=""></p>
+<p>池里面接而细分了各种小池用来满足oop思维上的需要，比如游戏逻辑上的Game，比如经过服务器的判定，xxx对xxx造成了多少伤害，被攻击者扣血，并且产生飙血特效，攻击者技能进入冷却，MP减少，获得了一个增益效果。这个过程可以在代码中这样体现：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div></pre></td><td class="code"><pre><div class="line">...接收到服务器判定结果，创建一个Entity...</div><div class="line">var e = contexts.game.CreateEntity();  </div><div class="line">e.AddBattleInfoComponent(&quot;攻击者&quot;,&quot;被攻击者&quot;,&quot;释放的技能&quot;,damage);</div><div class="line">...上面创建的Entity会响应到相应的ReactiveSystem</div><div class="line">public class BattleShow:ReactiveSystem&lt;GameEntity&gt;&#123;</div><div class="line">...collector...</div><div class="line">...Fliter...筛选需要的Entity</div><div class="line">overried Excute()&#123;</div><div class="line">UI显示战斗信息</div><div class="line">更新双方状态，角色属性，buff或者debuff</div><div class="line">生成技能特效</div><div class="line">&#125;</div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>输入响应方面的Input，比如按钮点击，键盘输入…</p>
+<p>具体怎么用呢？如ECS所述，C,S分离，S注重方法定义；C注重字段定义。通过ECS的特性可以让我们从繁琐的逻辑交互解放出来，写出清晰，简洁的代码，使用ECS框架会产生很多相似的代码，所以借助了代码生成器来自动生成一些定义组件和事件绑定的代码。</p>
+<p>这样我们就从MonoBehaviour解脱出来了，多人协作只要按照ECS框架进行，就能写出高性能，强解耦合的代码，从另一方面说，如果不按照ECS框架来走，新加的代码寸步难行。</p>
+<h3 id="定义C："><a href="#定义C：" class="headerlink" title="定义C："></a>定义C：</h3><p>实现IComponent接口，给类加上特性标签，是Game，还是Input。</p>
+<p>组件字段还可以加上[EntityIndex]特性，0.47.7版本的ECS需要using Entitas.CodeGeneration.Attributes，在相应的Contexts，自动生成了快速访问的方法，比如这里就是对GameEntity下的PlayerId设立了一个集合</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">using Entitas;</div><div class="line">using Entitas.CodeGeneration.Attributes;</div><div class="line">[Game]</div><div class="line">public class PlayerIdComponent : IComponent</div><div class="line">&#123;</div><div class="line">    [EntityIndex]</div><div class="line">    public string playerId;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>可以通过context中的game池快速获取所有创建了的带有PlayerIdComponent组件的Entity，及对应的字段，以HashSet结构返回。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line"> public static class ContextsExtensions &#123;</div><div class="line">    public static System.Collections.Generic.HashSet&lt;GameEntity&gt; GetEntitiesWithPlayerId(this GameContext context, string playerId) &#123;</div><div class="line">        return ((Entitas.EntityIndex&lt;GameEntity, string&gt;)context.GetEntityIndex(Contexts.PlayerId)).GetEntities(playerId);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果再加上[Unique] 特性修饰，说明该组件在当前Contexts下只能存在一个</p>
+<p>在entity中通过hasXXX可以判断组件是否存在，entity.xxx定位到该组件</p>
+<h3 id="代码生成"><a href="#代码生成" class="headerlink" title="代码生成"></a>代码生成</h3><p><img src="/2018/01/22/ECS/CodeGenerate.png" alt=""><br>根据定义的C，生成代码。</p>
+<h3 id="定义S"><a href="#定义S" class="headerlink" title="定义S"></a>定义S</h3><p>IInitializeSystem 做一些初始化的操作。</p>
+<p>Reactive Systems，基于事件的响应，通过实现各种Reactive Systems，来达到响应，比如在网络同步的时候使用Reactive Systems会感觉异常的轻松。</p>
+<blockquote>
+<p>*<br>当有entity创建时，针对不同entity的配置，加入不同的注册队列，在下一个循环帧开启时，响应队列中的内容，然后释放。<br>每个继承Reactive Systems的类主要包含了collects,filters,executes三个部分<br>1.Collector<br>记录了每次entities的变化，在entities remove之前一直被保存<br>2.Filter<br>再次验证你需要的Entities，并不是所有时候都要用到<br>3.Execute<br>只会执行发生变化，并且经过筛选后的entities，只会在Entities发生改变才会execute<br>看我们继承的ReactiveSystem抽象类源码就可以知道<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div></pre></td><td class="code"><pre><div class="line">public abstract class ReactiveSystem&lt;TEntity&gt; : IReactiveSystem where TEntity : class, IEntity, new() &#123;</div><div class="line">	//构造函数</div><div class="line">	protected ReactiveSystem(IContext&lt;TEntity&gt; context) &#123;</div><div class="line">            _collector = GetTrigger(context); //保持集合</div><div class="line">            _buffer = new List&lt;TEntity&gt;();//Entity数组</div><div class="line">	&#125;</div><div class="line">...</div><div class="line">	//需要实现的三个抽象类</div><div class="line">	//Collector</div><div class="line">	protected abstract Collector&lt;TEntity&gt; GetTrigger(IContext&lt;TEntity&gt; context);</div><div class="line">	//过滤规则</div><div class="line">	protected abstract bool Filter(TEntity entity);</div><div class="line">	//最终满足要求的Entites</div><div class="line">	protected abstract void Execute(List&lt;TEntity&gt; entities);</div><div class="line">	//在update或者fixedUpdate中调用</div><div class="line">	public void Execute() &#123;</div><div class="line">            if(_collector.collectedEntities.Count != 0) &#123;</div><div class="line">                foreach(var e in _collector.collectedEntities) &#123;</div><div class="line">                    if(Filter(e)) &#123;</div><div class="line">                        e.Retain(this);</div><div class="line">                        _buffer.Add(e);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                _collector.ClearCollectedEntities();</div><div class="line">                if(_buffer.Count != 0) &#123;</div><div class="line">                    Execute(_buffer);</div><div class="line">                    for(int i = 0; i &lt; _buffer.Count; i++) &#123;</div><div class="line">                        _buffer[i].Release(this);</div><div class="line">                    &#125;</div><div class="line">                    _buffer.Clear();</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">...</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+</blockquote>
+<p>Execute Systems在Unity引擎的update或者fixedupdate中循环调用</p>
+<h3 id="Show-Case"><a href="#Show-Case" class="headerlink" title="Show Case"></a>Show Case</h3><p>1、减少Entity的创建</p>
+<p>如果定义一个组件<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">[Game]</div><div class="line">public MoveableComponent : IComponent&#123;&#125;</div></pre></td></tr></table></figure></p>
+<p>自动生成的代码允许我们使用game.isMoveable设置</p>
+<p>如果给在一个Enity上进行下面的设置<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">game.isMoveable = false;</div><div class="line">game.isMoveable = true;</div></pre></td></tr></table></figure></p>
+<p>可以起到类似刷新，重新创建一个Entity的效果，进而可以再一次响应对应的ReactiveSystem，这样可以减少Entity的Create。</p>
+<p>相应的，也可以通过ReplaceXXX()来起到类似的效能。</p>
+<p>2、Entity的销毁</p>
+<p>有时候为了不创建过多的Entity，比如经过服务器的结算，xxx道具被成功拍下，这一个条消息需要①响应数据库的更改，②拍卖行UI系统的界面更新，③邮箱有一条成功交易的记录，并且收到了拍卖行发过来的道具。④玩家金币数量减少….等等</p>
+<p>在这么一个过程不太可能取创建四个Entity，一个对应数据库，一个对应UI，一个对应邮箱，一个对应金币数量更新。</p>
+<p>此时可以做的是，创建一个Entity，上面挂上响应不同系统的组件，当一个系统完成了响应后，不要立即销毁，如果立即销毁会导致剩下的三个系统无法进行响应，所以可以给他标记上是否需要销毁，在这一帧完成之后，即所有的系统都响应完成，此时就可以销毁了。</p>
+<p>还有一种办法是，让所有的响应系统实现ICleanUpSystem，在CleanUp里面完成对Entity的销毁，但是这种处理方法，需要在在系统中保存下这一帧所有的处理的Entity，在CleanUp内做销毁。</p>
+<h3 id="初始化一些配置"><a href="#初始化一些配置" class="headerlink" title="初始化一些配置"></a>初始化一些配置</h3><p>在Unity中创建一个Mono脚本<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div></pre></td><td class="code"><pre><div class="line">public class GameController : MonoBehaviour</div><div class="line">&#123;</div><div class="line">    private Systems _systems;  //</div><div class="line">    private Contexts _contexts;</div><div class="line">    private void Awake()</div><div class="line">    &#123;</div><div class="line">        _contexts = Contexts.sharedInstance;</div><div class="line">        _systems = CreateSystems(_contexts);</div><div class="line">        _systems.Initialize();</div><div class="line">    &#125;</div><div class="line">    private void FixedUpdate()</div><div class="line">    &#123;</div><div class="line">        _systems.Execute();</div><div class="line">        _systems.Cleanup();</div><div class="line">    &#125;</div><div class="line">    private void OnDestroy()</div><div class="line">    &#123;</div><div class="line">        _systems.TearDown();</div><div class="line">    &#125;</div><div class="line">    private Systems CreateSystems(Contexts contexts)</div><div class="line">    &#123;</div><div class="line">		_systems = new Systems();</div><div class="line">		return _systems.Add(new TickUpdateSystem());</div><div class="line">        //return new Feature(&quot;ECSUI&quot;).Add(new TickUpdateSystem());  //使用调试面板</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<h3 id="辅助性的类"><a href="#辅助性的类" class="headerlink" title="辅助性的类"></a>辅助性的类</h3><h4 id="EntityLink"><a href="#EntityLink" class="headerlink" title="EntityLink"></a>EntityLink</h4><p>根据需要可以使用EntityLinkExtension构造一个EntityLink关联GameObject和Enity、Context，比如有一些非指向性技能，需要进行碰撞检测的时候就有这个需要了，我需要获取碰撞到的玩家，根据玩家信息，做一些伤害计算，击中头部伤害翻倍之类。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">namespace Entitas.Unity</div><div class="line">&#123;</div><div class="line">    public static class EntityLinkExtension</div><div class="line">    &#123;</div><div class="line">        public static EntityLink GetEntityLink(this GameObject gameObject);</div><div class="line">        public static EntityLink Link(this GameObject gameObject, IEntity entity, IContext context);</div><div class="line">        public static void Unlink(this GameObject gameObject);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">namespace Entitas.Unity</div><div class="line">&#123;</div><div class="line">    public class EntityLink : MonoBehaviour</div><div class="line">    &#123;</div><div class="line">        public EntityLink();</div><div class="line">        public IEntity entity &#123; get; &#125;</div><div class="line">        public IContext context &#123; get; &#125;</div><div class="line">        public void Link(IEntity entity, IContext context);</div><div class="line">        public override string ToString();</div><div class="line">        public void Unlink();</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h4 id="IGroup"><a href="#IGroup" class="headerlink" title="IGroup"></a>IGroup</h4><p>Group是包含了特定Component的Entities集合，从这个集合中能够在更小范围内的定位合适的Entity</p>
+<p>当单纯的Collector，和Filter不能满足需求时，可以使用Group，比如说，当点击一个Buton后，需要响应一连串的事件，这个时候会构造一个接口，让需要响应这个Button的类去实现这个接口，当我们点击Button反馈到ReactiveSystem的时候，就去遍历所有实现了这个接口的组。</p>
+<p>观察ECS框架的代码就可以看到，里面充斥着对集合的运用，Group，Collector，EntityIndex返回的HashSet，其目的就在于给出合适的数据后，能够得到我们想要的东西，某一个或者一组Entity，特定的System等等。</p>
+<p><img src="/2018/01/22/ECS/Group.png" alt=""></p>
+<p>其实就是根据Entity上的Component的一个组合编号，通常可以用这些编号来快速定位到需要的Entity<br>比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div></pre></td><td class="code"><pre><div class="line">	readonly IGroup&lt;GameEntity&gt; _group;</div><div class="line">  	//初始化时就把需要的实体筛选出来</div><div class="line">public MoveSystem(Contexts contexts) &#123;</div><div class="line">       _group = contexts.game.GetGroup(Matcher&lt;GameEntity&gt;.AllOf(GameMatcher.Move, GameMatcher.Position));</div><div class="line">   &#125;</div><div class="line">//每一帧调用</div><div class="line">	public void Execute() &#123;</div><div class="line">       foreach (var e in _group.GetEntities()) &#123;</div><div class="line">           var move = e.move;</div><div class="line">           var pos = e.position;</div><div class="line">           e.ReplacePosition(pos.x, pos.y + move.speed, pos.z);</div><div class="line">       &#125;</div><div class="line">   &#125;</div></pre></td></tr></table></figure>
+<h3 id="ECS的优势"><a href="#ECS的优势" class="headerlink" title="ECS的优势"></a>ECS的优势</h3><p>ECS快在哪，gameobject过于笨重，里面包含了一些渲染接口，物理计算接口等等，然而大部分时间只需要其中的某一项属性，比如位置。</p>
+<p>多人游戏方面，可以很方便的写出简洁的代码，在游戏中当有人按下W，无论是网络消息还是本地输入，本地玩家按钮事件同步到其他玩家，其他玩家按钮事件同步到本地，对于ECS来说就是一个Entity。</p>
+<p>后端验证，同理这就是一个消息包。</p>
+<p>教学引导系统，任务系统方面。简单的说，每步教学操作，每个任务都是一个节点，每个节点对应一个状态，这个状态有对应的System。</p>
+<p>日志输出，他还是一个消息包。</p>
+<h3 id="环境配置中可能出现的问题"><a href="#环境配置中可能出现的问题" class="headerlink" title="环境配置中可能出现的问题"></a>环境配置中可能出现的问题</h3><p>1、缺少Assembly-CSharp.csproj</p>
+<p><img src="/2018/01/22/ECS/ProjectPath.png" alt=""></p>
+<p>如果MonoDev这个IDE开发，随便新建一个脚本打开后 ，IDE就会生成这么一个Assembly-CSharp.csproj工程配置文件</p>
+<p>如果用VS开发，也会生成一个文件，只不过名字是和你的Unity工程名字一样，比如这里的ECS.csproj</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/12/21/Unitykey2/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -606,6 +797,141 @@
             </a>
           </div>
           <!--/noindex-->
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/12/14/BFS&DFS/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/12/14/BFS&DFS/" itemprop="url">BFS和DFS</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-14T22:35:32+08:00">
+                2017-12-14
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/12/14/BFS&DFS/" class="leancloud_visitors" data-flag-title="BFS和DFS">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="广度优先搜索-BFS"><a href="#广度优先搜索-BFS" class="headerlink" title="广度优先搜索 BFS"></a>广度优先搜索 BFS</h2><p>偏向暴力的遍历算法。</p>
+<p>通常借助队列结构来实现遍历，当所有的邻接节点遍历完成之后才会深入。</p>
+<p>附图一张:</p>
+<p><img src="/2017/12/14/BFS&DFS/Spanning_Tree.png" alt=""></p>
+<p>A*算法实质上也是图搜索算法中的广度搜索算法，不过他是加权的BFS，如果使用DFS来进行寻路，搜索时长不稳定，这是由于DFS是递归式的深入，一次递归何时触底返回无法把控。</p>
+<p>在理解A<em> 原理的基础上， A</em>算法的过程可以总结成下面的伪代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">define open list //need heap sort</div><div class="line"></div><div class="line">open list sort heap</div><div class="line"></div><div class="line">originNode = start</div><div class="line"></div><div class="line">find node is end</div><div class="line"></div><div class="line">while(start == end)&#123;</div><div class="line">	foreach start node neigbours </div><div class="line">	&#123;</div><div class="line"> 		neibour add to open list</div><div class="line">	&#125;</div><div class="line">	start = pop open list</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>所以，对于A*算法的优化主要就集中在Open List如何快速的查找附近最近的节点，所以使用堆排序是最好不过了。</p>
+<h2 id="深度优先搜索-DFS"><a href="#深度优先搜索-DFS" class="headerlink" title="深度优先搜索 DFS"></a>深度优先搜索 DFS</h2><p>一种递归，不断深入的算法，深入一个节点，赋值dtime为当前步数，当不能深入时，原路返回，并且检查是否存在分支，如果没有分支，赋值ftime当前步数，并且继续原路返回；如果存在分支则继续深入，按照此前的设定进行。</p>
+<p>附图一张：<br><img src="/2017/12/14/BFS&DFS/DFS.png" alt=""></p>
+<p>只需要经过一次扫描，就可以根据dTime，fTime 可以在O(1)的时间内判断两个节点是否连通的关系。</p>
+<p>比如判断a节点是否可以抵达e，a的ftime为10，d的dtime为11，ftime<dtime，说明从a出发不能抵达e。d的ftime为14，e的dtime为12，ftime>dtime，说明从d出发可以抵达e。</dtime，说明从a出发不能抵达e。d的ftime为14，e的dtime为12，ftime></p>
+<p>典型的例子，脏字过滤，“大傻比”这三个字，按照DFS，首先可以确定“大”和“傻”之间有潜在脏字可能,他们是连通的，如果可以证明“傻”和“比”两个连通，则可以判断这是一个脏字。</p>
+
+          
         
       
     </div>
@@ -1028,7 +1354,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/16/Meshdeformation/">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/11/04/BST/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lyu">
@@ -1047,7 +1373,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/16/Meshdeformation/" itemprop="url">给Mesh施力变形</a></h2>
+                <a class="post-title-link" href="/2017/11/04/BST/" itemprop="url">高级搜索树</a></h2>
         
 
         <div class="post-meta">
@@ -1059,8 +1385,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-16T20:16:06+08:00">
-                2017-10-16
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-04T20:36:36+08:00">
+                2017-11-04
               </time>
             
 
@@ -1077,7 +1403,7 @@
 
           
           
-             <span id="/2017/10/16/Meshdeformation/" class="leancloud_visitors" data-flag-title="给Mesh施力变形">
+             <span id="/2017/11/04/BST/" class="leancloud_visitors" data-flag-title="高级搜索树">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1106,279 +1432,276 @@
 
       
         
-          <h2 id="准备工作"><a href="#准备工作" class="headerlink" title="准备工作"></a>准备工作</h2><p>构建一个Mesh变形类，他需要MeshFilter组件支持后续的计算</p>
-<p>1、首先需要获取到Mesh数据，只要有了Mesh数据就可以提取到原始的顶点位置，顶点空间信息是模型坐标系下的</p>
-<p>2、发生变形后，还需要在变形的过程中实时更新各个顶点的变形速度（这是一个矢量）</p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/16/Meshdeformation/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/15/Silhouette_Enhancement/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lyu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Back">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/15/Silhouette_Enhancement/" itemprop="url">UnityShader-透明物体的轮廓增强</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-15T16:12:31+08:00">
-                2017-10-15
-              </time>
-            
-
-            
-
-            
-          </span>
-
           
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/10/15/Silhouette_Enhancement/" class="leancloud_visitors" data-flag-title="UnityShader-透明物体的轮廓增强">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>最近发现UnityShader维基百科上的教程一级棒，不过是英文的，看完之后用我觉得最好理解的方式把他写下来。</p>
-<h2 id="透明物体的轮廓增强"><a href="#透明物体的轮廓增强" class="headerlink" title="透明物体的轮廓增强"></a>透明物体的轮廓增强</h2><p>效果即如图所示，一个半透明物体的边缘的不透明度要比其他部分的不透明度高。</p>
-<p><img src="/2017/10/15/Silhouette_Enhancement/Jellyfish.jpg" alt=""><br></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/15/Silhouette_Enhancement/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <div>
-      
-    </div>
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/13/ShaderBlend/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="Lyu">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.png">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Back">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h2 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2017/10/13/ShaderBlend/" itemprop="url">UnityShader-Blend</a></h2>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-13T21:15:49+08:00">
-                2017-10-13
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-             <span id="/2017/10/13/ShaderBlend/" class="leancloud_visitors" data-flag-title="UnityShader-Blend">
-               <span class="post-meta-divider">|</span>
-               <span class="post-meta-item-icon">
-                 <i class="fa fa-eye"></i>
-               </span>
-               
-                 <span class="post-meta-item-text">阅读次数 </span>
-               
-                 <span class="leancloud-visitors-count"></span>
-             </span>
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          <h2 id="Blend基本概念"><a href="#Blend基本概念" class="headerlink" title="Blend基本概念"></a>Blend基本概念</h2><p><img src="/2017/10/13/ShaderBlend/PipelineBlend.png" alt=""></p>
-<p>流水线：</p>
+            <h2 id="BST的定义"><a href="#BST的定义" class="headerlink" title="BST的定义"></a>BST的定义</h2><p>从当前root节点出发，左节点不大于（不小于）root节点，右节点不小于（不大于）root节点。</p>
+<p>插入操作：每次插入一个节点，都需要按照以上规则进行插入，很显然，每个插入的节点都是叶节点。</p>
+<p>根据这种树结构的特性，可以明确的得出左子树的全部节点都不大于（不小于）右子树，即局部顺序性和全局单调性，这两个特性就可以保证，对这棵树进行中序遍历（恰好是每个节点的投影顺序），即可得到一个顺序队列。</p>
+<p>删除操作如图：</p>
+<p><img src="/2017/11/04/BST/bst-remove.png" alt=""></p>
+<p>删除节点的矫正，只需要在删除节点A的右子树中，进行中序遍历，向左侧深入，触底后的第一个节点B和节点A交换位置，再删除节点A，如果触底的那个节点B是叶节点，直接删除，如果不是叶节点，就把B的右孩子顶替节点B的位置。</p>
+<p>这种结构的树，可以看出，查找的次数，插入查找的次数，删除节点引发的矫正操作次数，都不会超过树高度h。</p>
+<h2 id="BST隐患和前景"><a href="#BST隐患和前景" class="headerlink" title="BST隐患和前景"></a>BST隐患和前景</h2><p>存在退化成单链表的可能。</p>
+<p>对于一个固定的无序数组来说，最先插入的数越接近中间值，树的高度越低。</p>
+<p><img src="/2017/11/04/BST/BSTBalance.png" alt=""></p>
+<p>随着BST树节点的增加，维护一颗足够平衡的BST树是很重要的。</p>
+<p>可以发现，如果BST是一个完全二叉树，那么他的高度H可以达到最低，即logn，但是相应的将一颗BST树转化成一颗完全二叉树成本也过高。</p>
+<h2 id="AVL"><a href="#AVL" class="headerlink" title="AVL"></a>AVL</h2><h3 id="AVL定义和证明"><a href="#AVL定义和证明" class="headerlink" title="AVL定义和证明"></a>AVL定义和证明</h3><p>AVL树是BBST（平衡二叉树）的一种，使树的高度渐进的逼近logn。</p>
+<p><strong>为了平衡BST树，提出了定义，左右子树的高度差不超过1。</strong></p>
+<p><img src="/2017/11/04/BST/AVLDefine.png" alt=""></p>
+<p>关于高度为logn的证明,从节点个数出发（fib的前三项是0，1，2），根据定义，左右子树高度差不超过1，第h项fib数，可以表达处于h高度时BST树至少能容纳的节点个数。fib数的指数，即是树的高度。即logn</p>
+<p><img src="/2017/11/04/BST/AVLConfirm.png" alt=""></p>
+<p>从AVL树的节点数据结构而言，需要有一个记录当前节点高度的字段。每当插入新节点，或者删除节点时，我们要对这些高度进行更新，必要时还需要对整个AVL树进行重平衡。</p>
+<h3 id="AVL重平衡"><a href="#AVL重平衡" class="headerlink" title="AVL重平衡"></a>AVL重平衡</h3><p><img src="/2017/11/04/BST/AVLRebalance.png" alt=""></p>
+<p>插入或者删除节点，可能会引起多个父节点的失衡。我们需要通过旋转来进行重平衡。</p>
+<h3 id="如何旋转"><a href="#如何旋转" class="headerlink" title="如何旋转"></a>如何旋转</h3><p>一共有zig-zig , zag-zag , zig-zag , zag-zig四种，可以想象成进行旋转的<strong>两个节点</strong>，绕顺时针或者逆时针发生旋转，然后再对两个节点的子树按照BST规定进行重新分配，即不能影响到他们中序遍历的顺序。</p>
+<h4 id="插入节点的重平衡"><a href="#插入节点的重平衡" class="headerlink" title="插入节点的重平衡:"></a>插入节点的重平衡:</h4><p>插入节点v后，逐层更新他的父节点的高度，遇到第一个失衡节点后返回。</p>
+<p>从节点v开始，根据旋转规则，逐层往上回溯，即v-&gt;p,v-&gt;g..直到和失衡节点旋转后，停止算法，此时更新高度，AVL树已经重平衡完毕。</p>
+<p>通过旋转使得局部平衡恢复后，不会影响到原失衡区root节点的高度差，也就是他们的失衡波动只会在局部作用，不会向上传递。</p>
+<h4 id="删除节点的重平衡："><a href="#删除节点的重平衡：" class="headerlink" title="删除节点的重平衡："></a>删除节点的重平衡：</h4><p>删除节点的失衡传播性。删除节点，高度取决于最高的那个分支，至多引起一个父节点的失衡。</p>
+<p><img src="/2017/11/04/BST/AVLDelete.png" alt=""></p>
+<p>如图所示，虽然局部恢复了平衡，但是局部的高度却整体减少了1，也就是说，这个局部子树的高度减1可能会导致他的父节点或者他的祖父，祖祖父甚至一直向上出现失衡。</p>
+<p>所以在删除节点后。</p>
+<h3 id="3-4重构"><a href="#3-4重构" class="headerlink" title="3+4重构"></a>3+4重构</h3><p><img src="/2017/11/04/BST/AVL3+4Model.png" alt=""></p>
+<p>BST树的特性就是，无论zig-zig，zig-zag…如何旋转，他们的中序遍历结果都不会变。所以我们可以直接从中序遍历结果入手，直接操作他们的相对位置。我们需要3知道个节点，4颗子树，就可以直接构造出4种旋转的等效结果。</p>
+<p>大致结构如下：</p>
+<p><img src="/2017/11/04/BST/AVL3+4Connect.png" alt=""></p>
+<p>已知3个节点，这3个节点可能需要发生一些旋转，但是他们的子树顺序T0,T1,T2,T3必然是保持不变的。</p>
+<h3 id="AVL总结"><a href="#AVL总结" class="headerlink" title="AVL总结"></a>AVL总结</h3><h2 id="伸展树"><a href="#伸展树" class="headerlink" title="伸展树"></a>伸展树</h2><p>局部性：</p>
+<p>刚被访问的数据，极有可能很快的再次被访问</p>
+<p><img src="/2017/11/04/BST/splaydefine.png" alt=""></p>
+<h3 id="splay单层伸展"><a href="#splay单层伸展" class="headerlink" title="splay单层伸展"></a>splay单层伸展</h3><p>实现手段，通过旋转，移至<strong>树根</strong></p>
+<p><img src="/2017/11/04/BST/splayrot.png" alt=""></p>
+<p>这种策略下的优化搜索，存在缺陷</p>
+<p><img src="/2017/11/04/BST/splaybadcondition.png" alt=""></p>
+<p>在搜索了一轮以后，发生的旋转次数n+(n-1)+(n-2)+…2+1，即O（n^2）,分摊下来每次搜索的成本高达O(n)，比AVL的logn要高，搜索成本并没有达到想象中的优化效果。反而退化成了线性队列。</p>
+<p>splay本身的思路是没有问题的，只是需要优化：</p>
+<p><img src="/2017/11/04/BST/splaybetterdefine.png" alt=""></p>
+<h3 id="splay双层伸展"><a href="#splay双层伸展" class="headerlink" title="splay双层伸展"></a>splay双层伸展</h3><p>不再是逐层移动到树根，而是逐两层的移动，具体的旋转操作无非涉及zig-zig,zag-zag,zig-zag,zag-zig。</p>
+<p>其中zig-zag，zag-zig，和逐层伸展并没有什么区别。他们的表现形式就像是v-&gt;p,v-&gt;g。</p>
+<p>但是zig-zig，zag-zag，就会有很大的不同，不是直接对父节点旋转，而是从对祖父节点旋转开始，他们的表现形式就像是p-&gt;g,v-&gt;p。</p>
+<p>下图可以看出两者区别：</p>
+<p><img src="/2017/11/04/BST/splayzigzig.png" alt=""></p>
+<p>一些恶意查找的情况，按照新的优化算法效果如下：</p>
+<p><img src="/2017/11/04/BST/splayshow0.png" alt=""></p>
+<p><img src="/2017/11/04/BST/splayshow1.png" alt=""></p>
+<p>总结如下：</p>
+<p><img src="/2017/11/04/BST/splayrun.png" alt=""></p>
+<p>当节点v抵达根节点时，可以发现，整棵树的高度缩短了一半。</p>
+<h3 id="特殊情况"><a href="#特殊情况" class="headerlink" title="特殊情况"></a>特殊情况</h3><p>当v节点的深度为奇数时会出现v只有父亲，没有祖父的情况，这种情况的处理最终只会出现在即将抵达root节点时。</p>
+<p><img src="/2017/11/04/BST/splayspecial.png" alt=""></p>
+<h3 id="插入和删除"><a href="#插入和删除" class="headerlink" title="插入和删除"></a>插入和删除</h3><p>查找操作，通常来说会实现search接口，search接口返回的节点，在splay的过程中其实已经逐两层伸展到了root节点。</p>
+<p>插入操作可能的一种实现：</p>
+<p>整个操作遵循局部性的定义，插入操作进行之前，一般会定位一下要在什么地方插入，于是调用search接口查找返回最接近插入节点的那个hot节点，此时定位的hot节点由于search接口集成实现的伸展操作，已经抵达root节点，接下来的插入只需要插在左还是右，最后再进行一次旋转，使得新插入的节点成为新的root节点。</p>
+<p>删除操作：</p>
+<p>依然是调用search接口，得到节点后，此时位于root节点，我们对他进行删除，此时得到一颗大的左子树，和一颗大的右子树，根据BST树的定义，通过中序遍历，查找出右子树的最小节点，把他作为新的root节点，即可完成拼接。</p>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><p><img src="/2017/11/04/BST/splayend.png" alt=""></p>
+<p>伸展树不需要记录和更新树的高度，从实现和空间复杂度的角度来看，是要优于AVL树的</p>
+<p>伸展树的本质特征是局部性，所以单次查找的效率不稳定，存在最坏情况，远大于logn，接近n，但是多次操作后，对于缓存命中率极高的情况，查找次数可能会远远的小于logn</p>
+<p>故而，对于效率敏感的场合并不适用</p>
+<h2 id="B-树"><a href="#B-树" class="headerlink" title="B-树"></a>B-树</h2><p>等效于BST</p>
+<p>动机：针对不同存储级别上访问速度的差异（一级缓存，二级缓存，主存,硬盘）设计的数据结构，维持高效的I/O</p>
+<h3 id="高速缓存的形象比喻"><a href="#高速缓存的形象比喻" class="headerlink" title="高速缓存的形象比喻:"></a>高速缓存的形象比喻:</h3><p><img src="/2017/11/04/BST/fastcache.png" alt=""></p>
+<p><img src="/2017/11/04/BST/fastcache2.png" alt=""></p>
+<p>大批量数据操作下，可以看出做好缓存的重要性</p>
+<h3 id="多路搜索树，BST的合并版本："><a href="#多路搜索树，BST的合并版本：" class="headerlink" title="多路搜索树，BST的合并版本："></a>多路搜索树，BST的合并版本：</h3><p><img src="/2017/11/04/BST/multi-way.png" alt=""></p>
+<p>通常来说n阶B-树含有n-1个关键码</p>
+<h3 id="分析优势"><a href="#分析优势" class="headerlink" title="分析优势"></a>分析优势</h3><p>考虑到I/O操作成本开销大,同时充分利用到了外存对批量访问的高效支持，即是上述说到的1b和1kb的访问速度一样快：</p>
+<p><img src="/2017/11/04/BST/b-tree-show.png" alt=""></p>
+<p>假设关键码占用4个字节，1KB可以分200-300个关键码</p>
+<h3 id="B-树节点分布"><a href="#B-树节点分布" class="headerlink" title="B-树节点分布"></a>B-树节点分布</h3><p><img src="/2017/11/04/BST/b-tree-show2.png" alt=""></p>
+<p>根据上面的节点分布，大概可以看出，一个节点需要两个数组，数组A保存内部节点本身，数组B保存向下一层深入的节点引用，数组B的长度要比数组A大1，其原因是，数组B存放的是数组A中节点的左或右子树的引用,这从图中不难发现。</p>
+<h3 id="B-树查找实现"><a href="#B-树查找实现" class="headerlink" title="B-树查找实现"></a>B-树查找实现</h3><p><img src="/2017/11/04/BST/b-tree-search0.png" alt=""></p>
+<p><img src="/2017/11/04/BST/b-tree-search.png" alt=""></p>
+<p>V属于超级节点，整个查找的过程是不断的向下逐层深入的，当前超级节点如果没有查找到目标节点，找到合适的下潜引用后，继续在下一个超级节点中查找。</p>
+<h3 id="B-树插入"><a href="#B-树插入" class="headerlink" title="B-树插入"></a>B-树插入</h3><p>首先引出，B-树一个超级节点包含m个关键码，划分出了上界和下界，即m和m/2的上整</p>
+<p>插入操作，无非是，通过search接口查找到合适的位置后，插入节点，更新关键码数组和向下引用数组，因为我们的关键码是新插入的，所以向下引用为null</p>
+<p><img src="/2017/11/04/BST/b-tree-insert0.png" alt=""></p>
+<p>但是在插入一个新的节点后，可能会使得这个超级节点的个数大于m，此时需要的操作就是找到此时超级节点的中位节点，向上提一层，插入至父超级节点中对应的秩r下，child[r-1]指分裂的左子树，child[r+1]指向分裂的右子树，上溢修正的伪代码可能是这样：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">... //插入操作代码</div><div class="line">Node v= findMidNode(); //找出中位节点</div><div class="line">B-Node L = ConstructLeft(); //把中位节点左侧关键码key和引用child分离，构造一个新的超级节点</div><div class="line">B-Node R = ConstructRight();//把中位节点右侧关键码key和引用child分离，构造一个新的超级节点</div><div class="line">B-Node p = v.parent;//获得父超级节点</div><div class="line">int r = p.search(v);//找出v在父超级节点中的秩</div><div class="line">p.key.insert(r+1,v); // 中位节点向上提一层</div><div class="line">p.child.insert(r+1,L); //v的左侧指向新的左侧超级节点</div><div class="line">p.child.insert(r+2,R); //v的右侧指向新的右侧超级节点</div></pre></td></tr></table></figure></p>
+<p>流程图如下：</p>
+<p><img src="/2017/11/04/BST/b-tree-insert.png" alt=""></p>
+<p>很自然的，中位节点上移后，可能会使得上一层的超级节点出现上溢，触发新的分裂</p>
+<p>甚至更坏的情况，这种上溢现象一直延伸的根节点，使得根节点这个超级节点也需要分裂，但是此时已经没有父节点了，所以此时的中位节点成为了新的根节点，这是使得B-树变高的唯一情况，也是需要特殊处理的情况。</p>
+<h3 id="B-树删除"><a href="#B-树删除" class="headerlink" title="B-树删除"></a>B-树删除</h3><p>删除操作更为费解一些，和往常一样，分为删除和矫正，删除的的思路和BST删除思路是一致的</p>
+<h4 id="关键码的删除"><a href="#关键码的删除" class="headerlink" title="关键码的删除"></a>关键码的删除</h4><p>先找到待删除节点，然后往待删除节点的右子树深入，获取第一个节点A，如果这个节点不是叶节点，则以节点A的右子树继续深入，直到获取的节点为叶节点A’。此时A’和待删除节点交换，再删除我们要删除的那个节点数据，至此关键码的删除完成。</p>
+<h4 id="引用数组的矫正"><a href="#引用数组的矫正" class="headerlink" title="引用数组的矫正"></a>引用数组的矫正</h4><p>同时，经过交换，我们目前处于最下一层，我们的向下引用全部为空，所以，直接随便删除数组中的一个元素即可完成引用数组的矫正.</p>
+<p>大致是这样：</p>
+<p><img src="/2017/11/04/BST/b-tree-delete.png" alt=""></p>
+<p>由于B-树种下界为m/2的定义，每一个超级节点的个数不能低于m/2，节点的删除可能会引发下溢</p>
+<p>此时优先考虑旋转来解决，其次是合并。</p>
+<p>当一个超级节点出现下溢时，环顾他的左右兄弟，类似这样的伪代码<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">void HandleRot()&#123;</div><div class="line">B-Node v ; //出现下溢的节点</div><div class="line">B-Node p = v.parent(); //下溢节点的父节点</div><div class="line">int r = search(v.child[0]); // 定位v在父节点中的秩</div><div class="line">if(p.child[r-1].CanRot()) //如果查找出的这个左兄弟节点可以贡献出一个内部节点</div><div class="line">&#123;</div><div class="line">	Rot();</div><div class="line">	return;</div><div class="line">&#125;</div><div class="line">if(p.child[r+1].CanRot()) //如果查找出的这个右兄弟节点可以贡献出一个内部节点</div><div class="line">&#123;</div><div class="line">	Rot();</div><div class="line">	return;</div><div class="line">&#125;</div><div class="line">	Combine() ;//同级兄弟内部节点个数足够的低，不能贡献出一个内部节点，合并</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>以左旋为例(右旋同理)，父节点秩的左侧引用系欸但可以贡献出一个节点，如图,y是p.key[r]，把左兄弟（即p.child[r-1]）的最大内部节点</p>
+<p><img src="/2017/11/04/BST/b-tree-rot.png" alt=""></p>
+<p>旋转的具体操作内容，可能会是这样。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">B-Node L = p.child[r-1];</div><div class="line">Node x = L.key[L.key.length-1];</div><div class="line">L.key.remove(L.key.length-1); //移除关键码</div><div class="line">L.child.remove(L.key.length);//移除引用</div><div class="line">Node y = p.key[r];</div><div class="line">p.key[r] = x; //交换位置</div><div class="line">v.key.insert(0,y); //补充到下溢节点中</div><div class="line">v.child.insert(v.key.length,null);//v 和 L其实已经是最底层的叶节点了。</div></pre></td></tr></table></figure></p>
+<p>当旋转不足以处理下溢时，才会选择合并操作</p>
+<p>找出v的同级左右节点，选一个合并，根据上文旋转规则，所以不可能出现合并后，长度超过超级节点上界m的情况</p>
 <blockquote>
 <ul>
-<li>顶点着色器-&gt;深度测试-&gt;片元着色器-&gt;透明度测试-&gt;混合操作</li>
+<li>合并操作的思考，可能出现下溢节点没有左或者右兄弟吗？不可能，根据B-树的插入可知，子节点都是由于上溢而分裂出来的，故而不可能没有同级兄弟。</li>
 </ul>
 </blockquote>
-<p><strong>所谓混合，即是Blending阶段之前（下一帧）的计算结果和当前屏幕显示内容（上一帧的结果）的混合，呈现出一定的颜色衰减。</strong></p>
-          <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2017/10/13/ShaderBlend/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
-          <!--/noindex-->
+<p>合并操作如图</p>
+<p><img src="/2017/11/04/BST/b-tree-combine.png" alt=""></p>
+<p>找出一个无法贡献出节点的同级兄弟，以左侧兄弟为例，伪代码可能会是这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">Node y = p.key[r];</div><div class="line">p.key.remove(r);// 移除用于粘合两个超级节点的节点的关键码</div><div class="line">p.child.remove(r+1); // 移除用于粘合两个超级节点的节点的引用</div><div class="line">L.key.insertLast(y); //追加至左侧节点关键码尾部</div><div class="line">L.child.insertLast(null);//追加至左侧节点引用尾部</div><div class="line">for(int i=0 ;i &lt;v.key.length;i++)&#123; //合并v中的关键码</div><div class="line">	L.key.insertLast(v.key[i]);</div><div class="line">&#125;</div><div class="line">for(int i=0 ;i &lt;v.child.length;i++)&#123;//合并v中的引用</div><div class="line">	L.child.insertLast(v.child[i]);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>由于把y拉下用于粘合两个超级节点，父节点p少了一个内部节点，可能会触发下溢，所以我们还需要检测一下，如果出现了下溢，按照类似的方法处理即可。</p>
+<p>下溢是使得B-树高度下降的唯一入口。</p>
+<h2 id="红黑树"><a href="#红黑树" class="headerlink" title="红黑树"></a>红黑树</h2><p>红黑树是一颗真二叉树</p>
+<p><img src="/2017/11/04/BST/rb-tree-define.png" alt=""></p>
+<p>可以和一颗4阶B-树对比起来思考</p>
+<p><img src="/2017/11/04/BST/rb-b.png" alt=""></p>
+<p>根据红黑树的定义，随便找一个叶节点v,一直v-&gt;parent(),直到抵达root节点，经过的黑色节点个数是一样的。</p>
+<p>参照一颗4阶B-树不难证明这一点，把每一个红色节点向上提一层，和他的父节点一起合并成一个超级节点，最终得到的就是一颗4阶B-树，此时B-树的高度就是叶节点一条回路经过的黑色节点个数。</p>
+<h3 id="插入操作"><a href="#插入操作" class="headerlink" title="插入操作"></a>插入操作</h3><p>定义插入的节点为x，在找到合适位置后，插入，并且把节点染成红色(除非当前插入节点就是根节点)。此时会有两种情况</p>
+<blockquote>
+<ul>
+<li>如果此时父节点是黑色，那么按照BST树的约定，每插入的一个节点其实都是叶节点，红黑树定义有过声明，外部节点都是黑色节点，所以必然满足红黑树的定义。</li>
+<li>如果此时父节点是红色（红黑树定义，层次上，红色节点不能连续出现，即双红缺陷）</li>
+</ul>
+</blockquote>
+<h4 id="父节点为红色，而叔节点为黑色"><a href="#父节点为红色，而叔节点为黑色" class="headerlink" title="父节点为红色，而叔节点为黑色"></a>父节点为红色，而叔节点为黑色</h4><p><img src="/2017/11/04/BST/RR-1.png" alt=""></p>
+<p>对于这种情况，把他转化成4阶B-树可以很明显的看出，此时合并的超级节点没有问题，没有发生上溢或者下溢，只不过不是按照RBR的顺序排列，即黑色节点居中。</p>
+<p>换算过对于红黑树来说，只需要对红黑树进行如下的结构（类似真二叉树的结构），按照中序组合重排列，再把颜色按照RBR调整，即可双红缺陷修复成功。</p>
+<blockquote>
+<ul>
+<li>只需要一次3+4重构（1或2次旋转）</li>
+</ul>
+</blockquote>
+<p><img src="/2017/11/04/BST/RR-1-1.png" alt=""></p>
+<h4 id="父节点为红色，叔节点也为红色"><a href="#父节点为红色，叔节点也为红色" class="headerlink" title="父节点为红色，叔节点也为红色"></a>父节点为红色，叔节点也为红色</h4><p><img src="/2017/11/04/BST/RR-2.png" alt=""></p>
+<p>从B-树的角度考虑，经过提升变换后，合成的超级节点出现了上溢现象，就如同在B-树中解决上溢的思路，找到中位点，然后向上提升一层，原来的超级节点在中位点的分割下，发生分裂。</p>
+<p>从红黑树的角度来看，为了修复这次的双红缺陷，只需要叔父节点染黑，祖父节点转红，但是这种变色转换，<strong>不需要进行旋转操作</strong>。很可能会是的祖父节点g出现双红缺陷。</p>
+<blockquote>
+<ul>
+<li>只需要进行染色操作(3次染色)，不需要旋转。</li>
+</ul>
+</blockquote>
+<p>如果出现新的双红缺陷，不妨借用前面的两种解决方案，递归的解决，即</p>
+<blockquote>
+<ul>
+<li>1、父节点为红色，叔节点为黑色</li>
+<li>2、父节点为红色，叔节点也为红色</li>
+</ul>
+</blockquote>
+<h4 id="总结-1"><a href="#总结-1" class="headerlink" title="总结"></a>总结</h4><p>考虑到第二种双红缺陷的传播性，综合起来评价，修复双红缺陷，至多需要</p>
+<blockquote>
+<ul>
+<li>1、logn次重染色</li>
+<li>2、一次3+4重构</li>
+</ul>
+</blockquote>
+<h3 id="删除操作"><a href="#删除操作" class="headerlink" title="删除操作"></a>删除操作</h3><p>删除操作之前，红黑树必然是满足所有条件的。</p>
+<p>最简单的删除情况：</p>
+<p><img src="/2017/11/04/BST/rb-tree-remove.png" alt=""></p>
+<p>当我们定位到需要删除的点x后，根据BST的删除操作处理（最终会在叶节点中找到一个合适的节点w的值和目标节点的值交换，然后移除节点w），w为黑色null节点，只需要把x替换成r，即可保证BST的正确性</p>
+<p>然而，由于删除了一个节点，可能会使得当前这颗子树叶节点的黑高度和其他子树叶节点的黑高度不一致。</p>
+<h4 id="情况0：x或者r，二者之一为红色节点"><a href="#情况0：x或者r，二者之一为红色节点" class="headerlink" title="情况0：x或者r，二者之一为红色节点"></a>情况0：x或者r，二者之一为红色节点</h4><p>如果x或者r二者之一为红色节点，由于红色节点不参与黑高度计算，在删除节点x后，r接替x，红黑树的所有条件依然可以保留下来，而<strong>如果x和r皆是黑色节点，就会触发双黑缺陷</strong>，使得这颗子树的黑高度低于其他子树。</p>
+<h4 id="情况1：兄弟节点s为黑，s至少有一个红孩子t，p的颜色不定"><a href="#情况1：兄弟节点s为黑，s至少有一个红孩子t，p的颜色不定" class="headerlink" title="情况1：兄弟节点s为黑，s至少有一个红孩子t，p的颜色不定"></a>情况1：兄弟节点s为黑，s至少有一个红孩子t，p的颜色不定</h4><p>因为我们需要删除x节点，从B-树上看，如果我们删除节点x，这是一个黑色节点，r也是一个黑色节点，也就是说x单独成为一个超级节点，如果我们删除节点x，必然会引发下溢。</p>
+<p>从B-树的角度我们去修复下溢：</p>
+<p><img src="/2017/11/04/BST/BB-1-1.png" alt=""></p>
+<p>当删除了节点x后，从B-树的角度上看，发生了下溢，为了修复下溢，选择旋转或合并操作，此时的情况是，左子树恰好有足够的兄弟可以借出用于修复，最后得出修复后的结构。</p>
+<p><img src="/2017/11/04/BST/BB-1.png" alt=""></p>
+<p>进行一次3+4重构，并重染色，就可以一次彻底的完成双黑缺陷。</p>
+<p>接下来的问题在于，由于s至少有一个红孩子t，这使得s的子树可以借出一个节点用于修复下溢，所以如果s中没有红孩子呢？</p>
+<h4 id="情况2：s为黑，s的两个孩子均为黑，p为红"><a href="#情况2：s为黑，s的两个孩子均为黑，p为红" class="headerlink" title="情况2：s为黑，s的两个孩子均为黑，p为红"></a>情况2：s为黑，s的两个孩子均为黑，p为红</h4><p>承接上一个情况的疑问，如果兄弟节点s没有红孩子，也就是说转换成B-树后，s自己就是一个超级节点，并且只有s自己这么一个内部节点，那么修复同级节点x的下溢，无法贡献出内部节点，需要通过合并节点来解决。</p>
+<p><img src="/2017/11/04/BST/BB-2R.png" alt=""></p>
+<p>所以这时引发出两种情况，如果p为红，或者为黑。</p>
+<p>为了修复下溢，通过把p拉下合并同级节点x来修复下溢。观察修复后的B-树结构。很自然的我们就会想到，如果把p拉下来合并同级节点，会不会造成上层超级节点的下溢。由于p是红色节点，转化成B-树后，红色节点不会单独成为一个超级节点。红色节点左侧或者右侧必然有且仅有一个黑色节点（黑色节点单独成一个超级节点），所以这种修复不会使得上层出现下溢。</p>
+<p>所以接下来讨论p为黑的情况</p>
+<h4 id="情况3：s为黑，s的两个孩子均为黑，p为黑"><a href="#情况3：s为黑，s的两个孩子均为黑，p为黑" class="headerlink" title="情况3：s为黑，s的两个孩子均为黑，p为黑"></a>情况3：s为黑，s的两个孩子均为黑，p为黑</h4><p><img src="/2017/11/04/BST/BB-2B.png" alt=""></p>
+<p>从B-树的角度看，p为黑色节点，拉下粘合拼接后，必然会导致原先P这一层出现下溢，其等效于删除x节点时的状况。</p>
+<p>从红黑树的角度看，此时p以下的所有节点已经恢复了红黑树的平衡，但从整体上，为了修复x的删除，我们把s染为红色，p以下的整体高度下降了1，整棵红黑树必然是失衡的。</p>
+<p>就如下图表示的，存在一个看不到的x节点，使得双黑缺陷依然存在。(这一点从B-树修复下溢引发上层下溢同样可以论证)</p>
+<p><img src="/2017/11/04/BST/BB-2B&#39;.png" alt=""></p>
+<p>观察p的父节点x’和叔节点s’，以及祖父节点p’，继续向上寻找对应的修正方案，直到抵达root节点或者对应的修正方案不再是BB-2B。</p>
+<h4 id="情况4-：s为红"><a href="#情况4-：s为红" class="headerlink" title="情况4 ：s为红"></a>情况4 ：s为红</h4><p><img src="/2017/11/04/BST/BB-3.png" alt=""></p>
+<p>删除前是平衡的，因为x和r皆为黑色，x的删除依然会造成双黑缺陷，但是经过变换，p朝x方向旋转，p转红，s转黑，x的新的兄弟节点s’是黑色，这样我们就将这个问题转向了BB-1或者BB-2R</p>
+<h2 id="优先级队列"><a href="#优先级队列" class="headerlink" title="优先级队列"></a>优先级队列</h2><p>定义：</p>
+<p>按照元素的优先级在容器中进行排列，其表现形式即优先级越高的越靠前。</p>
+<p>从实现上来说，使用数组，链表，或者更高明的BBST都可以实现。</p>
+<p>数组实现上：</p>
+<p>getMax操作： 每次从中取出优先级最高的元素，其对应的元素即是数组的最后一个元素，时间成本为O(1)。</p>
+<p>delMax操作：直接删除最后一个元素O(1)</p>
+<p>insert操作：类似插入排序，找到合适的位置插入，由于本身就是一个有序序列，可以通过二分优化查找，插入操作中查找合适位置需要的时间成本即为logn，然而由于是数组，当插入一个元素后，插入位置后面的元素全部要往后移动一个单位，其空间操作的成本O(n)，总计O(logn)+O(n)。</p>
+<p>链表实现：</p>
+<p>getMax操作：最坏的情况下需要遍历所有元素，才能获得，时间成本O（n）</p>
+<p>delMax操作：删除的空间成本为O(1),总计成本为O(n)+O(1)</p>
+<p>insert操作：最坏的情况下依然需要遍历所有元素，查找的时间成本依然是O(n)，但是空间成本是O(1)</p>
+<p>BBST实现：</p>
+<p>无论是AVL,还是红黑树，都可以直接拿来用，他们需要的删除操作直接对应的是优先级最高的元素，删除操作依然是优先级最高的元素，换言之对于BBST全部功能，只用了2/3，有些杀鸡用牛刀的感觉。</p>
+<p>getMax操作：取决于树高，O(logn)，实际上通过优化，比如说只需要把优先级最大的元素持久化的保存下来，并对其进行维护，getMax操作只需要O(1)的成本。</p>
+<p>delMax操作：删除后的平衡修复不会超过o(logn)</p>
+<p>insert操作：O(logn)</p>
+<p><img src="/2017/11/04/BST/BBST-Priority.png" alt=""></p>
+<p>其结构是通过完全二叉树来实现</p>
+<h3 id="结构"><a href="#结构" class="headerlink" title="结构"></a>结构</h3><p><img src="/2017/11/04/BST/priorityqueue.png" alt=""></p>
+<p>根据这种结构，参照节点对应的index关系，完全可以通过数组来实现。</p>
+<h3 id="插入操作-1"><a href="#插入操作-1" class="headerlink" title="插入操作"></a>插入操作</h3><p><img src="/2017/11/04/BST/priorityInsert0.png" alt=""></p>
+<p>直接向末尾插入词条e</p>
+<p>如果e和父节点违反堆序性(大顶堆，小顶堆)，交换位置。</p>
+<p><img src="/2017/11/04/BST/priorityInsert1.png" alt=""></p>
+<blockquote>
+<ul>
+<li>swap交换操作是存在三次赋值的，从最坏情况分析，e会不停的和父节点交换位置，直到抵达根节点，交换次数取决于树高，完全二叉树的树高即是logn，所以对于e的插入操作，其总计成本为3logn，在这一点上可以进行一个简单的优化，即是，先把e保存下来，如果需要交换位置，e直接赋值为父节点，直到不需要交换位置时，把当前节点赋值为原先保存下来的e。这样就变成了logn+2</li>
+</ul>
+</blockquote>
+<p>这个操作称之为上滤。</p>
+<h3 id="删除操作-1"><a href="#删除操作-1" class="headerlink" title="删除操作"></a>删除操作</h3><p><img src="/2017/11/04/BST/prioritydelete0.png" alt=""></p>
+<p>和插入操作与之对应，当删除了一个元素，即堆顶元素，用末尾元素和堆顶元素交换，删除堆顶元素。</p>
+<p>因为交换了堆顶元素，所以此时的堆序性不能确定是否正确，逐层向下和左右孩子元素进行对比，如果违反堆序性，交换位置，直到不违反堆序性或者抵达最底层，也就是没有左右孩子元素时。</p>
+<p>与上滤操作相对应，称之为下滤。和上滤有些不同地方是，e节点是同时和他的左右孩子相比。</p>
+<p>关于这个过程的正确性，末尾元素不能说是队列中的最小元素，但是可以说是遵循堆序性下的最底层元素，把他和堆顶元素交换。从原先BST树的角度看，删除堆顶元素后，可以不断的旋转把删除后的空缺旋转到最底层叶节点删除，那还不如直接和末尾元素交换，然后再自上而下的修复一次堆序性。由于末尾元素没有左右孩子节点，所以无需考虑对下层所有节点的影响，反观如果从树的中间部位随机取一个节点去和堆顶元素交换，一方面要修复和堆顶元素交换后删除出现的空缺，一方面要修复交换后堆顶元素的正确性。</p>
+<h3 id="批量建堆"><a href="#批量建堆" class="headerlink" title="批量建堆"></a>批量建堆</h3><p>给出一串数据，把他们转化成满足优先级队列结构的数组。</p>
+<h4 id="自上而下的上滤"><a href="#自上而下的上滤" class="headerlink" title="自上而下的上滤"></a>自上而下的上滤</h4><p>实质上就是挨个把数据插入一个空的优先级队列，即不断地上滤。</p>
+<p>当把这一串数据全部转换成优先级队列后，不难得出他的成本是nlogn。这和得到一个全序数组的成本是一样的，而优先级队列只需要满足偏序就可以，因为每次取出的都是首元素。</p>
+<p><img src="/2017/11/04/BST/priorityuptodown.png" alt=""></p>
+<p>很明显这是一种蛮力算法。</p>
+<h4 id="自下而上的下滤"><a href="#自下而上的下滤" class="headerlink" title="自下而上的下滤"></a>自下而上的下滤</h4><p><img src="/2017/11/04/BST/prioritydowntoup.png" alt=""></p>
+<p><img src="/2017/11/04/BST/prioritydowntoup0.png" alt=""></p>
+<p>从正确性角度分析，这种算法的核心思维是，把所有的元素分割成一个一个小堆，小堆的个数取决于倒数第二层节点的个数。分别对小堆进行下滤矫正其堆序性，同一层级的小堆矫正完毕后，兄弟小堆合并(这里的合并没有什么实质意义，只是代表这个小堆内部堆序性是正确的)，此时他们的父节点进行一次下滤，矫正堆序性。直到父节点为根节点，下滤后结束算法。</p>
+<p>从上述过程可以发现，和上滤蛮力算法不同的是，我们忽略了最下一层2^n个的叶节点，叶节点是不需要下滤操作的，转而通过小堆下滤来修复堆序性。</p>
+<p>分析整个过程不难得出最坏情况下，时间成本取决于完全二叉堆的高度，1+2+3+4…logn =&gt; O(n)</p>
+<p>也就是说，只需要进行O(n)次的下滤操作即可使得一串数据转换成优先级队列。</p>
+<p>相比较O(nlogn)的上滤，这要好上很多。个人认为以上滤的角度分析，这顿下滤操作实际上就是O((n-2^n)logn)</p>
+<h4 id="堆排序"><a href="#堆排序" class="headerlink" title="堆排序"></a>堆排序</h4><p>其过程和选择排序有类似之处，选择排序把数组划分为已排序区间和待排序区间，初始状态下已排序区间长度为0，每次从待排序区间获取最大值，加入已排序区间(它的过程更像是交换位置，而待排序区间的index减1)，已排序区间长度加1，待排序区间长度自然减1，直到待排序区间长度为0，可以看出选择排序的成本为O(n^2)</p>
+<p>若使用前面介绍的内容，先进行批量建堆，成本为O(n)，得到一个拥有堆序性的二叉堆。</p>
+<p>再着手完全二叉堆上的选择排序，每次取出堆顶元素，堆顶元素即为最大元素，把他和此时的堆末尾元素交换，堆长度减1，已排序区间长度加1，接下来通过下滤修复交换后的堆序失衡，修复完成后，再把堆顶元素和此时堆末尾元素交换，堆长度减1，已排序区间长度加1，继续此前的修复，直到堆长度为0。如此就获得一个全排序的队列，它的成本即为nlogn，远比n^2好</p>
+<p><img src="/2017/11/04/BST/heapsort.png" alt=""></p>
+<h4 id="堆合并"><a href="#堆合并" class="headerlink" title="堆合并"></a>堆合并</h4><p>需求来源于，存在两个长度分别为m,n的堆，如何将两个堆合并一起。</p>
+<h5 id="左式堆"><a href="#左式堆" class="headerlink" title="左式堆"></a>左式堆</h5><p>自然而然的，可以有一种蛮力的算法，直接将两个堆拼在一起，然后再进行自上而下的下滤操作，暴力的修复堆序性，它的成本也可以控制在O(m+n)，然而，这两个堆原先本就具备堆序性，蛮力的合并在一起，形成了一定程度上的浪费。</p>
+<p><img src="/2017/11/04/BST/leftlist0.png" alt=""></p>
+<p>如果有一种堆是倾斜向一侧的，在进行合并时，只需要关注其中更小的那一个堆，使用floyd算法付出O(logn)的代价就可以合并完成。</p>
+<p>为了实现这样一种单向倾斜的堆，首先需要一些空的节点填充在另一侧，这样构成单向倾斜。</p>
+<p><img src="/2017/11/04/BST/nullpathlength.png" alt=""></p>
+<p>空节点路径长度，反应的是在堆中的填充度，长度越小，填充的越完善（满树），说明越向这一侧倾斜。</p>
+<p>这里的npl(x)，是指x到外部节点的最近距离，取x左右子树中较小的npl值，最后加上1，这个1即是x到子树的距离1.</p>
+<p><img src="/2017/11/04/BST/leftlist.png" alt=""></p>
+<p>左子堆的规模和高度不一定比右子堆大，就和AVL树一样，他的高度差是由他的子树累计而来的。</p>
+<p><img src="/2017/11/04/BST/rChain.png" alt=""></p>
+<p>这里想表达的是，沿着右分支深入，抵达的外部节点是全堆中最浅的外部节点。</p>
+<p>由二叉树的性质不难得出，右侧链长为d的左式堆，<strong>至少</strong>包含2<sup>d+1</sup> -1个节点，至少包含2<sup>d</sup>-1个内部节点。</p>
+<p>也就是说，如果在包含n个节点的左式堆中，右侧链的长度d&lt;=log<sub>2</sub><sup>n+1</sup>-1 = O(logn)</p>
+<h5 id="合并实现"><a href="#合并实现" class="headerlink" title="合并实现"></a>合并实现</h5><p>此时的左式堆，已经不适合用数组来实现了，应该转由二叉树结构来实现。</p>
+<p><img src="/2017/11/04/BST/pqmerge0.png" alt=""></p>
+<p>可以大致分为几个过程:</p>
+<blockquote>
+<ul>
+<li>a,b分别为需要合并的子堆</li>
+<li>如果a为空，返回b；如果b为空，返回a。（递归基）</li>
+<li>考察a和b的大小，确保a大于等于b，如果不满足a，b交换。</li>
+<li>深入a的右子堆，使之与当前的b进行合并操作。返回的是合并后的堆顶，使之成为a右节点。</li>
+<li>更新父子关系。</li>
+<li>如果左节点为空，或者左节点的npl小于右节点的npl，交换左右子树，确保左倾性。</li>
+<li>更新a的npl，由于前面的判断和交换使得此时的堆必然是左式堆，所以如果存在右子堆的话，直接用右子堆的npl加上a本身，如果没有直接返回1</li>
+<li>返回合并后的堆顶</li>
+</ul>
+</blockquote>
+<p><img src="/2017/11/04/BST/pqmerge.png" alt=""></p>
+<p>这个过程是围绕右侧链来实现的，所以成本不超过logn</p>
+<h5 id="插入和删除-1"><a href="#插入和删除-1" class="headerlink" title="插入和删除"></a>插入和删除</h5><p>插入和删除皆可以解释成变相的合并操作</p>
+<p>插入，实质上就是合并一个长度仅为1的子树</p>
+<p>删除，实质上就是在删除一个节点后，分离出了左右两个子树，无论如何的删除，分离出的两个子树必然也满足左式堆的左倾性和堆序性，所以做一次成本为logn的合并即可。</p>
+
+          
         
       
     </div>
@@ -1420,7 +1743,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/09/状态模式/">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/11/03/BinTree/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lyu">
@@ -1439,7 +1762,7 @@
         
           <h2 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/10/09/状态模式/" itemprop="url">《游戏编程模式》设计模式之状态模式</a></h2>
+                <a class="post-title-link" href="/2017/11/03/BinTree/" itemprop="url">二叉树</a></h2>
         
 
         <div class="post-meta">
@@ -1451,8 +1774,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-09T14:35:44+08:00">
-                2017-10-09
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-11-03T20:26:06+08:00">
+                2017-11-03
               </time>
             
 
@@ -1469,7 +1792,7 @@
 
           
           
-             <span id="/2017/10/09/状态模式/" class="leancloud_visitors" data-flag-title="《游戏编程模式》设计模式之状态模式">
+             <span id="/2017/11/03/BinTree/" class="leancloud_visitors" data-flag-title="二叉树">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -1498,10 +1821,10 @@
 
       
         
-          <h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>因为一些原因导致不能使用Unity的动画系统，三十多个动画需要手动管理，参照Unity的动画系统，很自然的就想到了状态机。</p>
+          <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>二叉树的结构没什么好说的，见明起意。但是利用这种非线性结构可以高效的完成搜索，删除，添加。先从树的遍历说起</p>
           <!--noindex-->
           <div class="post-button text-center">
-            <a class="btn" href="/2017/10/09/状态模式/#more" rel="contents">
+            <a class="btn" href="/2017/11/03/BinTree/#more" rel="contents">
               阅读全文 &raquo;
             </a>
           </div>
@@ -1542,7 +1865,7 @@
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
   </nav>
 
 
@@ -1588,7 +1911,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">25</span>
+                <span class="site-state-item-count">32</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>
@@ -1601,7 +1924,7 @@
             
             <div class="site-state-item site-state-tags">
               <a href="/tags/index.html">
-                <span class="site-state-item-count">11</span>
+                <span class="site-state-item-count">14</span>
                 <span class="site-state-item-name">标签</span>
               </a>
             </div>
