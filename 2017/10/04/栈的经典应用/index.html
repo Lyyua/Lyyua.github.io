@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Hexo, NexT" />
+  <meta name="keywords" content="算法," />
 
 
 
@@ -93,15 +93,20 @@
 
 
 
-<meta name="description" content="��עԭ����ֻ��Ϊ�˸��õĶ�λ���⡣">
-<meta property="og:type" content="website">
-<meta property="og:title" content="Back">
-<meta property="og:url" content="http://lyyua.com/archives/page/2/index.html">
+<meta name="description" content="栈应用：  1、进制转换，不断的除商，压入栈中，最后再一次pop出来就是转换的结果  2、括号匹配，左括号进栈，右括号匹配栈顶，发生匹配则弹出栈顶，只要出现：①右括号和栈顶不匹配。②右括号存在，但是栈为空。即可得出失配  3、栈混洗 ，用到三个栈，栈A为原始栈，栈S为中转栈，栈B为最终栈，每次从栈A中Pop出一个元素压入栈S，栈S决定Pop与否，最后得出栈B。    只要出现:栈A顺序i，j，k,">
+<meta name="keywords" content="算法">
+<meta property="og:type" content="article">
+<meta property="og:title" content="栈的经典应用">
+<meta property="og:url" content="http://lyyua.com/2017/10/04/栈的经典应用/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="��עԭ����ֻ��Ϊ�˸��õĶ�λ���⡣">
+<meta property="og:description" content="栈应用：  1、进制转换，不断的除商，压入栈中，最后再一次pop出来就是转换的结果  2、括号匹配，左括号进栈，右括号匹配栈顶，发生匹配则弹出栈顶，只要出现：①右括号和栈顶不匹配。②右括号存在，但是栈为空。即可得出失配  3、栈混洗 ，用到三个栈，栈A为原始栈，栈S为中转栈，栈B为最终栈，每次从栈A中Pop出一个元素压入栈S，栈S决定Pop与否，最后得出栈B。    只要出现:栈A顺序i，j，k,">
+<meta property="og:image" content="http://lyyua.com/2017/10/04/栈的经典应用/OrderOp.png">
+<meta property="og:image" content="http://lyyua.com/2017/10/04/栈的经典应用/postfix.png">
+<meta property="og:updated_time" content="2018-01-23T02:39:00.748Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Back">
-<meta name="twitter:description" content="��עԭ����ֻ��Ϊ�˸��õĶ�λ���⡣">
+<meta name="twitter:title" content="栈的经典应用">
+<meta name="twitter:description" content="栈应用：  1、进制转换，不断的除商，压入栈中，最后再一次pop出来就是转换的结果  2、括号匹配，左括号进栈，右括号匹配栈顶，发生匹配则弹出栈顶，只要出现：①右括号和栈顶不匹配。②右括号存在，但是栈为空。即可得出失配  3、栈混洗 ，用到三个栈，栈A为原始栈，栈S为中转栈，栈B为最终栈，每次从栈A中Pop出一个元素压入栈S，栈S决定Pop与否，最后得出栈B。    只要出现:栈A顺序i，j，k,">
+<meta name="twitter:image" content="http://lyyua.com/2017/10/04/栈的经典应用/OrderOp.png">
 
 
 
@@ -129,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://lyyua.com/archives/page/2/"/>
+  <link rel="canonical" href="http://lyyua.com/2017/10/04/栈的经典应用/"/>
 
 
 
 
 
-  <title>归档 | Back</title>
+  <title>栈的经典应用 | Back</title>
   
 
 
@@ -170,7 +175,7 @@
     
   
 
-  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left  page-archive  ">
+  <!-- hexo-inject:begin --><!-- hexo-inject:end --><div class="container sidebar-position-left page-post-detail ">
     <div class="headband"></div>
 
     <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
@@ -254,402 +259,211 @@
           <div id="content" class="content">
             
 
-  <section id="posts" class="posts-collapse">
-    <span class="archive-move-on"></span>
+  <div id="posts" class="posts-expand">
+    
 
-    <span class="archive-page-counter">
-      
-      
-       
-      
-      OK! 目前共计 32 篇日志。 继续努力。
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/10/04/栈的经典应用/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
     </span>
 
     
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">栈的经典应用</h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-10-04T20:36:36+08:00">
+                2017-10-04
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/10/04/栈的经典应用/" class="leancloud_visitors" data-flag-title="栈的经典应用">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
 
       
       
-      
 
+      
+        <h2 id="栈应用："><a href="#栈应用：" class="headerlink" title="栈应用："></a>栈应用：</h2><blockquote>
+<ul>
+<li><p>1、进制转换，不断的除商，压入栈中，最后再一次pop出来就是转换的结果</p>
+</li>
+<li><p>2、括号匹配，左括号进栈，右括号匹配栈顶，发生匹配则弹出栈顶，只要出现：<br>①右括号和栈顶不匹配。<br>②右括号存在，但是栈为空。即可得出失配</p>
+</li>
+<li><p>3、栈混洗 ，用到三个栈，栈A为原始栈，栈S为中转栈，栈B为最终栈，每次从栈A中Pop出一个元素压入栈S，栈S决定Pop与否，最后得出栈B。 </p>
+<blockquote>
+<ul>
+<li>只要出现:栈A顺序i，j，k,结果混洗后…k,i,j… 的情况，必然可以判断不是栈混洗，因为要使K在i和j的前面，必然在k入栈S之前，栈S没有弹出元素，即是然遵循i,j,k的顺序入栈S，出栈不论怎么出他们的顺序也是k,j,i。</li>
+</ul>
+</blockquote>
+</li>
+<li><p>栈混洗验证，O(n)复杂度：</p>
+<blockquote>
+<ul>
+<li>三个栈，待验证栈混洗的栈A，顺序排序的栈B，中间栈S</li>
+<li>栈B pop()，再push()进中间栈S，检查此时栈S的栈顶数据和栈A栈顶数据，如果相等，栈S和栈A同时pop()；如果不相等，栈B继续pop(),并且push()进中间栈S。直到栈B为空。如果此时中间栈S为空，则说明是栈混洗，如果不为空，把栈S中数据依次pop()到一个新的栈C，栈C和剩余的栈A数据进行对比，栈C pop，栈A pop，检查是否相等，直到全部pop都相等说明是栈混洗，否则不是。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+<ul>
+<li><p>括号匹配和栈混洗有联系，括号匹配的过程类似栈混洗，左括号入站，右括号出栈，也就是说，括号匹配的种数和栈混洗的种数是一样的。 (2n)!/((n+1)!(n)!)</p>
+</li>
+<li><p>4、中缀表达式，典型的例子就是计算器运算</p>
+<blockquote>
+<ul>
+<li>准备两个栈，栈A存放数字,栈B存放运算符,运算式子按规则筛选入对应的栈，当栈A的栈顶运算符大于当前准备入栈的运算符对比，则从栈A中进行两次pop（），进行{popA2}{popB}{popA1}计算，阶乘有些特殊，他只需要栈从A中pop（）出一个即可，即{popA1}{popB}。运算完毕后，运算结果重新入栈A，当前运算符入栈B，如此迭代。</li>
+</ul>
+</blockquote>
+</li>
+</ul>
+</blockquote>
+<p>运算符优先级比较</p>
+<p><img src="/2017/10/04/栈的经典应用/OrderOp.png" alt=""></p>
+<blockquote>
+<ul>
+<li>5、逆波兰表达式，其实就是特殊处理的中缀表达式</li>
+</ul>
+</blockquote>
+<p><img src="/2017/10/04/栈的经典应用/postfix.png" alt=""></p>
+<blockquote>
+<blockquote>
+<ul>
+<li>RPN式子可以直接进行计算，而不需要考虑运算符优先级，他其实是特殊处理过的中缀表达式，准备两个栈，栈A是运算符临时栈，栈B是RPN式子栈，数字直接入栈B，运算符先入栈A，栈A的栈顶运算符和当前运算符进行对比，即栈顶运算符大于当前运算符时，栈A弹出栈顶运算符，压入栈B中（括号不入栈B），同时，当前运算符压入栈A，准备下一次迭代。最后得出的栈B就是完整的RPN式子。</li>
+</ul>
+</blockquote>
+</blockquote>
+
+      
+    </div>
+
+    <div>
       
         
-        <div class="collection-title">
-          <h2 class="archive-year motion-element" id="archive-year-2017">2017</h2>
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <div>
+      
+        
+
+      
+    </div>
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/算法/" rel="tag"># 算法</a>
+          
         </div>
       
+
+      
+      
       
 
       
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/10/04/词典/" rel="next" title="散列表">
+                <i class="fa fa-chevron-left"></i> 散列表
+              </a>
+            
+          </div>
 
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
+          <span class="post-nav-divider"></span>
 
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/16/Meshdeformation/" itemprop="url">
-              
-                <span itemprop="name">给Mesh施力变形</span>
-              
-            </a>
-        
-      </h3>
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2017/10/09/状态模式/" rel="prev" title="《游戏编程模式》设计模式之状态模式">
+                《游戏编程模式》设计模式之状态模式 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
 
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-16T20:16:06+08:00"
-              content="2017-10-16" >
-          10-16
-        </time>
-      </div>
-
-    </header>
+      
+      
+    </footer>
   </article>
 
 
 
-    
-
+    <div class="post-spread">
       
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/15/Silhouette_Enhancement/" itemprop="url">
-              
-                <span itemprop="name">UnityShader-透明物体的轮廓增强</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-15T16:12:31+08:00"
-              content="2017-10-15" >
-          10-15
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/13/ShaderBlend/" itemprop="url">
-              
-                <span itemprop="name">UnityShader-Blend</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-13T21:15:49+08:00"
-              content="2017-10-13" >
-          10-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/13/FFmpegCMD/" itemprop="url">
-              
-                <span itemprop="name">使用FFMPEG命令行操作视频</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-13T10:46:44+08:00"
-              content="2017-10-13" >
-          10-13
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/09/状态模式/" itemprop="url">
-              
-                <span itemprop="name">《游戏编程模式》设计模式之状态模式</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-09T14:35:44+08:00"
-              content="2017-10-09" >
-          10-09
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/04/栈的经典应用/" itemprop="url">
-              
-                <span itemprop="name">栈的经典应用</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-04T20:36:36+08:00"
-              content="2017-10-04" >
-          10-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/04/词典/" itemprop="url">
-              
-                <span itemprop="name">散列表</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-04T20:36:36+08:00"
-              content="2017-10-04" >
-          10-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2017/10/04/Matrix2/" itemprop="url">
-              
-                <span itemprop="name">矩阵在数学上的补充</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-10-04T16:18:49+08:00"
-              content="2017-10-04" >
-          10-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2017/09/04/Matrix/" itemprop="url">
-              
-                <span itemprop="name">矩阵的几何解释 - 旋转</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-09-04T21:56:49+08:00"
-              content="2017-09-04" >
-          09-04
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-      
-      
-      
-
-      
-      
-
-      
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-    <header class="post-header">
-
-      <h3 class="post-title">
-        
-            <a class="post-title-link" href="/2017/08/27/Flyweight3/" itemprop="url">
-              
-                <span itemprop="name">《游戏编程模式》设计模式之享元模式（三）正文</span>
-              
-            </a>
-        
-      </h3>
-
-      <div class="post-meta">
-        <time class="post-time" itemprop="dateCreated"
-              datetime="2017-08-27T20:17:10+08:00"
-              content="2017-08-27" >
-          08-27
-        </time>
-      </div>
-
-    </header>
-  </article>
-
-
-
-    
-
-  </section>
-
-  
-  <nav class="pagination">
-    <a class="extend prev" rel="prev" href="/archives/"><i class="fa fa-angle-left"></i></a><a class="page-number" href="/archives/">1</a><span class="page-number current">2</span><a class="page-number" href="/archives/page/3/">3</a><a class="page-number" href="/archives/page/4/">4</a><a class="extend next" rel="next" href="/archives/page/3/"><i class="fa fa-angle-right"></i></a>
-  </nav>
-
-
+    </div>
+  </div>
 
 
           </div>
@@ -657,6 +471,12 @@
 
 
           
+  <div class="comments" id="comments">
+    
+      <div id="lv-container" data-id="city" data-uid="MTAyMC8yOTgyMy82Mzg5"></div>
+    
+  </div>
+
 
         </div>
         
@@ -677,8 +497,17 @@
       
 
       
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
 
-      <section class="site-overview sidebar-panel sidebar-panel-active">
+      <section class="site-overview sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -731,6 +560,22 @@
 
       </section>
 
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#栈应用："><span class="nav-number">1.</span> <span class="nav-text">栈应用：</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
       
 
       
@@ -851,11 +696,9 @@
 
 
   
-  
-    <script type="text/javascript" id="motion.page.archive">
-      $('.archive-year').velocity('transition.slideLeftIn');
-    </script>
-  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.1"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.1"></script>
+
 
 
   
@@ -885,6 +728,17 @@
 
 
 
+  
+    <script type="text/javascript">
+      (function(d, s) {
+        var j, e = d.getElementsByTagName(s)[0];
+        if (typeof LivereTower === 'function') { return; }
+        j = d.createElement(s);
+        j.src = 'https://cdn-city.livere.com/js/embed.dist.js';
+        j.async = true;
+        e.parentNode.insertBefore(j, e);
+      })(document, 'script');
+    </script>
   
 
 
