@@ -102,7 +102,7 @@
 <meta property="og:description" content="广度优先搜索 BFS偏向暴力的遍历算法。">
 <meta property="og:image" content="http://lyyua.com/2017/12/17/BFS&DFS/Spanning_Tree.png">
 <meta property="og:image" content="http://lyyua.com/2017/12/17/BFS&DFS/DFS.png">
-<meta property="og:updated_time" content="2018-01-23T10:32:38.604Z">
+<meta property="og:updated_time" content="2018-01-25T14:55:34.091Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BFS和DFS">
 <meta name="twitter:description" content="广度优先搜索 BFS偏向暴力的遍历算法。">
@@ -357,6 +357,21 @@
 <p>只需要经过一次扫描，就可以根据dTime，fTime 可以在O(1)的时间内判断两个节点是否连通的关系。</p>
 <p>比如判断a节点是否可以抵达e，a的ftime为10，d的dtime为11，ftime<dtime，说明从a出发不能抵达e。d的ftime为14，e的dtime为12，ftime>dtime，说明从d出发可以抵达e。</dtime，说明从a出发不能抵达e。d的ftime为14，e的dtime为12，ftime></p>
 <p>典型的例子，脏字过滤，“大傻比”这三个字，按照DFS，首先可以确定“大”和“傻”之间有潜在脏字可能,他们是连通的，如果可以证明“傻”和“比”两个连通，则可以判断这是一个脏字。</p>
+<h2 id="Dijkstra算法"><a href="#Dijkstra算法" class="headerlink" title="Dijkstra算法"></a>Dijkstra算法</h2><p>对有向图的最短路径搜索。</p>
+<p>规定一个起点，开始BFS遍历，初始情况下默认其余节点和起点的距离为无穷大，当遍历到某个节点时，如果计算的距离更小，更新节点和起点的距离，并更新当前节点的父节点。</p>
+<p>想知道某个节点与起点的最短路劲时，只需要<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Path p;</div><div class="line">while(v-&gt;parent()!=start)&#123;</div><div class="line">	v=v-&gt;parent();</div><div class="line">	p.add(v);</div><div class="line">&#125;</div></pre></td></tr></table></figure></p>
+<p>整个过程可以说是贪心的，假设每次遍历到的点的路径都是距离起点最短的。</p>
+<h2 id="Floyd算法"><a href="#Floyd算法" class="headerlink" title="Floyd算法"></a>Floyd算法</h2><p>Dijkstra算法是单源的。</p>
+<p>需求是：当输入任意两个目标点时，在O(1)的时间内求得最短路径。</p>
+<p>主要问题：不知道i和j之间的最短路径，经过0个，1个还是多个节点。</p>
+<p>算法的核心是：</p>
+<blockquote>
+<ul>
+<li>dist[i][j] = min(dist[i][j],dist[i][k]+dist[k][j]);</li>
+</ul>
+</blockquote>
+<p>使用k来拼接i,j，其中k可以是任意情况，满足上述规则，则更新距离，下面的三层遍历下来，即可完成所有路径的最短拓扑。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">for k in 1 to number of vertices&#123;</div><div class="line">   for i in 1 to number of vertices&#123;</div><div class="line">      for j in 1 to number f vertices&#123;</div><div class="line">        dist[i][j] = min(dist[i][j],dist[i][k]+dist[k][j]);</div><div class="line">       &#125;</div><div class="line">    &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
 
       
     </div>
@@ -534,7 +549,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#广度优先搜索-BFS"><span class="nav-number">1.</span> <span class="nav-text">广度优先搜索 BFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度优先搜索-DFS"><span class="nav-number">2.</span> <span class="nav-text">深度优先搜索 DFS</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#广度优先搜索-BFS"><span class="nav-number">1.</span> <span class="nav-text">广度优先搜索 BFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#深度优先搜索-DFS"><span class="nav-number">2.</span> <span class="nav-text">深度优先搜索 DFS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Dijkstra算法"><span class="nav-number">3.</span> <span class="nav-text">Dijkstra算法</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Floyd算法"><span class="nav-number">4.</span> <span class="nav-text">Floyd算法</span></a></li></ol></div>
             
 
           </div>
