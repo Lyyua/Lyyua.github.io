@@ -100,7 +100,7 @@
 <meta property="og:url" content="http://lyyua.com/2017/12/24/Unitykey2/index.html">
 <meta property="og:site_name" content="Back">
 <meta property="og:description" content="前言依然是小Tips。">
-<meta property="og:updated_time" content="2018-01-23T05:46:07.825Z">
+<meta property="og:updated_time" content="2018-01-28T10:32:38.190Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="UnityKey2">
 <meta name="twitter:description" content="前言依然是小Tips。">
@@ -357,6 +357,8 @@
 <h2 id="Animator的动画执行顺序问题"><a href="#Animator的动画执行顺序问题" class="headerlink" title="Animator的动画执行顺序问题"></a>Animator的动画执行顺序问题</h2><p>通常来说一个动画，可能会做成不带位移，不带旋转，换句话说，动画的root节点不会发生任何Transform变换，但是免不了有的情况会出现带位移，如果需要他保持原点，把root绑定一下，这样他的root节点就不接收位移和旋转了。这是在美术不需要修改模型动画的前提下做的一定程度的约束，但是最终的动画结果可能不尽人意。</p>
 <p>由此引申的一个话题就是，如果我希望人工干预动画里的某一批节点的transform，则可以旋转从lateupdate做手脚，即是在动画系统结算完成后干预，当然，也可以使用avatar mask。</p>
 <h2 id="当帧率过小时的FixedUpdate"><a href="#当帧率过小时的FixedUpdate" class="headerlink" title="当帧率过小时的FixedUpdate"></a>当帧率过小时的FixedUpdate</h2><p>主要作用于物理模拟，因为刚体效果的体现，是和时间有关的。帧率过小时，意味着update调用次数也少，但是fixed次数是和时间有关的，相比之下，反而比update的次数多了</p>
+<h2 id="对UI的位置做初始化"><a href="#对UI的位置做初始化" class="headerlink" title="对UI的位置做初始化"></a>对UI的位置做初始化</h2><p>如果需要对UI的锚点，相对位置做初始化。</p>
+<p>在设置锚点信息后，会使用RectTransform.anchoredPosition绑定</p>
 
       
     </div>
@@ -534,7 +536,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加载前回调"><span class="nav-number">2.</span> <span class="nav-text">加载前回调</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Navigation的距离问题"><span class="nav-number">3.</span> <span class="nav-text">Navigation的距离问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Animator的动画执行顺序问题"><span class="nav-number">4.</span> <span class="nav-text">Animator的动画执行顺序问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#当帧率过小时的FixedUpdate"><span class="nav-number">5.</span> <span class="nav-text">当帧率过小时的FixedUpdate</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#加载前回调"><span class="nav-number">2.</span> <span class="nav-text">加载前回调</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Navigation的距离问题"><span class="nav-number">3.</span> <span class="nav-text">Navigation的距离问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Animator的动画执行顺序问题"><span class="nav-number">4.</span> <span class="nav-text">Animator的动画执行顺序问题</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#当帧率过小时的FixedUpdate"><span class="nav-number">5.</span> <span class="nav-text">当帧率过小时的FixedUpdate</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#对UI的位置做初始化"><span class="nav-number">6.</span> <span class="nav-text">对UI的位置做初始化</span></a></li></ol></div>
             
 
           </div>

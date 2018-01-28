@@ -106,7 +106,7 @@
 <meta property="og:image" content="http://lyyua.com/2018/01/13/ECS/CodeGenerate.png">
 <meta property="og:image" content="http://lyyua.com/2018/01/13/ECS/Group.png">
 <meta property="og:image" content="http://lyyua.com/2018/01/13/ECS/ProjectPath.png">
-<meta property="og:updated_time" content="2018-01-23T05:47:56.869Z">
+<meta property="og:updated_time" content="2018-01-28T10:09:42.659Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="使用ECS框架设计游戏">
 <meta name="twitter:description" content="前言虽然教程在Github上很多，但是多注重于如何用，比较少关于为什么这么用，也许作者默认使用者对框架的思想很熟悉，而且教程都是英文的。。。">
@@ -413,6 +413,11 @@
 <p>后端验证，同理这就是一个消息包。</p>
 <p>教学引导系统，任务系统方面。简单的说，每步教学操作，每个任务都是一个节点，每个节点对应一个状态，这个状态有对应的System。</p>
 <p>日志输出，他还是一个消息包。</p>
+<h3 id="UI方面"><a href="#UI方面" class="headerlink" title="UI方面"></a>UI方面</h3><p>因为可能使用UI来隔离逻辑，所以UI跳转这一部分可以交给UI自己解决，跟实际数据有关的交互用ECS。</p>
+<h3 id="顺序问题"><a href="#顺序问题" class="headerlink" title="顺序问题"></a>顺序问题</h3><p>比如定义了创建了一个Entity，添加RecordComponent，MoveComponent.</p>
+<p>对应有RecordSystem，MoveSystem，经过常规的过滤后，是先执行RecordSystem还是MoveSystem呢？这取决于在Systems的注册顺序。</p>
+<p>如果是下面的注册顺序，先执行Move，再执行Record。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">new Systems()</div><div class="line">.add(MoveSystem(contexts))</div><div class="line">.add(RecordSystem(contexts));</div></pre></td></tr></table></figure>
 <h3 id="环境配置中可能出现的问题"><a href="#环境配置中可能出现的问题" class="headerlink" title="环境配置中可能出现的问题"></a>环境配置中可能出现的问题</h3><p>1、缺少Assembly-CSharp.csproj</p>
 <p><img src="/2018/01/13/ECS/ProjectPath.png" alt=""></p>
 <p>如果MonoDev这个IDE开发，随便新建一个脚本打开后 ，IDE就会生成这么一个Assembly-CSharp.csproj工程配置文件</p>
@@ -590,7 +595,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#框架介绍："><span class="nav-number">2.</span> <span class="nav-text">框架介绍：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义C："><span class="nav-number">3.</span> <span class="nav-text">定义C：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码生成"><span class="nav-number">4.</span> <span class="nav-text">代码生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义S"><span class="nav-number">5.</span> <span class="nav-text">定义S</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Show-Case"><span class="nav-number">6.</span> <span class="nav-text">Show Case</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化一些配置"><span class="nav-number">7.</span> <span class="nav-text">初始化一些配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#辅助性的类"><span class="nav-number">8.</span> <span class="nav-text">辅助性的类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#EntityLink"><span class="nav-number">8.1.</span> <span class="nav-text">EntityLink</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IGroup"><span class="nav-number">8.2.</span> <span class="nav-text">IGroup</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ECS的优势"><span class="nav-number">9.</span> <span class="nav-text">ECS的优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境配置中可能出现的问题"><span class="nav-number">10.</span> <span class="nav-text">环境配置中可能出现的问题</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#框架介绍："><span class="nav-number">2.</span> <span class="nav-text">框架介绍：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义C："><span class="nav-number">3.</span> <span class="nav-text">定义C：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#代码生成"><span class="nav-number">4.</span> <span class="nav-text">代码生成</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#定义S"><span class="nav-number">5.</span> <span class="nav-text">定义S</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Show-Case"><span class="nav-number">6.</span> <span class="nav-text">Show Case</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#初始化一些配置"><span class="nav-number">7.</span> <span class="nav-text">初始化一些配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#辅助性的类"><span class="nav-number">8.</span> <span class="nav-text">辅助性的类</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#EntityLink"><span class="nav-number">8.1.</span> <span class="nav-text">EntityLink</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#IGroup"><span class="nav-number">8.2.</span> <span class="nav-text">IGroup</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ECS的优势"><span class="nav-number">9.</span> <span class="nav-text">ECS的优势</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#UI方面"><span class="nav-number">10.</span> <span class="nav-text">UI方面</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#顺序问题"><span class="nav-number">11.</span> <span class="nav-text">顺序问题</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#环境配置中可能出现的问题"><span class="nav-number">12.</span> <span class="nav-text">环境配置中可能出现的问题</span></a></li></ol></div>
             
 
           </div>

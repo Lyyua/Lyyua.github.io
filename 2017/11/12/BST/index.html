@@ -157,7 +157,7 @@
 <meta property="og:image" content="http://lyyua.com/2017/11/12/BST/rChain.png">
 <meta property="og:image" content="http://lyyua.com/2017/11/12/BST/pqmerge0.png">
 <meta property="og:image" content="http://lyyua.com/2017/11/12/BST/pqmerge.png">
-<meta property="og:updated_time" content="2018-01-24T14:18:46.876Z">
+<meta property="og:updated_time" content="2018-01-26T13:09:22.726Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="高级搜索树">
 <meta name="twitter:description" content="前言高级搜索树是二叉树的推广。">
@@ -649,6 +649,15 @@
 <p>也就是说，如果在包含n个节点的左式堆中，右侧链的长度d&lt;=log<sub>2</sub><sup>n+1</sup>-1 = O(logn)</p>
 <h5 id="合并实现"><a href="#合并实现" class="headerlink" title="合并实现"></a>合并实现</h5><p>此时的左式堆，已经不适合用数组来实现了，应该转由二叉树结构来实现。</p>
 <p><img src="/2017/11/12/BST/pqmerge0.png" alt=""></p>
+<p>首先，两个堆A，B的合并，其实就是左式堆A的右子堆和B的合并过程。</p>
+<p>可以递归的去解决这个问题。</p>
+<p>给出定义，合并函数merge(a,b)<br>递归体的整体趋势<br>随着不断的合并，a的右子堆的深度越来越高，或者说npl越来越小。</p>
+<p>每次进行合并，都是当前节点的右子堆和此时的b合并。</p>
+<p>先判断下当前节点a,b的大小，如果b更大，则交换内容。</p>
+<p>同时递归的开始下一次合并。</p>
+<p>一旦出现，右子堆或者右堆为空，递归即可结束，返回非空的那个节点，用于绑定父子节点关系。</p>
+<p>在正常的递归过程中，没有立即绑定父子节点关系，需要等待递归结束后</p>
+<p>因为是左式堆，所以左侧的npl是需要更高的，如果右侧节点的npl更高，交换，最后返回此时的堆顶，用于上一个递归体。</p>
 <p>可以大致分为几个过程:</p>
 <blockquote>
 <ul>
