@@ -102,7 +102,7 @@
 <meta property="og:description" content="广度优先搜索 BFS偏向暴力的遍历算法。">
 <meta property="og:image" content="http://lyyua.com/2017/12/17/BFS&DFS/Spanning_Tree.png">
 <meta property="og:image" content="http://lyyua.com/2017/12/17/BFS&DFS/DFS.png">
-<meta property="og:updated_time" content="2018-01-25T14:55:34.091Z">
+<meta property="og:updated_time" content="2018-03-03T17:16:08.612Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="BFS和DFS">
 <meta name="twitter:description" content="广度优先搜索 BFS偏向暴力的遍历算法。">
@@ -371,6 +371,7 @@
 </ul>
 </blockquote>
 <p>使用k来拼接i,j，其中k可以是任意情况，满足上述规则，则更新距离，下面的三层遍历下来，即可完成所有路径的最短拓扑。</p>
+<p>首先当然是要来一次最基本的Dijkstra算法遍历，只不过现在的结果是单源最短，现在需要任意路线。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">for k in 1 to number of vertices&#123;</div><div class="line">   for i in 1 to number of vertices&#123;</div><div class="line">      for j in 1 to number f vertices&#123;</div><div class="line">        dist[i][j] = min(dist[i][j],dist[i][k]+dist[k][j]);</div><div class="line">       &#125;</div><div class="line">    &#125;</div><div class="line"> &#125;</div></pre></td></tr></table></figure>
 
       

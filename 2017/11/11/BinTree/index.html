@@ -111,7 +111,7 @@
 <meta property="og:image" content="http://lyyua.com/2017/11/11/BinTree/inordertraversal.png">
 <meta property="og:image" content="http://lyyua.com/2017/11/11/BinTree/reshow.png">
 <meta property="og:image" content="http://lyyua.com/2017/11/11/BinTree/reshow2.png">
-<meta property="og:updated_time" content="2018-01-23T03:57:50.453Z">
+<meta property="og:updated_time" content="2018-01-28T15:06:13.501Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="二叉树">
 <meta name="twitter:description" content="前言二叉树的结构没什么好说的，见明起意。但是利用这种非线性结构可以高效的完成搜索，删除，添加。把以前学的时候记得笔记总结下，先从树的遍历说起">
@@ -391,6 +391,7 @@
 <p>同时进一步观察可以发现，由于上一行是先序遍历的结果，下一行是中序遍历的结果,中序遍历的结果是，左右分明，先左再中再右;而先序遍历的结果是，一切从根节点开始，所以我们可以利用先序遍历的根节点，从中序遍历的结果中确认左右节点。</p>
 <p>这类问题使用递归可以很好的实现，类似这样</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">Queue&lt;Node&gt; que;</div><div class="line">void Start()</div><div class="line">&#123;</div><div class="line">	travel(midNodesResult,que.dequeue());</div><div class="line">&#125;</div><div class="line">void travel(Node[] nodes，Node root)&#123;</div><div class="line">if(!nodes || nodes.length==1)return; //不存在子节点，或者只剩下自己</div><div class="line">Node n = que.dequeue();//当前结点</div><div class="line">Node[] left = divideLeft(root,nodes);//根据当前根节点划分两组</div><div class="line">Node[] right = divideRight(root,nodes);</div><div class="line">bool isLeft = WhereIsThisNode(left,right,n); //判断当前结点在哪一组</div><div class="line">if(isLeft)&#123;</div><div class="line">	root.left = n;</div><div class="line">&#125;else&#123;</div><div class="line">	root.right = n;</div><div class="line">&#125;</div><div class="line">travel(left,n);</div><div class="line">travel(right,n);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>如果是后序遍历，最后一个节点就是根节点，整体逆着来。</p>
 <h3 id="先序遍历-后序遍历结果确定真二叉树结构"><a href="#先序遍历-后序遍历结果确定真二叉树结构" class="headerlink" title="先序遍历 + 后序遍历结果确定真二叉树结构"></a>先序遍历 + 后序遍历结果确定真二叉树结构</h3><p>思路依然是（先序遍历/后序遍历） + 中序遍历结果确定二叉树结构的思路。</p>
 <p>给定一行先序遍历的结果，再给定一行后续遍历的结果，根据一行的数据来对另一行数据做减而治之的操作。</p>
 <p><img src="/2017/11/11/BinTree/reshow2.png" alt=""></p>
