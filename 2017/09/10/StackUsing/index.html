@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="随便扯," />
+  <meta name="keywords" content="算法," />
 
 
 
@@ -93,24 +93,20 @@
 
 
 
-<meta name="description" content="动机之前看Scut服务器框架的时候，不太理解为什么需要用Redis缓存数据，在一定时间后同步至数据库，或者说没有想到他们的效率差异达到多个数量级。">
-<meta name="keywords" content="随便扯">
+<meta name="description" content="进制转换不断的除商，压入栈中，最后再一次pop出来就是转换的结果">
+<meta name="keywords" content="算法">
 <meta property="og:type" content="article">
-<meta property="og:title" content="系统运作和高速缓存">
-<meta property="og:url" content="http://lyyua.com/2017/12/02/系统运作和高速缓存/index.html">
+<meta property="og:title" content="栈的经典应用">
+<meta property="og:url" content="http://lyyua.com/2017/09/10/StackUsing/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="动机之前看Scut服务器框架的时候，不太理解为什么需要用Redis缓存数据，在一定时间后同步至数据库，或者说没有想到他们的效率差异达到多个数量级。">
-<meta property="og:image" content="http://lyyua.com/2017/12/02/系统运作和高速缓存/SystemContext.png">
-<meta property="og:image" content="http://lyyua.com/2017/12/02/系统运作和高速缓存/hello1.png">
-<meta property="og:image" content="http://lyyua.com/2017/12/02/系统运作和高速缓存/hello2.png">
-<meta property="og:image" content="http://lyyua.com/2017/12/02/系统运作和高速缓存/hello3.png">
-<meta property="og:image" content="http://lyyua.com/2017/12/02/系统运作和高速缓存/cache.png">
-<meta property="og:image" content="http://lyyua.com/2017/12/02/系统运作和高速缓存/level.png">
-<meta property="og:updated_time" content="2018-01-23T05:43:24.106Z">
+<meta property="og:description" content="进制转换不断的除商，压入栈中，最后再一次pop出来就是转换的结果">
+<meta property="og:image" content="http://lyyua.com/2017/09/10/StackUsing/OrderOp.png">
+<meta property="og:image" content="http://lyyua.com/2017/09/10/StackUsing/postfix.png">
+<meta property="og:updated_time" content="2018-03-19T06:38:29.121Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="系统运作和高速缓存">
-<meta name="twitter:description" content="动机之前看Scut服务器框架的时候，不太理解为什么需要用Redis缓存数据，在一定时间后同步至数据库，或者说没有想到他们的效率差异达到多个数量级。">
-<meta name="twitter:image" content="http://lyyua.com/2017/12/02/系统运作和高速缓存/SystemContext.png">
+<meta name="twitter:title" content="栈的经典应用">
+<meta name="twitter:description" content="进制转换不断的除商，压入栈中，最后再一次pop出来就是转换的结果">
+<meta name="twitter:image" content="http://lyyua.com/2017/09/10/StackUsing/OrderOp.png">
 
 
 
@@ -138,13 +134,13 @@
 
 
 
-  <link rel="canonical" href="http://lyyua.com/2017/12/02/系统运作和高速缓存/"/>
+  <link rel="canonical" href="http://lyyua.com/2017/09/10/StackUsing/"/>
 
 
 
 
 
-  <title>系统运作和高速缓存 | Back</title>
+  <title>栈的经典应用 | Back</title>
   
 
 
@@ -273,7 +269,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/12/02/系统运作和高速缓存/">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/09/10/StackUsing/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lyu">
@@ -290,7 +286,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">系统运作和高速缓存</h2>
+          <h2 class="post-title" itemprop="name headline">栈的经典应用</h2>
         
 
         <div class="post-meta">
@@ -302,8 +298,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-02T20:37:47+08:00">
-                2017-12-02
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-09-10T20:36:36+08:00">
+                2017-09-10
               </time>
             
 
@@ -320,7 +316,7 @@
 
           
           
-             <span id="/2017/12/02/系统运作和高速缓存/" class="leancloud_visitors" data-flag-title="系统运作和高速缓存">
+             <span id="/2017/09/10/StackUsing/" class="leancloud_visitors" data-flag-title="栈的经典应用">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -348,31 +344,24 @@
       
 
       
-        <h2 id="动机"><a href="#动机" class="headerlink" title="动机"></a>动机</h2><p>之前看Scut服务器框架的时候，不太理解为什么需要用Redis缓存数据，在一定时间后同步至数据库，或者说没有想到他们的效率差异达到多个数量级。<br><a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>首先，一个典型的系统硬件组成</p>
-<p><img src="/2017/12/02/系统运作和高速缓存/SystemContext.png" alt=""></p>
-<p>当我们用shell命令运行一个helloWorld的流程，系统硬件到底做了什么。</p>
-<p>1、启动shell，等待键盘输入</p>
-<p><img src="/2017/12/02/系统运作和高速缓存/hello1.png" alt=""></p>
-<p>2、输入./hello，运行可执行文件hello</p>
-<p><img src="/2017/12/02/系统运作和高速缓存/hello2.png" alt=""></p>
-<p>3、将hello的执行结果输出到shell窗口</p>
-<p><img src="/2017/12/02/系统运作和高速缓存/hello3.png" alt=""></p>
-<p>由此可以看出，系统花费了大量的时间从一个地方挪到另一个地方，</p>
-<blockquote>
-<ul>
-<li>程序加载时，他们被复制到主存</li>
-<li>处理器运行时，指令又从主存复制到处理器</li>
-<li>接下来，字符串”hello,world/n”从磁盘被复制到主存，再从主存复制到显示设备</li>
-</ul>
-</blockquote>
-<p>这些复制操作就是开销，于是有了高速缓存。</p>
-<p><img src="/2017/12/02/系统运作和高速缓存/cache.png" alt=""></p>
-<p>L1高速缓存容量可达数万字节，访问速度几乎和访问寄存器文件一样快。</p>
-<p>L2告诉缓存通过一条特俗的总线连接到处理器，其容量为数十万到数百万字节，时间要比L1告诉高速缓存时间长5倍。但是仍然比访问主存的时间快5~10倍。</p>
-<p>他们的趋势是离主存越来越近。</p>
-<p><img src="/2017/12/02/系统运作和高速缓存/level.png" alt=""></p>
-<p>利用了高速缓存的局部性原理，即程序具有访问局部区域里的数据和代码的趋势，这点很重要。</p>
+        <h2 id="进制转换"><a href="#进制转换" class="headerlink" title="进制转换"></a>进制转换</h2><p>不断的除商，压入栈中，最后再一次pop出来就是转换的结果</p>
+<a id="more"></a>
+<h2 id="括号匹配"><a href="#括号匹配" class="headerlink" title="括号匹配"></a>括号匹配</h2><p>左括号进栈，右括号匹配栈顶，发生匹配则弹出栈顶，只要出现：<br>①右括号和栈顶不匹配。<br>②右括号存在，但是栈为空。即可得出失配</p>
+<h2 id="栈混洗"><a href="#栈混洗" class="headerlink" title="栈混洗"></a>栈混洗</h2><p>用到三个栈，栈A为原始栈，栈S为中转栈，栈B为最终栈，每次从栈A中Pop出一个元素压入栈S，栈S决定Pop与否，最后得出栈B。 </p>
+<p>只要出现:栈A顺序i，j，k,结果混洗后…k,i,j… 的情况，必然可以判断不是栈混洗，因为要使K在i和j的前面，必然在k入栈S之前，栈S没有弹出元素，即是然遵循i,j,k的顺序入栈S，出栈不论怎么出他们的顺序也是k,j,i。</p>
+<h2 id="栈混洗验证，O-n-复杂度："><a href="#栈混洗验证，O-n-复杂度：" class="headerlink" title="栈混洗验证，O(n)复杂度："></a>栈混洗验证，O(n)复杂度：</h2><p>三个栈，待验证栈混洗的栈A，顺序排序的栈B，中间栈S</p>
+<p>栈B pop()，并push()进中间栈S，检查此时栈S的栈顶数据和栈A栈顶数据，如果相等，栈S和栈A同时pop()；如果不相等，栈B继续pop(),并push()进中间栈S。直到栈B为空。如果此时中间栈S为空，则说明是栈混洗，如果不为空，把栈S中数据依次pop()到一个新的栈C，栈C和剩余的栈A数据进行对比，栈C pop，栈A pop，检查是否相等，直到全部pop都相等说明是栈混洗，否则不是。</p>
+<p>括号匹配和栈混洗有联系，括号匹配的过程类似栈混洗，左括号入站，右括号出栈，也就是说，括号匹配的种数和栈混洗的种数是一样的。 (2n)!/((n+1)!(n)!)</p>
+<h2 id="中缀表达式"><a href="#中缀表达式" class="headerlink" title="中缀表达式"></a>中缀表达式</h2><p>典型的例子就是计算器运算</p>
+<p>1、准备两个栈，栈A存放数字,栈B存放运算符。<br>2、运算式子按规则筛选入对应的栈，当栈A的栈顶运算符大于当前准备入栈的运算符对比，则从栈A中进行两次pop（），进行{popA2}{popB}{popA1}计算，阶乘有些特殊，他只需要栈从A中pop（）出一个即可，即{popA1}{popB}。运算完毕后，运算结果重新入栈A，当前运算符入栈B，如此迭代。</p>
+<p>运算符优先级比较</p>
+<p><img src="/2017/09/10/StackUsing/OrderOp.png" alt=""></p>
+<h2 id="逆波兰表达式"><a href="#逆波兰表达式" class="headerlink" title="逆波兰表达式"></a>逆波兰表达式</h2><p>其实就是特殊处理的中缀表达式</p>
+<h2 id="获得RPN式子"><a href="#获得RPN式子" class="headerlink" title="获得RPN式子"></a>获得RPN式子</h2><p>RPN式子可以直接进行计算，而不需要考虑运算符优先级，他其实是特殊处理过的中缀表达式。</p>
+<p>1、准备两个栈，栈A是运算符临时栈，栈B是RPN式子栈，数字直接入栈B，运算符先入栈A。<br>2、栈A的栈顶运算符和当前运算符进行对比，即栈顶运算符大于当前运算符时，栈A弹出栈顶运算符，压入栈B中（括号不入栈B），同时，当前运算符压入栈A，准备下一次迭代。<br>3、最后得出的栈B就是完整的RPN式子。</p>
+<p>根据RPN式子直接进行计算，运算符优先级已经处理好了。</p>
+<p>如下：<br><img src="/2017/09/10/StackUsing/postfix.png" alt=""></p>
+<h2 id="树的遍历"><a href="#树的遍历" class="headerlink" title="树的遍历"></a>树的遍历</h2><p>之后二叉树里说到。</p>
 
       
     </div>
@@ -402,7 +391,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/随便扯/" rel="tag"># 随便扯</a>
+            <a href="/tags/算法/" rel="tag"># 算法</a>
           
         </div>
       
@@ -415,8 +404,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/11/25/Unity&Android/" rel="next" title="Unity&Android">
-                <i class="fa fa-chevron-left"></i> Unity&Android
+              <a href="/2017/09/04/Matrix/" rel="next" title="矩阵的几何解释 - 旋转">
+                <i class="fa fa-chevron-left"></i> 矩阵的几何解释 - 旋转
               </a>
             
           </div>
@@ -425,8 +414,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2017/12/09/线程/" rel="prev" title="线程原理">
-                线程原理 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/09/17/散列表/" rel="prev" title="散列表">
+                散列表 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -550,7 +539,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#动机"><span class="nav-number">1.</span> <span class="nav-text">动机</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#进制转换"><span class="nav-number">1.</span> <span class="nav-text">进制转换</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#括号匹配"><span class="nav-number">2.</span> <span class="nav-text">括号匹配</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栈混洗"><span class="nav-number">3.</span> <span class="nav-text">栈混洗</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#栈混洗验证，O-n-复杂度："><span class="nav-number">4.</span> <span class="nav-text">栈混洗验证，O(n)复杂度：</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#中缀表达式"><span class="nav-number">5.</span> <span class="nav-text">中缀表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#逆波兰表达式"><span class="nav-number">6.</span> <span class="nav-text">逆波兰表达式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#获得RPN式子"><span class="nav-number">7.</span> <span class="nav-text">获得RPN式子</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#树的遍历"><span class="nav-number">8.</span> <span class="nav-text">树的遍历</span></a></li></ol></div>
             
 
           </div>
