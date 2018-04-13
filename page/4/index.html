@@ -393,6 +393,241 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/07/12/float/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Lyu">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Back">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h2 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2017/07/12/float/" itemprop="url">浮点记法</a></h2>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-12T22:35:59+08:00">
+                2017-07-12
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+             <span id="/2017/07/12/float/" class="leancloud_visitors" data-flag-title="浮点记法">
+               <span class="post-meta-divider">|</span>
+               <span class="post-meta-item-icon">
+                 <i class="fa fa-eye"></i>
+               </span>
+               
+                 <span class="post-meta-item-text">阅读次数 </span>
+               
+                 <span class="leancloud-visitors-count"></span>
+             </span>
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <p>浮点型变量在计算机内存中占用4字节（Byte）,即32-bit。</p>
+<p>一个浮点数由2部分组成：底数m 和 指数e，下面细说。</p>
+<blockquote>
+<ul>
+<li>底数部分　使用２进制数来表示此浮点数的实际值。</li>
+<li>指数部分　占用８-bit的二进制数，可表示数值范围为0－255。　但是指数应可正可负，所以IEEE规定，此处算出的次方须减去127才是真正的指数。所以float的指数可从 -126到128.</li>
+<li>底数部分实际是占用24-bit的一个值，由于其最高位是e位 ，所以最高位省去不存储，在存储中只有23-bit。</li>
+</ul>
+</blockquote>
+<p>总结一下，底数部分23位，加上指数部分8位，使用了31位。那么前面说过，float是占用4个字节即32-bit,还剩一位，是4字节中的最高位，用来指示浮点数的正负，当最高位是1时，为负数，最高位是0时，为正数。</p>
+<p>浮点数据就是按下规则存储在4个字节中：</p>
+<table>
+<thead>
+<tr>
+<th>Address+0</th>
+<th>Address+1</th>
+<th>Address+2</th>
+<th>Address+3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SEEE EEEE</td>
+<td>EMMM MMMM</td>
+<td>MMMM MMMM</td>
+<td>MMMM MMMM</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<ul>
+<li>S: 表示浮点数正负，1为负数，0为正数</li>
+<li>E: 指数加上127后的值的二进制数</li>
+<li>M: 24-bit的底数（只存储23-bit）</li>
+</ul>
+</blockquote>
+<p>注意：这里有个特例，浮点数 为0时，指数和底数都为0，但此前的公式不成立。因为2的0次方为1，所以，0是个特例。当然，这个特例也不用人为去解决，编译器会自动去识别。</p>
+<p>通过上面的格式，我们下面举例看下4.5在计算机中存储的具体数据：</p>
+<table>
+<thead>
+<tr>
+<th>Address+0</th>
+<th>Address+1</th>
+<th>Address+2</th>
+<th>Address+3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x40</td>
+<td>0x90</td>
+<td>0x00</td>
+<td>0x00</td>
+</tr>
+</tbody>
+</table>
+<p>接下来我们验证下上面的数据表示的到底是不是4.5，从而也看下它的转换过程。<br>由于浮点数不是以直接格式存储，他有几部分组成，所以要转换浮点数，首先要把各部分的值分离出来。转成二进制：</p>
+<table>
+<thead>
+<tr>
+<th>Address+0</th>
+<th>Address+1</th>
+<th>Address+2</th>
+<th>Address+3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SEEE EEEE</td>
+<td>EMMM MMMM</td>
+<td>MMMM MMMM</td>
+<td>MMMM MMMM</td>
+</tr>
+<tr>
+<td>0x40</td>
+<td>0x90</td>
+<td>0x00</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>01000000</td>
+<td>10010000</td>
+<td>00000000</td>
+<td>00000000</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<ul>
+<li>S: 为0，是个正数。</li>
+<li>E:为 10000001   转为10进制为129，129-127=2，即实际指数部分为2。</li>
+<li>M:为 00100000000000000000000，在底数左边省略存储了一个1，使用 实际底数表示为<br>1.00100000000000000000000</li>
+</ul>
+</blockquote>
+<p>到此，我们吧三个部分的值都拎出来了，现在，我们通过指数部分E的值来调整底数部分M的值。调整方法为：如果指数E为负数，底数的小数点向左移，如果指数E为正数，底数的小数点向右移。小数点移动的位数由指数E的绝对值决定。</p>
+<p>这里，E为正2，使用向右移2为即得：</p>
+<p>100.100000000000000000000</p>
+<p>至次，这个结果就是4.5的二进制浮点数，将他换算成10进制数就看到4.5了，如何转换，看下面：</p>
+<p>小数点左边的100 表示为 (1 × 2<sup>2</sup>) + (0 × 2<sup>1</sup>) + (0 × 2<sup>0</sup>), 其结果为 4。</p>
+<p>小数点右边的 .100… 表示为 (1 × 2<sup>-1</sup>) + (0 × 2<sup>-2</sup>) + (0 × 2<sup>-3</sup>) + … ，其结果为.5 。<br>以上二值的和为4.5， 由于S 为0，使用为正数，即4.5 。<br>所以，16进制 0x40900000 是浮点数 4.5 。</p>
+<p>上面是如何将计算机存储中的二进制数如何转换成实际浮点数，下面看下如何将一浮点数装换成计算机存储格式中的二进制数。</p>
+<p>举例将17.625换算成 float型。</p>
+<p>首先，将17.625换算成二进制位：10001.101   ( 0.625 = 0.5+0.125, 0.5即 1/2, 0.125即 1/8 如果不会将小数部分转换成二进制，请参考其他书籍。) </p>
+<p><img src="/2017/07/12/float/float.jpg" alt=""></p>
+<p>再将 10001.101 向右移，直到小数点前只剩一位 成了 1.0001101 x 2的4次方（因为右移了4位）。</p>
+<p>此时 我们的底数M和指数E就出来了：</p>
+<p>底数部分M，因为小数点前必为1，所以IEEE规定只记录小数点后的就好，所以此处底数为   0001101 。</p>
+<p>指数部分E，实际为4，但须加上127，固为131，即二进制数 10000011 </p>
+<p>符号部分S，由于是正数，所以S为0.</p>
+<p>综上所述，17.625的 float 存储格式就是：</p>
+<p>0 10000011 00011010000000000000000</p>
+<p>转换成16进制：0x41 8D 00 00</p>
+<p>所以，一看，还是占用了4个字节。</p>
+
+          
+        
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <div>
+      
+    </div>
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
     <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/07/09/Rain3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1339,7 +1574,7 @@
           
             <div class="site-state-item site-state-posts">
               <a href="/archives/">
-                <span class="site-state-item-count">38</span>
+                <span class="site-state-item-count">39</span>
                 <span class="site-state-item-name">日志</span>
               </a>
             </div>

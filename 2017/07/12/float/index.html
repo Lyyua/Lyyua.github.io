@@ -77,7 +77,7 @@
 <link href="/css/main.css?v=5.1.1" rel="stylesheet" type="text/css" />
 
 
-  <meta name="keywords" content="Lua," />
+  <meta name="keywords" content="随便扯," />
 
 
 
@@ -93,17 +93,19 @@
 
 
 
-<meta name="description" content="前言lua的oop和table密切相关，整个OOP都是通过table来模拟的，继承和重写用到了元表。">
-<meta name="keywords" content="Lua">
+<meta name="description" content="浮点型变量在计算机内存中占用4字节（Byte）,即32-bit。 一个浮点数由2部分组成：底数m 和 指数e，下面细说。   底数部分　使用２进制数来表示此浮点数的实际值。 指数部分　占用８-bit的二进制数，可表示数值范围为0－255。　但是指数应可正可负，所以IEEE规定，此处算出的次方须减去127才是真正的指数。所以float的指数可从 -126到128. 底数部分实际是占用24-bit的一">
+<meta name="keywords" content="随便扯">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Lua中的OOP">
-<meta property="og:url" content="http://lyyua.com/2017/12/31/lua2/index.html">
+<meta property="og:title" content="浮点记法">
+<meta property="og:url" content="http://lyyua.com/2017/07/12/float/index.html">
 <meta property="og:site_name" content="Back">
-<meta property="og:description" content="前言lua的oop和table密切相关，整个OOP都是通过table来模拟的，继承和重写用到了元表。">
-<meta property="og:updated_time" content="2018-01-23T05:47:34.091Z">
+<meta property="og:description" content="浮点型变量在计算机内存中占用4字节（Byte）,即32-bit。 一个浮点数由2部分组成：底数m 和 指数e，下面细说。   底数部分　使用２进制数来表示此浮点数的实际值。 指数部分　占用８-bit的二进制数，可表示数值范围为0－255。　但是指数应可正可负，所以IEEE规定，此处算出的次方须减去127才是真正的指数。所以float的指数可从 -126到128. 底数部分实际是占用24-bit的一">
+<meta property="og:image" content="http://lyyua.com/2017/07/12/float/float.jpg">
+<meta property="og:updated_time" content="2018-04-13T09:16:18.525Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Lua中的OOP">
-<meta name="twitter:description" content="前言lua的oop和table密切相关，整个OOP都是通过table来模拟的，继承和重写用到了元表。">
+<meta name="twitter:title" content="浮点记法">
+<meta name="twitter:description" content="浮点型变量在计算机内存中占用4字节（Byte）,即32-bit。 一个浮点数由2部分组成：底数m 和 指数e，下面细说。   底数部分　使用２进制数来表示此浮点数的实际值。 指数部分　占用８-bit的二进制数，可表示数值范围为0－255。　但是指数应可正可负，所以IEEE规定，此处算出的次方须减去127才是真正的指数。所以float的指数可从 -126到128. 底数部分实际是占用24-bit的一">
+<meta name="twitter:image" content="http://lyyua.com/2017/07/12/float/float.jpg">
 
 
 
@@ -131,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="http://lyyua.com/2017/12/31/lua2/"/>
+  <link rel="canonical" href="http://lyyua.com/2017/07/12/float/"/>
 
 
 
 
 
-  <title>Lua中的OOP | Back</title>
+  <title>浮点记法 | Back</title>
   
 
 
@@ -266,7 +268,7 @@
   
 
   <article class="post post-type-normal " itemscope itemtype="http://schema.org/Article">
-    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/12/31/lua2/">
+    <link itemprop="mainEntityOfPage" href="http://lyyua.com/2017/07/12/float/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Lyu">
@@ -283,7 +285,7 @@
 
         
         
-          <h2 class="post-title" itemprop="name headline">Lua中的OOP</h2>
+          <h2 class="post-title" itemprop="name headline">浮点记法</h2>
         
 
         <div class="post-meta">
@@ -295,8 +297,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-12-31T17:29:06+08:00">
-                2017-12-31
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2017-07-12T22:35:59+08:00">
+                2017-07-12
               </time>
             
 
@@ -313,7 +315,7 @@
 
           
           
-             <span id="/2017/12/31/lua2/" class="leancloud_visitors" data-flag-title="Lua中的OOP">
+             <span id="/2017/07/12/float/" class="leancloud_visitors" data-flag-title="浮点记法">
                <span class="post-meta-divider">|</span>
                <span class="post-meta-item-icon">
                  <i class="fa fa-eye"></i>
@@ -341,22 +343,120 @@
       
 
       
-        <h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>lua的oop和table密切相关，整个OOP都是通过table来模拟的，继承和重写用到了元表。 <a id="more"></a></p>
-<h2 id="正文"><a href="#正文" class="headerlink" title="正文"></a>正文</h2><p>先按照常规的table结构定义一个武器类，武器名称，威力，子弹数量</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">Weapon = &#123;</div><div class="line">	id = &quot;&quot;,</div><div class="line">	damage=0,</div><div class="line">	bulletCount=0,</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>定义构造方法，这样可以new出各种类型的武器，这里的New对应的是一个函数而不是某个字段，用来模拟构造函数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Weapon = &#123;</div><div class="line">	id = &quot;&quot;,</div><div class="line">	damage=0,</div><div class="line">	bulletCount=0,</div><div class="line">	New = function(id,damage,bulletCount)</div><div class="line">		local w =&#123;&#125;  --构造一个新表</div><div class="line">		w.damage = damage or 0</div><div class="line">		w.bulletCount = bulletCount or 0</div><div class="line">		w.id = id or &quot;&quot;</div><div class="line">		return w</div><div class="line">	end,	</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>再加上一个可以显示武器信息的方法</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div></pre></td><td class="code"><pre><div class="line">Weapon = &#123;</div><div class="line">	id = &quot;&quot;,</div><div class="line">	damage=0,</div><div class="line">	bulletCount=0,</div><div class="line">	New = function(id,damage,bulletCount)</div><div class="line">		local w =&#123;&#125; </div><div class="line">		w.damage = damage or 0</div><div class="line">		w.bulletCount = bulletCount or 0</div><div class="line">		w.id = id or &quot;&quot;</div><div class="line">		w.ShowInfo = Weapon.ShowInfo --新的表内依然要定义方法</div><div class="line">		return w</div><div class="line">	end,	</div><div class="line">	ShowInfo = function(self)</div><div class="line">		print(&quot;名字：&quot;,self.id..&quot;\t&quot;,&quot;伤害：&quot;,self.damage..&quot;\t&quot;,&quot;弹药数：&quot;,self.bulletCount)</div><div class="line">	end</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这里模拟出来的Weapon就是一个工厂，通过不断的调用New方法可以产生新的实例</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">p = Weapon.New(&quot;98k&quot;,80,12)</div><div class="line">p2 = Weapon.New(&quot;m4&quot;,20,30)</div><div class="line">p:ShowInfo()    --名字：	98k		伤害：	80		弹药数：	12</div><div class="line">p2:ShowInfo()	--名字：	m4		伤害：	20		弹药数：	30</div></pre></td></tr></table></figure>
-<p>还可以结合元表来做一些运算符操作，其他部分代码一样，只是添加了元表<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div></pre></td><td class="code"><pre><div class="line">Weapon = &#123;</div><div class="line">	id = &quot;&quot;,</div><div class="line">	damage=0,</div><div class="line">	bulletCount=0,</div><div class="line">	mt = &#123;&#125; ,--元表 </div><div class="line">	New = function(id,damage,bulletCount)</div><div class="line">		local w =&#123;&#125;</div><div class="line">		setmetatable(w,Weapon.mt)	--设置元表</div><div class="line">		w.damage = damage or 0</div><div class="line">		w.bulletCount = bulletCount or 0</div><div class="line">		w.id = id or &quot;&quot;</div><div class="line">		w.ShowInfo = Weapon.ShowInfo</div><div class="line">		w.mt = Weapon.mt 			--链接元表方法</div><div class="line">		return w</div><div class="line">	end,	</div><div class="line">	ShowInfo = function(self)</div><div class="line">		print(&quot;名字：&quot;,self.id..&quot;\t&quot;,&quot;伤害：&quot;,self.damage..&quot;\t&quot;,&quot;弹药数：&quot;,self.bulletCount)</div><div class="line">	end</div><div class="line">&#125;</div><div class="line">p = Weapon.New(&quot;98k&quot;,80,12)</div><div class="line">p2 = Weapon.New(&quot;m4&quot;,20,30)</div><div class="line">p:ShowInfo()    --名字：	98k		伤害：	80		弹药数：	12</div><div class="line">p2:ShowInfo()	--名字：	m4		伤害：	20		弹药数：	30</div><div class="line">--比较是否为同一种武器</div><div class="line">Weapon.mt.__eq = function(w1,w2)</div><div class="line">	return w1.id == w2.id and w1.damage == w2.damage	</div><div class="line">end</div><div class="line">print(p==p2) --false 比较结果</div></pre></td></tr></table></figure></p>
-<p>同理，如果乐意的话，可以加上<strong>add,</strong>sub….之类的，也可以重写__tostring</p>
-<p>既然使用了元表来模拟oop，不如再进一步充分利用，通过设置元方法，可以省去很多操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">Weapon = &#123;</div><div class="line">	id = &quot;&quot;,</div><div class="line">	damage=0,</div><div class="line">	bulletCount=0,</div><div class="line">	mt = &#123;&#125; ,--元表 </div><div class="line">	New = function(id,damage,bulletCount)</div><div class="line">		local w =&#123;&#125;</div><div class="line">		setmetatable(w,Weapon.mt)	--设置元表</div><div class="line">		w.damage = damage or 0</div><div class="line">		w.bulletCount = bulletCount or 0</div><div class="line">		w.id = id or &quot;&quot;</div><div class="line">		--通过__index 设置，免去手动链接</div><div class="line">		--w.ShowInfo = Weapon.ShowInfo</div><div class="line">		--w.mt = Weapon.mt 			--链接元表方法</div><div class="line">		return w</div><div class="line">	end,	</div><div class="line">	ShowInfo = function(self)</div><div class="line">		print(&quot;名字：&quot;,self.id..&quot;\t&quot;,&quot;伤害：&quot;,self.damage..&quot;\t&quot;,&quot;弹药数：&quot;,self.bulletCount)</div><div class="line">	end</div><div class="line">&#125;</div><div class="line">--比较是否为同一种武器</div><div class="line">Weapon.mt.__eq = function(w1,w2)</div><div class="line">	return w1.id == w2.id and w1.damage == w2.damage	</div><div class="line">end</div><div class="line">Weapon.mt__index = Weapon  		--设置__index</div><div class="line">p = Weapon.New(&quot;98k&quot;,80,12)</div><div class="line">p2 = Weapon.New(&quot;m4&quot;,20,30)</div><div class="line">p:ShowInfo()    --名字：	98k		伤害：	80		弹药数：	12</div><div class="line">p2:ShowInfo()	--名字：	m4		伤害：	20		弹药数：	30</div><div class="line">print(p==p2) 	--false 比较结果</div></pre></td></tr></table></figure></p>
-<p>模拟继承和方法重写，在上面Weapon类的基础上，构造一个SuperWeapon继承于Weapon</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">SuperWeapon=&#123;</div><div class="line">	ExplosionRange = 200,  --新增字段，爆炸范围</div><div class="line">	mt = &#123;&#125;,				--依然是元表，用来提供和方法的链接</div><div class="line">	New = function(id,damage,bulletCount,range)</div><div class="line">		local s = &#123;&#125;</div><div class="line">		s = Weapon.New(id,damage,bulletCount)   --id之类的字段保留，模拟继承自父类Weapon</div><div class="line">		setmetatable(s,SuperWeapon.mt)			--定义元表</div><div class="line">		s.ExplosionRange = range</div><div class="line">		return s</div><div class="line">	end,</div><div class="line">	ShowInfo = function(self)</div><div class="line">		print(&quot;名字：&quot;,self.id..&quot;\t&quot;,&quot;伤害：&quot;,</div><div class="line">				self.damage..&quot;\t&quot;,&quot;弹药数：&quot;,self.bulletCount..&quot;\t&quot;,</div><div class="line">				&quot;爆炸范围：&quot;,self.ExplosionRange)</div><div class="line">	end,</div><div class="line">&#125;</div><div class="line">SuperWeapon.mt.__index = SuperWeapon			--链接元表</div><div class="line">sp = SuperWeapon.New(&quot;RPG&quot;,500,3，400)</div><div class="line">sp:ShowInfo()		--名字：	RPG		伤害：	500		弹药数：	3		爆炸范围：	400</div></pre></td></tr></table></figure>
-<p>在设置__index元方法处可以简化一下</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">SuperWeapon=&#123;</div><div class="line">	ExplosionRange = 200,  --新增字段，爆炸范围</div><div class="line">	New = function(id,damage,bulletCount,range)</div><div class="line">		local s = &#123;&#125;</div><div class="line">		s = Weapon.New(id,damage,bulletCount)   --id之类的字段保留，模拟继承自父类Weapon</div><div class="line">		setmetatable(s,&#123;__index = SuperWeapon&#125;)			--定义元表</div><div class="line">		s.ExplosionRange = range</div><div class="line">		return s</div><div class="line">	end,</div><div class="line">	ShowInfo = function(self)</div><div class="line">		print(&quot;名字：&quot;,self.id..&quot;\t&quot;,&quot;伤害：&quot;,</div><div class="line">				self.damage..&quot;\t&quot;,&quot;弹药数：&quot;,self.bulletCount..&quot;\t&quot;,</div><div class="line">				&quot;爆炸范围：&quot;,self.ExplosionRange)</div><div class="line">	end,</div><div class="line">&#125;</div><div class="line">sp = SuperWeapon.New(&quot;RPG&quot;,500,3，400)</div><div class="line">sp:ShowInfo()		--名字：	RPG		伤害：	500		弹药数：	3		爆炸范围：	400</div></pre></td></tr></table></figure>
+        <p>浮点型变量在计算机内存中占用4字节（Byte）,即32-bit。</p>
+<p>一个浮点数由2部分组成：底数m 和 指数e，下面细说。</p>
+<blockquote>
+<ul>
+<li>底数部分　使用２进制数来表示此浮点数的实际值。</li>
+<li>指数部分　占用８-bit的二进制数，可表示数值范围为0－255。　但是指数应可正可负，所以IEEE规定，此处算出的次方须减去127才是真正的指数。所以float的指数可从 -126到128.</li>
+<li>底数部分实际是占用24-bit的一个值，由于其最高位是e位 ，所以最高位省去不存储，在存储中只有23-bit。</li>
+</ul>
+</blockquote>
+<p>总结一下，底数部分23位，加上指数部分8位，使用了31位。那么前面说过，float是占用4个字节即32-bit,还剩一位，是4字节中的最高位，用来指示浮点数的正负，当最高位是1时，为负数，最高位是0时，为正数。</p>
+<p>浮点数据就是按下规则存储在4个字节中：</p>
+<table>
+<thead>
+<tr>
+<th>Address+0</th>
+<th>Address+1</th>
+<th>Address+2</th>
+<th>Address+3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SEEE EEEE</td>
+<td>EMMM MMMM</td>
+<td>MMMM MMMM</td>
+<td>MMMM MMMM</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<ul>
+<li>S: 表示浮点数正负，1为负数，0为正数</li>
+<li>E: 指数加上127后的值的二进制数</li>
+<li>M: 24-bit的底数（只存储23-bit）</li>
+</ul>
+</blockquote>
+<p>注意：这里有个特例，浮点数 为0时，指数和底数都为0，但此前的公式不成立。因为2的0次方为1，所以，0是个特例。当然，这个特例也不用人为去解决，编译器会自动去识别。</p>
+<p>通过上面的格式，我们下面举例看下4.5在计算机中存储的具体数据：</p>
+<table>
+<thead>
+<tr>
+<th>Address+0</th>
+<th>Address+1</th>
+<th>Address+2</th>
+<th>Address+3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>0x40</td>
+<td>0x90</td>
+<td>0x00</td>
+<td>0x00</td>
+</tr>
+</tbody>
+</table>
+<p>接下来我们验证下上面的数据表示的到底是不是4.5，从而也看下它的转换过程。<br>由于浮点数不是以直接格式存储，他有几部分组成，所以要转换浮点数，首先要把各部分的值分离出来。转成二进制：</p>
+<table>
+<thead>
+<tr>
+<th>Address+0</th>
+<th>Address+1</th>
+<th>Address+2</th>
+<th>Address+3</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>SEEE EEEE</td>
+<td>EMMM MMMM</td>
+<td>MMMM MMMM</td>
+<td>MMMM MMMM</td>
+</tr>
+<tr>
+<td>0x40</td>
+<td>0x90</td>
+<td>0x00</td>
+<td>0x00</td>
+</tr>
+<tr>
+<td>01000000</td>
+<td>10010000</td>
+<td>00000000</td>
+<td>00000000</td>
+</tr>
+</tbody>
+</table>
+<blockquote>
+<ul>
+<li>S: 为0，是个正数。</li>
+<li>E:为 10000001   转为10进制为129，129-127=2，即实际指数部分为2。</li>
+<li>M:为 00100000000000000000000，在底数左边省略存储了一个1，使用 实际底数表示为<br>1.00100000000000000000000</li>
+</ul>
+</blockquote>
+<p>到此，我们吧三个部分的值都拎出来了，现在，我们通过指数部分E的值来调整底数部分M的值。调整方法为：如果指数E为负数，底数的小数点向左移，如果指数E为正数，底数的小数点向右移。小数点移动的位数由指数E的绝对值决定。</p>
+<p>这里，E为正2，使用向右移2为即得：</p>
+<p>100.100000000000000000000</p>
+<p>至次，这个结果就是4.5的二进制浮点数，将他换算成10进制数就看到4.5了，如何转换，看下面：</p>
+<p>小数点左边的100 表示为 (1 × 2<sup>2</sup>) + (0 × 2<sup>1</sup>) + (0 × 2<sup>0</sup>), 其结果为 4。</p>
+<p>小数点右边的 .100… 表示为 (1 × 2<sup>-1</sup>) + (0 × 2<sup>-2</sup>) + (0 × 2<sup>-3</sup>) + … ，其结果为.5 。<br>以上二值的和为4.5， 由于S 为0，使用为正数，即4.5 。<br>所以，16进制 0x40900000 是浮点数 4.5 。</p>
+<p>上面是如何将计算机存储中的二进制数如何转换成实际浮点数，下面看下如何将一浮点数装换成计算机存储格式中的二进制数。</p>
+<p>举例将17.625换算成 float型。</p>
+<p>首先，将17.625换算成二进制位：10001.101   ( 0.625 = 0.5+0.125, 0.5即 1/2, 0.125即 1/8 如果不会将小数部分转换成二进制，请参考其他书籍。) </p>
+<p><img src="/2017/07/12/float/float.jpg" alt=""></p>
+<p>再将 10001.101 向右移，直到小数点前只剩一位 成了 1.0001101 x 2的4次方（因为右移了4位）。</p>
+<p>此时 我们的底数M和指数E就出来了：</p>
+<p>底数部分M，因为小数点前必为1，所以IEEE规定只记录小数点后的就好，所以此处底数为   0001101 。</p>
+<p>指数部分E，实际为4，但须加上127，固为131，即二进制数 10000011 </p>
+<p>符号部分S，由于是正数，所以S为0.</p>
+<p>综上所述，17.625的 float 存储格式就是：</p>
+<p>0 10000011 00011010000000000000000</p>
+<p>转换成16进制：0x41 8D 00 00</p>
+<p>所以，一看，还是占用了4个字节。</p>
+
       
     </div>
 
@@ -385,7 +485,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/Lua/" rel="tag"># Lua</a>
+            <a href="/tags/随便扯/" rel="tag"># 随便扯</a>
           
         </div>
       
@@ -398,8 +498,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2017/12/30/lua/" rel="next" title="Lua简单学习">
-                <i class="fa fa-chevron-left"></i> Lua简单学习
+              <a href="/2017/07/09/Rain3/" rel="next" title="Rain AI，从实现一个内部小队通信的角度谈谈（二）">
+                <i class="fa fa-chevron-left"></i> Rain AI，从实现一个内部小队通信的角度谈谈（二）
               </a>
             
           </div>
@@ -408,8 +508,8 @@
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2018/01/13/ECS/" rel="prev" title="使用ECS框架设计游戏">
-                使用ECS框架设计游戏 <i class="fa fa-chevron-right"></i>
+              <a href="/2017/07/30/UnityKey/" rel="prev" title="UnityKey">
+                UnityKey <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -460,17 +560,8 @@
       
 
       
-        <ul class="sidebar-nav motion-element">
-          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
-            文章目录
-          </li>
-          <li class="sidebar-nav-overview" data-target="site-overview">
-            站点概览
-          </li>
-        </ul>
-      
 
-      <section class="site-overview sidebar-panel">
+      <section class="site-overview sidebar-panel sidebar-panel-active">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
           <img class="site-author-image" itemprop="image"
                src="/images/avatar.png"
@@ -523,22 +614,6 @@
 
       </section>
 
-      
-      <!--noindex-->
-        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
-          <div class="post-toc">
-
-            
-              
-            
-
-            
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#正文"><span class="nav-number">2.</span> <span class="nav-text">正文</span></a></li></ol></div>
-            
-
-          </div>
-        </section>
-      <!--/noindex-->
       
 
       
